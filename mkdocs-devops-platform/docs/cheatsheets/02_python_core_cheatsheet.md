@@ -1,7 +1,4 @@
 # 📘 Python Core — Comprehensive Cheat Sheet
-> **Author**: AI-Generated for DevOps & Cloud Engineers
-> **Last Updated**: 2026-08-05
-> **Pages**: ~50+ pages (Equivalent Depth & Coverage) | **Sections**: 24 | **Examples**: Comprehensive Production Snippets
 
 ## 📑 Table of Contents
 1. [Python Fundamentals](#1-python-fundamentals)

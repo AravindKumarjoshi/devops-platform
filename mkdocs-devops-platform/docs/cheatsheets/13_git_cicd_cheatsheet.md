@@ -1,7 +1,4 @@
 # 📘 Git & CI/CD Automation — Comprehensive Cheat Sheet
-> **Author**: AI-Generated for DevOps & Cloud Engineers
-> **Last Updated**: 2026-08-05
-> **Pages**: ~50+ pages (Equivalent Depth & Coverage) | **Sections**: 10 | **Examples**: Comprehensive Production Snippets
 
 ## 📑 Table of Contents
 

@@ -9,6 +9,7 @@ theme:
   name: material
   features:
     - navigation.tabs
+    - navigation.tabs.sticky
     - navigation.sections
     - navigation.expand
     - navigation.top
@@ -46,6 +47,8 @@ nav:
           - PowerShell Mastery: cheatsheets/20_PowerShell_Mastery.md
           - OS Architecture: cheatsheets/21_OS_Architecture.md
       - DevOps & Infrastructure:
+          - Jenkins: cheatsheets/23_jenkins_cheatsheet.md
+          - GCP DevOps Services: cheatsheets/24_gcp_devops_services.md
           - Networking: cheatsheets/06_networking_cheatsheet.md
           - Docker: cheatsheets/07_docker_cheatsheet.md
           - Kubernetes: cheatsheets/08_kubernetes_cheatsheet.md

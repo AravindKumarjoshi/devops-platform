@@ -1,7 +1,5 @@
 # 📘 Data Structures & Algorithms (DSA) in Python — Comprehensive Textbook
 
-> **Author**: AI-Generated for DevOps & Cloud Engineers (Percipio / Codecademy Syllabus Edition)
-> **Last Updated**: 2026-08-10
 > **Sections**: 6 Sets | **Depth**: Exhaustive Textbook-Level | **Visuals**: Mermaid Diagrams Throughout
 
 ## Table of Contents
