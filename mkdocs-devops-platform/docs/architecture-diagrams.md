@@ -24,19 +24,19 @@ The platform is built on GCP's **Shared VPC** model. A single **Host Project** o
             GHE_OP[GitHub Enterprise Server]
         end
 
-        subgraph HostProject["🔵 Shared VPC Host Project\n(enterprise-vpc-host)"]
-            SVPC[shared-vpc Network\n10.0.0.0/8]
-            CR[Cloud Router\nASN 65001]
-            NAT[Cloud NAT\nShared IP Pool]
-            VPN[Cloud VPN / Interconnect\n10Gbps Dedicated]
-            FW[Cloud Firewall Rules\nCentralized Policy]
+        subgraph HostProject["🔵 Shared VPC Host Project<br>(enterprise-vpc-host)"]
+            SVPC[shared-vpc Network<br>10.0.0.0/8]
+            CR[Cloud Router<br>ASN 65001]
+            NAT[Cloud NAT<br>Shared IP Pool]
+            VPN[Cloud VPN / Interconnect<br>10Gbps Dedicated]
+            FW[Cloud Firewall Rules<br>Centralized Policy]
         end
 
         DC <-->|"Encrypted Tunnel"| VPN
         VPN --> CR
         CR --> SVPC
         SVPC --> NAT
-        NAT -->|"Outbound Internet\n(No external IPs needed)"| Internet((Internet))
+        NAT -->|"Outbound Internet<br>(No external IPs needed)"| Internet((Internet))
         SVPC --> FW
         SNOW_OP -->|"HTTPS"| VPN
         GHE_OP -->|"HTTPS"| VPN
@@ -52,24 +52,24 @@ The platform is built on GCP's **Shared VPC** model. A single **Host Project** o
 
     ```mermaid
     graph LR
-        SVPC["Shared VPC\n(Host Project)"] 
+        SVPC["Shared VPC<br>(Host Project)"] 
 
-        subgraph GKE_PROJ["🟢 GKE Platform Project\n(enterprise-platform-prod)"]
-            GKE[GKE Cluster\ngke-prod-us-central1]
+        subgraph GKE_PROJ["🟢 GKE Platform Project<br>(enterprise-platform-prod)"]
+            GKE[GKE Cluster<br>gke-prod-us-central1]
             AR[Artifact Registry]
             CB[Cloud Build]
         end
 
-        subgraph DATA_PROJ["🟡 Data Platform Project\n(enterprise-data-prod)"]
-            BQ[BigQuery\nData Warehouse]
-            DP[Dataproc\nSpark/Hadoop]
-            GCS[Cloud Storage\nData Lake]
+        subgraph DATA_PROJ["🟡 Data Platform Project<br>(enterprise-data-prod)"]
+            BQ[BigQuery<br>Data Warehouse]
+            DP[Dataproc<br>Spark/Hadoop]
+            GCS[Cloud Storage<br>Data Lake]
         end
 
-        subgraph APP_PROJ["🟠 App Platform Project\n(enterprise-app-prod)"]
-            CF_SNOW[Cloud Function\nServiceNow Webhook]
-            CF_SLACK[Cloud Function\nSlack PagerDuty Bot]
-            CR_RUN[Cloud Run\nApp Services]
+        subgraph APP_PROJ["🟠 App Platform Project<br>(enterprise-app-prod)"]
+            CF_SNOW[Cloud Function<br>ServiceNow Webhook]
+            CF_SLACK[Cloud Function<br>Slack PagerDuty Bot]
+            CR_RUN[Cloud Run<br>App Services]
         end
 
         SVPC -->|"Subnet: gke-nodes-subnet"| GKE_PROJ
@@ -90,19 +90,19 @@ The platform is built on GCP's **Shared VPC** model. A single **Host Project** o
                 P2[Data Platform Project]
                 P3[App Platform Project]
             end
-            KMS[Cloud KMS\nKey Management]
-            SM[Secret Manager\nCredentials Store]
+            KMS[Cloud KMS<br>Key Management]
+            SM[Secret Manager<br>Credentials Store]
         end
 
-        IAM["Cloud IAM\nWorkload Identity\nLeast Privilege"] 
-        CALOG["Cloud Audit Logs\nAll Admin Activity"]
-        SCC["Security Command Center\nThreat Detection"]
+        IAM["Cloud IAM<br>Workload Identity<br>Least Privilege"] 
+        CALOG["Cloud Audit Logs<br>All Admin Activity"]
+        SCC["Security Command Center<br>Threat Detection"]
 
         IAM -->|"Controls access to"| VPC_SC
         PROJECTS -->|"All actions logged"| CALOG
         CALOG --> SCC
-        KMS -->|"Encrypts data at rest\nin all projects"| PROJECTS
-        SM -->|"Injects secrets at runtime\n(no hardcoded creds)"| PROJECTS
+        KMS -->|"Encrypts data at rest<br>in all projects"| PROJECTS
+        SM -->|"Injects secrets at runtime<br>(no hardcoded creds)"| PROJECTS
     ```
 
     !!! warning "VPC-SC Access Policy"
@@ -116,22 +116,22 @@ The platform is built on GCP's **Shared VPC** model. A single **Host Project** o
     ```mermaid
     graph LR
         subgraph External["🌐 External Systems"]
-            SNOW[ServiceNow\nOn-Premises]
-            GHE[GitHub Enterprise\nOn-Premises]
-            PD[PagerDuty\nSaaS]
-            DD[Datadog\nSaaS]
+            SNOW[ServiceNow<br>On-Premises]
+            GHE[GitHub Enterprise<br>On-Premises]
+            PD[PagerDuty<br>SaaS]
+            DD[Datadog<br>SaaS]
         end
 
         subgraph GCP["☁️ GCP Entry Points"]
-            APIGW[API Gateway\nOpenAPI spec\nAuth + Rate limiting]
-            CBT[Cloud Build Trigger\nGitHub App]
-            CF_SNOW[Cloud Function\nSNOW Webhook Handler]
-            CF_SLACK[Cloud Function\nSlack → PD Bot]
+            APIGW[API Gateway<br>OpenAPI spec<br>Auth + Rate limiting]
+            CBT[Cloud Build Trigger<br>GitHub App]
+            CF_SNOW[Cloud Function<br>SNOW Webhook Handler]
+            CF_SLACK[Cloud Function<br>Slack → PD Bot]
         end
 
-        SNOW -->|"Outbound REST\nHMAC-SHA256 signed"| APIGW
+        SNOW -->|"Outbound REST<br>HMAC-SHA256 signed"| APIGW
         APIGW --> CF_SNOW
-        CF_SNOW -->|"IAM grants /\nVM creation"| GCP
+        CF_SNOW -->|"IAM grants /<br>VM creation"| GCP
 
         GHE -->|"Webhook push event"| CBT
         CBT -->|"Triggers pipeline"| GCP
@@ -158,10 +158,10 @@ Jenkins runs as a single **Controller Pod** in the `jenkins-prod` namespace. It 
     ```mermaid
     graph TD
         subgraph GKE["☸️ GKE Cluster: enterprise-gke-prod-us-central1"]
-            subgraph NP1["Node Pool: jenkins-controller-pool\nn2-standard-4 × 1-2 nodes"]
-                JC["Jenkins Controller Pod\njenkins/jenkins:2.462.3-lts-jdk17\nCPU: 2-4 cores | RAM: 4-8 Gi"]
+            subgraph NP1["Node Pool: jenkins-controller-pool<br>n2-standard-4 × 1-2 nodes"]
+                JC["Jenkins Controller Pod<br>jenkins/jenkins:2.462.3-lts-jdk17<br>CPU: 2-4 cores | RAM: 4-8 Gi"]
             end
-            subgraph NP2["Node Pool: jenkins-agents-pool\nn2-standard-8 × 0-20 nodes (autoscaled)"]
+            subgraph NP2["Node Pool: jenkins-agents-pool<br>n2-standard-8 × 0-20 nodes (autoscaled)"]
                 AG1[Kaniko Agent Pod]
                 AG2[Maven Agent Pod]
                 AG3[NodeJS Agent Pod]
@@ -189,22 +189,22 @@ Jenkins runs as a single **Controller Pod** in the `jenkins-prod` namespace. It 
         DEV(["👤 Developer Browser"])
         
         subgraph GCP_LB["GCP Load Balancing"]
-            HTTPS_LB["Internal HTTPS LB\n(GCP managed cert)"]
+            HTTPS_LB["Internal HTTPS LB<br>(GCP managed cert)"]
         end
 
         subgraph NS_INGRESS["Namespace: ingress-nginx"]
-            ING[Ingress Resource\nHost: jenkins.internal.enterprise.com]
+            ING[Ingress Resource<br>Host: jenkins.internal.enterprise.com]
         end
 
         subgraph NS_PROD["Namespace: jenkins-prod"]
-            SVC_UI["Service: jenkins-ui\nClusterIP :8080"]
-            SVC_JNLP["Service: jenkins-jnlp\nClusterIP :50000"]
+            SVC_UI["Service: jenkins-ui<br>ClusterIP :8080"]
+            SVC_JNLP["Service: jenkins-jnlp<br>ClusterIP :50000"]
             JC_POD[Jenkins Controller Pod]
-            PVC[("PVC: jenkins-home\n100 Gi SSD Regional-PD")]
+            PVC[("PVC: jenkins-home<br>100 Gi SSD Regional-PD")]
         end
 
         subgraph NS_AGENTS["Namespace: jenkins-agents"]
-            AGENT[Agent Pod\n(ephemeral)]
+            AGENT[Agent Pod<br>(ephemeral)]
         end
 
         DEV --> HTTPS_LB
@@ -212,7 +212,7 @@ Jenkins runs as a single **Controller Pod** in the `jenkins-prod` namespace. It 
         ING --> SVC_UI
         SVC_UI --> JC_POD
         JC_POD --- PVC
-        AGENT -->|"JNLP connect-back\nport 50000"| SVC_JNLP
+        AGENT -->|"JNLP connect-back<br>port 50000"| SVC_JNLP
         SVC_JNLP --> JC_POD
     ```
 
@@ -224,19 +224,19 @@ Jenkins runs as a single **Controller Pod** in the `jenkins-prod` namespace. It 
     ```mermaid
     graph LR
         subgraph K8S["Kubernetes"]
-            KSA_C["KSA: jenkins-controller\nNamespace: jenkins-prod"]
-            KSA_A["KSA: jenkins-agent\nNamespace: jenkins-agents"]
+            KSA_C["KSA: jenkins-controller<br>Namespace: jenkins-prod"]
+            KSA_A["KSA: jenkins-agent<br>Namespace: jenkins-agents"]
         end
 
         subgraph GCP_IAM["GCP IAM"]
-            GSA_C["GSA: jenkins-controller\n@enterprise-platform-prod"]
-            GSA_A["GSA: jenkins-agent\n@enterprise-platform-prod"]
+            GSA_C["GSA: jenkins-controller<br>@enterprise-platform-prod"]
+            GSA_A["GSA: jenkins-agent<br>@enterprise-platform-prod"]
         end
 
         subgraph GCP_APIS["GCP APIs"]
-            AR["Artifact Registry\nroles/artifactregistry.writer"]
-            GKE_API["GKE API\nroles/container.developer"]
-            GCS["Cloud Storage\nroles/storage.objectAdmin"]
+            AR["Artifact Registry<br>roles/artifactregistry.writer"]
+            GKE_API["GKE API<br>roles/container.developer"]
+            GCS["Cloud Storage<br>roles/storage.objectAdmin"]
         end
 
         KSA_C -->|"WI annotation binding"| GSA_C
@@ -264,19 +264,19 @@ The end-to-end journey of a code change from a developer's laptop to the product
     ```mermaid
     sequenceDiagram
         autonumber
-        participant Dev as 👤 Developer
-        participant GH as GitHub Enterprise
-        participant JK as Jenkins
-        participant SQ as SonarQube
-        participant ART as Artifactory
+        participant Dev as "👤 Developer"
+        participant GH as "GitHub Enterprise"
+        participant JK as "Jenkins"
+        participant SQ as "SonarQube"
+        participant ART as "Artifactory"
 
         Dev->>GH: git push / open PR
         GH->>JK: Webhook: push event + commit SHA
-        JK->>JK: Stage 1 — Checkout & lint\n(Dockerfile, YAML, shellcheck)
-        JK->>JK: Stage 2 — Unit tests\n(Maven / npm test)
-        JK->>SQ: Stage 3 — SAST scan\n+ code coverage upload
-        SQ-->>JK: Quality Gate: PASSED ✅\n(coverage ≥ 80%, no critical issues)
-        JK->>ART: Stage 4 — Build & push Docker image\ntag: {build-number}-{git-sha:8}
+        JK->>JK: Stage 1 — Checkout & lint<br>(Dockerfile, YAML, shellcheck)
+        JK->>JK: Stage 2 — Unit tests<br>(Maven / npm test)
+        JK->>SQ: Stage 3 — SAST scan<br>+ code coverage upload
+        SQ-->>JK: Quality Gate: PASSED ✅<br>(coverage ≥ 80%, no critical issues)
+        JK->>ART: Stage 4 — Build & push Docker image<br>tag: {build-number}-{git-sha:8}
         ART-->>JK: Image URL confirmed + digest
     ```
 
@@ -285,17 +285,17 @@ The end-to-end journey of a code change from a developer's laptop to the product
     ```mermaid
     sequenceDiagram
         autonumber
-        participant JK as Jenkins
-        participant GATE as Approval Gate
-        participant GKE as Genesis GKE
-        participant SLACK as Slack #platform-releases
+        participant JK as "Jenkins"
+        participant GATE as "Approval Gate"
+        participant GKE as "Genesis GKE"
+        participant SLACK as "Slack #platform-releases"
 
-        JK->>GATE: Request production approval\n(image: myapp-142-a3f21b4c)
-        Note over GATE: Human approves OR\npolicy engine auto-approves\n(non-prod environments)
+        JK->>GATE: Request production approval<br>(image: myapp-142-a3f21b4c)
+        Note over GATE: Human approves OR<br>policy engine auto-approves<br>(non-prod environments)
         GATE-->>JK: ✅ Approved by: sre-lead@enterprise.com
-        JK->>GKE: helm upgrade --install myapp ./chart\n--set image.tag=142-a3f21b4c\n--wait --timeout 5m
+        JK->>GKE: helm upgrade --install myapp ./chart<br>--set image.tag=142-a3f21b4c<br>--wait --timeout 5m
         GKE-->>JK: Rollout complete: 3/3 pods Ready
-        JK->>SLACK: ✅ myapp v142 deployed to prod\nDuration: 4m 32s | Image: ...a3f21b4c
+        JK->>SLACK: ✅ myapp v142 deployed to prod<br>Duration: 4m 32s | Image: ...a3f21b4c
     ```
 
 === "Failure Paths"
@@ -303,25 +303,25 @@ The end-to-end journey of a code change from a developer's laptop to the product
     ```mermaid
     sequenceDiagram
         autonumber
-        participant JK as Jenkins
-        participant SQ as SonarQube
-        participant GKE as Genesis GKE
-        participant SLACK as Slack
-        participant Dev as 👤 Developer
+        participant JK as "Jenkins"
+        participant SQ as "SonarQube"
+        participant GKE as "Genesis GKE"
+        participant SLACK as "Slack"
+        participant Dev as "👤 Developer"
 
         Note over JK,SQ: Scenario A — Quality Gate Failure
         JK->>SQ: Scan results submitted
-        SQ-->>JK: ❌ FAILED: coverage 61% < 80% threshold\n3 critical vulnerabilities found
+        SQ-->>JK: ❌ FAILED: coverage 61% < 80% threshold<br>3 critical vulnerabilities found
         JK->>Dev: GitHub PR annotation with failure details
         JK->>SLACK: ❌ Build #142 FAILED — QG: coverage too low
         Note over JK,SLACK: Pipeline STOPS. No artifact pushed.
 
         Note over JK,GKE: Scenario B — Rollout Failure
         JK->>GKE: helm upgrade --install ...
-        GKE-->>JK: ❌ Timeout: 1/3 pods Ready\nCrashLoopBackOff detected
+        GKE-->>JK: ❌ Timeout: 1/3 pods Ready<br>CrashLoopBackOff detected
         JK->>GKE: helm rollback myapp (auto)
         GKE-->>JK: Rolled back to revision 141
-        JK->>SLACK: ⚠️ Deploy FAILED + rolled back\nPrevious version restored
+        JK->>SLACK: ⚠️ Deploy FAILED + rolled back<br>Previous version restored
     ```
 
 ---
@@ -338,16 +338,16 @@ Any engineer can trigger a **PagerDuty incident** directly from Slack by typing 
     ```mermaid
     sequenceDiagram
         autonumber
-        participant ENG as 👤 SRE Engineer
-        participant SLACK as Slack
-        participant BOT as Cloud Function Bot\n(Python / Flask)
+        participant ENG as "👤 SRE Engineer"
+        participant SLACK as "Slack"
+        participant BOT as "Cloud Function Bot<br>(Python / Flask)"
 
-        ENG->>SLACK: @pagerduty platform-sre\nP1: DB connection pool exhausted
-        SLACK->>BOT: POST /slack/events\n{event_callback, text, channel, ts}
-        BOT->>BOT: 1. Check X-Slack-Request-Timestamp\n   (reject if > 5 min old — replay attack)
-        BOT->>BOT: 2. Compute HMAC-SHA256\n   sig = hmac(SIGNING_SECRET, v0:ts:body)
-        BOT->>BOT: 3. compare_digest(computed, X-Slack-Signature)\n   ✅ Signature valid
-        BOT->>BOT: 4. Regex parse:\n   team = platform-sre\n   body = P1: DB connection pool exhausted
+        ENG->>SLACK: @pagerduty platform-sre<br>P1: DB connection pool exhausted
+        SLACK->>BOT: POST /slack/events<br>{event_callback, text, channel, ts}
+        BOT->>BOT: 1. Check X-Slack-Request-Timestamp<br>   (reject if > 5 min old — replay attack)
+        BOT->>BOT: 2. Compute HMAC-SHA256<br>   sig = hmac(SIGNING_SECRET, v0:ts:body)
+        BOT->>BOT: 3. compare_digest(computed, X-Slack-Signature)<br>   ✅ Signature valid
+        BOT->>BOT: 4. Regex parse:<br>   team = platform-sre<br>   body = P1: DB connection pool exhausted
     ```
 
 === "PagerDuty Lookup & Page"
@@ -355,16 +355,16 @@ Any engineer can trigger a **PagerDuty incident** directly from Slack by typing 
     ```mermaid
     sequenceDiagram
         autonumber
-        participant BOT as Cloud Function Bot
-        participant PD as PagerDuty API v2
-        participant ENG as 📟 On-Call Engineer
+        participant BOT as "Cloud Function Bot"
+        participant PD as "PagerDuty API v2"
+        participant ENG as "📟 On-Call Engineer"
 
-        BOT->>PD: GET /schedules?query=platform-sre\nAuthorization: Token token={PD_API_TOKEN}
+        BOT->>PD: GET /schedules?query=platform-sre<br>Authorization: Token token={PD_API_TOKEN}
         PD-->>BOT: [{id: SCH001, name: Platform SRE Rotation}]
-        BOT->>PD: GET /oncalls?schedule_ids[]=SCH001\n&earliest=true
-        PD-->>BOT: [{user: {name: Jane Smith,\n  email: jane@enterprise.com}}]
-        BOT->>PD: POST /incidents\n{title, service_id, escalation_policy,\n urgency: high, body: full message}
-        PD-->>BOT: {incident: {id: INC-4821,\n  html_url: pagerduty.com/...}}
+        BOT->>PD: GET /oncalls?schedule_ids[]=SCH001<br>&earliest=true
+        PD-->>BOT: [{user: {name: Jane Smith,<br>  email: jane@enterprise.com}}]
+        BOT->>PD: POST /incidents<br>{title, service_id, escalation_policy,<br> urgency: high, body: full message}
+        PD-->>BOT: {incident: {id: INC-4821,<br>  html_url: pagerduty.com/...}}
         PD->>ENG: 📱 Push notification + SMS page
     ```
 
@@ -373,16 +373,16 @@ Any engineer can trigger a **PagerDuty incident** directly from Slack by typing 
     ```mermaid
     sequenceDiagram
         autonumber
-        participant BOT as Cloud Function Bot
-        participant SG as SendGrid API
-        participant DL as platform-sre-dl@enterprise.com
-        participant SLACK as Slack
+        participant BOT as "Cloud Function Bot"
+        participant SG as "SendGrid API"
+        participant DL as "platform-sre-dl@enterprise.com"
+        participant SLACK as "Slack"
 
-        BOT->>SG: POST /v3/mail/send\n{to: platform-sre-dl@enterprise.com,\n subject: PagerDuty Incident INC-4821,\n html: full incident details table}
+        BOT->>SG: POST /v3/mail/send<br>{to: platform-sre-dl@enterprise.com,<br> subject: PagerDuty Incident INC-4821,<br> html: full incident details table}
         SG-->>BOT: 202 Accepted
         SG->>DL: 📧 HTML email delivered to all DL members
-        BOT->>SLACK: chat.postMessage (thread reply)\n"✅ Incident INC-4821 created\n📟 On-call: Jane Smith\n🔗 pagerduty.com/incidents/INC-4821"
-        Note over SLACK: Reply appears in thread\nunder original @pagerduty message
+        BOT->>SLACK: chat.postMessage (thread reply)<br>"✅ Incident INC-4821 created<br>📟 On-call: Jane Smith<br>🔗 pagerduty.com/incidents/INC-4821"
+        Note over SLACK: Reply appears in thread<br>under original @pagerduty message
     ```
 
 ---
@@ -399,19 +399,19 @@ Every change to a VM base image must go through this pipeline. No one can SSH in
     ```mermaid
     sequenceDiagram
         autonumber
-        participant DEV as 👤 Developer
-        participant SNOW as ServiceNow
-        participant GH as GitHub PR
-        participant SECOPS as 🔒 SecOps Reviewer
-        participant SRE as ☸️ SRE Reviewer
+        participant DEV as "👤 Developer"
+        participant SNOW as "ServiceNow"
+        participant GH as "GitHub PR"
+        participant SECOPS as "🔒 SecOps Reviewer"
+        participant SRE as "☸️ SRE Reviewer"
 
-        DEV->>SNOW: File RITM ticket:\n"Add nodejs 20.x to base image\nReason: App team requirement"
+        DEV->>SNOW: File RITM ticket:<br>"Add nodejs 20.x to base image<br>Reason: App team requirement"
         SNOW-->>DEV: RITM0042819 approved for implementation
         DEV->>GH: git checkout -b feat/RITM0042819-add-nodejs20
-        DEV->>GH: Edit ansible-playbook.yaml\n(add nodejs to apt_packages list)
-        DEV->>GH: Open PR — fill PULL_REQUEST_TEMPLATE.md\n(ticket link + justification + SecOps checklist)
+        DEV->>GH: Edit ansible-playbook.yaml<br>(add nodejs to apt_packages list)
+        DEV->>GH: Open PR — fill PULL_REQUEST_TEMPLATE.md<br>(ticket link + justification + SecOps checklist)
         GH->>SECOPS: Review request (CODEOWNERS mandatory)
-        SECOPS->>GH: ✅ CIS L1 check: no new SUID binaries\n   CVE scan: clean\n   UFW: no new external ports
+        SECOPS->>GH: ✅ CIS L1 check: no new SUID binaries<br>   CVE scan: clean<br>   UFW: no new external ports
         GH->>SRE: Review request (2 approvals required)
         SRE->>GH: ✅ Approve
     ```
@@ -421,25 +421,25 @@ Every change to a VM base image must go through this pipeline. No one can SSH in
     ```mermaid
     sequenceDiagram
         autonumber
-        participant GH as GitHub
-        participant CB as Cloud Build
-        participant PKR as Packer
-        participant VM as GCP Builder VM\n(temporary, no external IP)
-        participant ANS as Ansible
+        participant GH as "GitHub"
+        participant CB as "Cloud Build"
+        participant PKR as "Packer"
+        participant VM as "GCP Builder VM<br>(temporary, no external IP)"
+        participant ANS as "Ansible"
 
         GH->>CB: PR merge → Cloud Build trigger fires
         CB->>PKR: packer init (download plugins)
         CB->>PKR: packer validate (syntax + API check)
         PKR-->>CB: ✅ Validation passed
-        CB->>PKR: packer build\n(IAP tunnel SSH, no external IP)
+        CB->>PKR: packer build<br>(IAP tunnel SSH, no external IP)
         PKR->>VM: Launch n2-standard-4 from debian-12 base
-        PKR->>ANS: Invoke ansible-playbook provisioner\n(over IAP tunnel)
-        ANS->>VM: Play 1: CIS L1 hardening\n(sysctl, auditd, SSH config, AppArmor)
+        PKR->>ANS: Invoke ansible-playbook provisioner<br>(over IAP tunnel)
+        ANS->>VM: Play 1: CIS L1 hardening<br>(sysctl, auditd, SSH config, AppArmor)
         ANS->>VM: Play 2: UFW firewall rules
-        ANS->>VM: Play 3: Dev packages\n(nodejs, docker, kubectl, helm, terraform)
+        ANS->>VM: Play 3: Dev packages<br>(nodejs, docker, kubectl, helm, terraform)
         ANS->>VM: Play 4: GCP Ops Agent
         ANS->>VM: Play 5: Datadog Agent
-        ANS->>VM: Play 6: Pre-snapshot cleanup\n(bash_history, SSH host keys, apt cache, logs)
+        ANS->>VM: Play 6: Pre-snapshot cleanup<br>(bash_history, SSH host keys, apt cache, logs)
         ANS-->>PKR: Provisioning complete ✅
     ```
 
@@ -448,20 +448,20 @@ Every change to a VM base image must go through this pipeline. No one can SSH in
     ```mermaid
     sequenceDiagram
         autonumber
-        participant PKR as Packer
-        participant GCP as GCP Image Family\n(enterprise-images project)
-        participant CB as Cloud Build
-        participant SNOW as ServiceNow API
-        participant SLACK as Slack #platform-releases
+        participant PKR as "Packer"
+        participant GCP as "GCP Image Family<br>(enterprise-images project)"
+        participant CB as "Cloud Build"
+        participant SNOW as "ServiceNow API"
+        participant SLACK as "Slack #platform-releases"
 
         PKR->>GCP: Stop VM + capture disk snapshot
-        GCP-->>PKR: Image created:\nenterprise-debian12-base-143-a3f21b4c
-        PKR->>GCP: Set image family:\nenterprise-debian12-base (latest pointer updated)
+        GCP-->>PKR: Image created:<br>enterprise-debian12-base-143-a3f21b4c
+        PKR->>GCP: Set image family:<br>enterprise-debian12-base (latest pointer updated)
         GCP-->>CB: Build step complete
-        CB->>SNOW: PATCH /api/now/table/sc_req_item/RITM0042819\n{state: implemented, image: enterprise-debian12-base-143}
+        CB->>SNOW: PATCH /api/now/table/sc_req_item/RITM0042819<br>{state: implemented, image: enterprise-debian12-base-143}
         SNOW-->>CB: 200 OK — ticket updated
-        CB->>SLACK: ✅ Golden image build #143 SUCCESS\nenterprise-debian12-base-143-a3f21b4c\nDuration: 18m 42s
-        CB->>GH: Post PR comment:\n✅ Image: enterprise-debian12-base-143-a3f21b4c
+        CB->>SLACK: ✅ Golden image build #143 SUCCESS<br>enterprise-debian12-base-143-a3f21b4c<br>Duration: 18m 42s
+        CB->>GH: Post PR comment:<br>✅ Image: enterprise-debian12-base-143-a3f21b4c
     ```
 
 ---

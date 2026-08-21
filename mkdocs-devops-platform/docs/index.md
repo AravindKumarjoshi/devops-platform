@@ -13,13 +13,13 @@ All artifacts documented here are **production-grade**, version-controlled in Gi
 
 ```mermaid
 graph LR
-    GH["GitHub Enterprise\n(Source of Truth)"]
-    CB["Cloud Build\n(CI/CD Orchestrator)"]
-    AR["Artifact Registry\n(Image & Artifact Store)"]
-    GKE["GKE\n(Genesis Platform)"]
-    IMG["GCP Image Family\n(Golden VM Images)"]
-    MON["Monitoring Stack\n(Prometheus/Datadog/Cloud Monitoring)"]
-    SNOW["ServiceNow\n(ITSM & CMDB)"]
+    GH["GitHub Enterprise<br>(Source of Truth)"]
+    CB["Cloud Build<br>(CI/CD Orchestrator)"]
+    AR["Artifact Registry<br>(Image & Artifact Store)"]
+    GKE["GKE<br>(Genesis Platform)"]
+    IMG["GCP Image Family<br>(Golden VM Images)"]
+    MON["Monitoring Stack<br>(Prometheus/Datadog/Cloud Monitoring)"]
+    SNOW["ServiceNow<br>(ITSM & CMDB)"]
 
     GH -->|"Webhook trigger"| CB
     CB -->|"Push images"| AR
