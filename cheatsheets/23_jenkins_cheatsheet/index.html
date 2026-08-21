@@ -12,13 +12,13 @@
         <meta name="author" content="Platform SRE Team">
       
       
-        <link rel="canonical" href="https://AravindKumarjoshi.github.io/devops-platform/cheatsheets/21_OS_Architecture/">
+        <link rel="canonical" href="https://AravindKumarjoshi.github.io/devops-platform/cheatsheets/23_jenkins_cheatsheet/">
       
       
-        <link rel="prev" href="../20_PowerShell_Mastery/">
+        <link rel="prev" href="../21_OS_Architecture/">
       
       
-        <link rel="next" href="../23_jenkins_cheatsheet/">
+        <link rel="next" href="../24_gcp_devops_services/">
       
       
       <link rel="icon" href="../../assets/images/favicon.png">
@@ -26,7 +26,7 @@
     
     
       
-        <title>OS Architecture - Enterprise GCP DevOps & SRE Platform</title>
+        <title>Jenkins - Enterprise GCP DevOps & SRE Platform</title>
       
     
     
@@ -80,7 +80,7 @@
     <div data-md-component="skip">
       
         
-        <a href="#chapter-21-operating-system-architecture" class="md-skip">
+        <a href="#jenkins-devops-cheat-sheet" class="md-skip">
           Skip to content
         </a>
       
@@ -116,7 +116,7 @@
         <div class="md-header__topic" data-md-component="header-topic">
           <span class="md-ellipsis">
             
-              OS Architecture
+              Jenkins
             
           </span>
         </div>
@@ -715,8 +715,6 @@
                 
   
   
-    
-  
   
   
     
@@ -731,11 +729,13 @@
       
     
     
-    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3_3" checked>
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_3_3" >
         
           
           <label class="md-nav__link" for="__nav_3_3" id="__nav_3_3_label" tabindex="">
@@ -749,7 +749,7 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_3_3_label" aria-expanded="true">
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_3_3_label" aria-expanded="false">
           <label class="md-nav__title" for="__nav_3_3">
             <span class="md-nav__icon md-icon"></span>
             OS & Automation
@@ -844,6 +844,80 @@
                 
   
   
+  
+  
+    <li class="md-nav__item">
+      <a href="../21_OS_Architecture/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    OS Architecture
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    
+    
+    
+      
+      
+        
+          
+          
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3_4" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_3_4" id="__nav_3_4_label" tabindex="">
+            
+  
+  <span class="md-ellipsis">
+    DevOps & Infrastructure
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_3_4_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_3_4">
+            <span class="md-nav__icon md-icon"></span>
+            DevOps & Infrastructure
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
     
   
   
@@ -860,7 +934,7 @@
           
   
   <span class="md-ellipsis">
-    OS Architecture
+    Jenkins
   </span>
   
 
@@ -871,7 +945,7 @@
         
   
   <span class="md-ellipsis">
-    OS Architecture
+    Jenkins
   </span>
   
 
@@ -893,230 +967,47 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#1-linux-internals" class="md-nav__link">
+  <a href="#1-jenkins-architecture-overview" class="md-nav__link">
     <span class="md-ellipsis">
-      1. Linux Internals
+      1. Jenkins Architecture Overview
     </span>
   </a>
-  
-    <nav class="md-nav" aria-label="1. Linux Internals">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#user-space-vs-kernel-space" class="md-nav__link">
-    <span class="md-ellipsis">
-      User Space vs. Kernel Space
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#ring-0-vs-ring-3" class="md-nav__link">
-    <span class="md-ellipsis">
-      Ring 0 vs. Ring 3
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#system-calls" class="md-nav__link">
-    <span class="md-ellipsis">
-      System Calls
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#virtual-memory-paging-and-the-mmu" class="md-nav__link">
-    <span class="md-ellipsis">
-      Virtual Memory, Paging, and the MMU
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#completely-fair-scheduler-cfs" class="md-nav__link">
-    <span class="md-ellipsis">
-      Completely Fair Scheduler (CFS)
-    </span>
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
   
 </li>
       
         <li class="md-nav__item">
-  <a href="#2-windows-nt-internals" class="md-nav__link">
+  <a href="#2-declarative-pipeline-syntax-jenkinsfile" class="md-nav__link">
     <span class="md-ellipsis">
-      2. Windows NT Internals
+      2. Declarative Pipeline Syntax (Jenkinsfile)
     </span>
   </a>
-  
-    <nav class="md-nav" aria-label="2. Windows NT Internals">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#nt-kernel-architecture" class="md-nav__link">
-    <span class="md-ellipsis">
-      NT Kernel Architecture
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#registry-structure" class="md-nav__link">
-    <span class="md-ellipsis">
-      Registry Structure
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#ntfs-features" class="md-nav__link">
-    <span class="md-ellipsis">
-      NTFS Features
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#windows-services-lifecycle" class="md-nav__link">
-    <span class="md-ellipsis">
-      Windows Services Lifecycle
-    </span>
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
   
 </li>
       
         <li class="md-nav__item">
-  <a href="#3-concurrency-ipc" class="md-nav__link">
+  <a href="#3-kubernetes-dynamic-agents" class="md-nav__link">
     <span class="md-ellipsis">
-      3. Concurrency &amp; IPC
+      3. Kubernetes Dynamic Agents
     </span>
   </a>
-  
-    <nav class="md-nav" aria-label="3. Concurrency & IPC">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#inter-process-communication-ipc" class="md-nav__link">
-    <span class="md-ellipsis">
-      Inter-Process Communication (IPC)
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#concurrency-pitfalls" class="md-nav__link">
-    <span class="md-ellipsis">
-      Concurrency Pitfalls
-    </span>
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
   
 </li>
       
         <li class="md-nav__item">
-  <a href="#4-embedded-os-bare-metal-vs-rtos" class="md-nav__link">
+  <a href="#4-useful-global-variables" class="md-nav__link">
     <span class="md-ellipsis">
-      4. Embedded OS (Bare Metal vs. RTOS)
+      4. Useful Global Variables
     </span>
   </a>
-  
-    <nav class="md-nav" aria-label="4. Embedded OS (Bare Metal vs. RTOS)">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#bare-metal-super-loops-vs-rtos" class="md-nav__link">
-    <span class="md-ellipsis">
-      Bare Metal Super-loops vs. RTOS
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#task-scheduling-context-switching" class="md-nav__link">
-    <span class="md-ellipsis">
-      Task Scheduling &amp; Context Switching
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#priority-inversion-solutions" class="md-nav__link">
-    <span class="md-ellipsis">
-      Priority Inversion Solutions
-    </span>
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
   
 </li>
       
         <li class="md-nav__item">
-  <a href="#5-ros2" class="md-nav__link">
+  <a href="#5-jenkins-cli" class="md-nav__link">
     <span class="md-ellipsis">
-      5. ROS2
+      5. Jenkins CLI
     </span>
   </a>
-  
-    <nav class="md-nav" aria-label="5. ROS2">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#architecture" class="md-nav__link">
-    <span class="md-ellipsis">
-      Architecture
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#nodes-topics-publishers-and-subscribers" class="md-nav__link">
-    <span class="md-ellipsis">
-      Nodes, Topics, Publishers, and Subscribers
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#data-distribution-service-dds" class="md-nav__link">
-    <span class="md-ellipsis">
-      Data Distribution Service (DDS)
-    </span>
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
   
 </li>
       
@@ -1124,80 +1015,6 @@
   
 </nav>
       
-    </li>
-  
-
-              
-            
-          </ul>
-        </nav>
-      
-    </li>
-  
-
-              
-            
-              
-                
-  
-  
-  
-  
-    
-    
-    
-      
-      
-        
-          
-          
-        
-      
-    
-    
-    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
-      
-        
-        
-          
-        
-        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_3_4" >
-        
-          
-          <label class="md-nav__link" for="__nav_3_4" id="__nav_3_4_label" tabindex="">
-            
-  
-  <span class="md-ellipsis">
-    DevOps & Infrastructure
-  </span>
-  
-
-            <span class="md-nav__icon md-icon"></span>
-          </label>
-        
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_3_4_label" aria-expanded="false">
-          <label class="md-nav__title" for="__nav_3_4">
-            <span class="md-nav__icon md-icon"></span>
-            DevOps & Infrastructure
-          </label>
-          <ul class="md-nav__list" data-md-scrollfix>
-            
-              
-                
-  
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../23_jenkins_cheatsheet/" class="md-nav__link">
-        
-  
-  <span class="md-ellipsis">
-    Jenkins
-  </span>
-  
-
-      </a>
     </li>
   
 
@@ -1698,230 +1515,47 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#1-linux-internals" class="md-nav__link">
+  <a href="#1-jenkins-architecture-overview" class="md-nav__link">
     <span class="md-ellipsis">
-      1. Linux Internals
+      1. Jenkins Architecture Overview
     </span>
   </a>
-  
-    <nav class="md-nav" aria-label="1. Linux Internals">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#user-space-vs-kernel-space" class="md-nav__link">
-    <span class="md-ellipsis">
-      User Space vs. Kernel Space
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#ring-0-vs-ring-3" class="md-nav__link">
-    <span class="md-ellipsis">
-      Ring 0 vs. Ring 3
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#system-calls" class="md-nav__link">
-    <span class="md-ellipsis">
-      System Calls
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#virtual-memory-paging-and-the-mmu" class="md-nav__link">
-    <span class="md-ellipsis">
-      Virtual Memory, Paging, and the MMU
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#completely-fair-scheduler-cfs" class="md-nav__link">
-    <span class="md-ellipsis">
-      Completely Fair Scheduler (CFS)
-    </span>
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
   
 </li>
       
         <li class="md-nav__item">
-  <a href="#2-windows-nt-internals" class="md-nav__link">
+  <a href="#2-declarative-pipeline-syntax-jenkinsfile" class="md-nav__link">
     <span class="md-ellipsis">
-      2. Windows NT Internals
+      2. Declarative Pipeline Syntax (Jenkinsfile)
     </span>
   </a>
-  
-    <nav class="md-nav" aria-label="2. Windows NT Internals">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#nt-kernel-architecture" class="md-nav__link">
-    <span class="md-ellipsis">
-      NT Kernel Architecture
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#registry-structure" class="md-nav__link">
-    <span class="md-ellipsis">
-      Registry Structure
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#ntfs-features" class="md-nav__link">
-    <span class="md-ellipsis">
-      NTFS Features
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#windows-services-lifecycle" class="md-nav__link">
-    <span class="md-ellipsis">
-      Windows Services Lifecycle
-    </span>
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
   
 </li>
       
         <li class="md-nav__item">
-  <a href="#3-concurrency-ipc" class="md-nav__link">
+  <a href="#3-kubernetes-dynamic-agents" class="md-nav__link">
     <span class="md-ellipsis">
-      3. Concurrency &amp; IPC
+      3. Kubernetes Dynamic Agents
     </span>
   </a>
-  
-    <nav class="md-nav" aria-label="3. Concurrency & IPC">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#inter-process-communication-ipc" class="md-nav__link">
-    <span class="md-ellipsis">
-      Inter-Process Communication (IPC)
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#concurrency-pitfalls" class="md-nav__link">
-    <span class="md-ellipsis">
-      Concurrency Pitfalls
-    </span>
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
   
 </li>
       
         <li class="md-nav__item">
-  <a href="#4-embedded-os-bare-metal-vs-rtos" class="md-nav__link">
+  <a href="#4-useful-global-variables" class="md-nav__link">
     <span class="md-ellipsis">
-      4. Embedded OS (Bare Metal vs. RTOS)
+      4. Useful Global Variables
     </span>
   </a>
-  
-    <nav class="md-nav" aria-label="4. Embedded OS (Bare Metal vs. RTOS)">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#bare-metal-super-loops-vs-rtos" class="md-nav__link">
-    <span class="md-ellipsis">
-      Bare Metal Super-loops vs. RTOS
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#task-scheduling-context-switching" class="md-nav__link">
-    <span class="md-ellipsis">
-      Task Scheduling &amp; Context Switching
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#priority-inversion-solutions" class="md-nav__link">
-    <span class="md-ellipsis">
-      Priority Inversion Solutions
-    </span>
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
   
 </li>
       
         <li class="md-nav__item">
-  <a href="#5-ros2" class="md-nav__link">
+  <a href="#5-jenkins-cli" class="md-nav__link">
     <span class="md-ellipsis">
-      5. ROS2
+      5. Jenkins CLI
     </span>
   </a>
-  
-    <nav class="md-nav" aria-label="5. ROS2">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#architecture" class="md-nav__link">
-    <span class="md-ellipsis">
-      Architecture
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#nodes-topics-publishers-and-subscribers" class="md-nav__link">
-    <span class="md-ellipsis">
-      Nodes, Topics, Publishers, and Subscribers
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#data-distribution-service-dds" class="md-nav__link">
-    <span class="md-ellipsis">
-      Data Distribution Service (DDS)
-    </span>
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
   
 </li>
       
@@ -1943,129 +1577,123 @@
   
 
 
-<h1 id="chapter-21-operating-system-architecture">Chapter 21: Operating System Architecture<a class="headerlink" href="#chapter-21-operating-system-architecture" title="Permanent link">&para;</a></h1>
-<h2 id="1-linux-internals">1. Linux Internals<a class="headerlink" href="#1-linux-internals" title="Permanent link">&para;</a></h2>
-<h3 id="user-space-vs-kernel-space">User Space vs. Kernel Space<a class="headerlink" href="#user-space-vs-kernel-space" title="Permanent link">&para;</a></h3>
-<p>Modern operating systems fundamentally divide system memory and execution context into two primary domains: User Space and Kernel Space. This bifurcation is the cornerstone of system security, stability, and resource management.</p>
+<h1 id="jenkins-devops-cheat-sheet">Jenkins DevOps Cheat Sheet<a class="headerlink" href="#jenkins-devops-cheat-sheet" title="Permanent link">&para;</a></h1>
+<h2 id="1-jenkins-architecture-overview">1. Jenkins Architecture Overview<a class="headerlink" href="#1-jenkins-architecture-overview" title="Permanent link">&para;</a></h2>
 <ul>
-<li><strong>User Space:</strong> This is the unprivileged area where all user applications (e.g., web browsers, text editors, user-level daemons) execute. Code running here cannot directly access hardware or critical system structures. If an application crashes in User Space, it generally does not bring down the entire system.</li>
-<li><strong>Kernel Space:</strong> This is a privileged area reserved strictly for the core operating system kernel, kernel extensions, and most device drivers. Code here has unrestricted access to the underlying hardware and all memory. A crash or fatal error in Kernel Space typically results in a system-wide panic (Kernel Panic).</li>
+<li><strong>Controller (Master):</strong> Schedules jobs, dispatches builds to agents, serves the UI, and stores configuration.</li>
+<li><strong>Agent (Slave):</strong> Executes the actual build steps. Can be static (VMs) or dynamic (Kubernetes pods, Docker containers).</li>
+<li><strong>Executor:</strong> A slot on an agent available to run a job.</li>
 </ul>
-<h3 id="ring-0-vs-ring-3">Ring 0 vs. Ring 3<a class="headerlink" href="#ring-0-vs-ring-3" title="Permanent link">&para;</a></h3>
-<p>The x86 architecture implements hardware-level privilege rings, ranging from Ring 0 (most privileged) to Ring 3 (least privileged).</p>
+<hr />
+<h2 id="2-declarative-pipeline-syntax-jenkinsfile">2. Declarative Pipeline Syntax (Jenkinsfile)<a class="headerlink" href="#2-declarative-pipeline-syntax-jenkinsfile" title="Permanent link">&para;</a></h2>
+<p>A standard, readable way to define CI/CD as code.</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="n">pipeline</span><span class="w"> </span><span class="o">{</span>
+<a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a><span class="w">    </span><span class="n">agent</span><span class="w"> </span><span class="n">any</span><span class="w"> </span><span class="c1">// or agent { docker { image &#39;maven:3.8.1-jdk-11&#39; } }</span>
+<a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a>
+<a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a><span class="w">    </span><span class="n">environment</span><span class="w"> </span><span class="o">{</span>
+<a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a><span class="w">        </span><span class="n">DOCKER_CREDS</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">credentials</span><span class="o">(</span><span class="s1">&#39;docker-hub-credentials&#39;</span><span class="o">)</span>
+<a id="__codelineno-0-6" name="__codelineno-0-6" href="#__codelineno-0-6"></a><span class="w">        </span><span class="n">APP_VERSION</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;1.0.${BUILD_NUMBER}&quot;</span>
+<a id="__codelineno-0-7" name="__codelineno-0-7" href="#__codelineno-0-7"></a><span class="w">    </span><span class="o">}</span>
+<a id="__codelineno-0-8" name="__codelineno-0-8" href="#__codelineno-0-8"></a>
+<a id="__codelineno-0-9" name="__codelineno-0-9" href="#__codelineno-0-9"></a><span class="w">    </span><span class="n">parameters</span><span class="w"> </span><span class="o">{</span>
+<a id="__codelineno-0-10" name="__codelineno-0-10" href="#__codelineno-0-10"></a><span class="w">        </span><span class="n">choice</span><span class="o">(</span><span class="nl">name:</span><span class="w"> </span><span class="s1">&#39;ENVIRONMENT&#39;</span><span class="o">,</span><span class="w"> </span><span class="nl">choices:</span><span class="w"> </span><span class="o">[</span><span class="s1">&#39;dev&#39;</span><span class="o">,</span><span class="w"> </span><span class="s1">&#39;prod&#39;</span><span class="o">],</span><span class="w"> </span><span class="nl">description:</span><span class="w"> </span><span class="s1">&#39;Deploy target&#39;</span><span class="o">)</span>
+<a id="__codelineno-0-11" name="__codelineno-0-11" href="#__codelineno-0-11"></a><span class="w">    </span><span class="o">}</span>
+<a id="__codelineno-0-12" name="__codelineno-0-12" href="#__codelineno-0-12"></a>
+<a id="__codelineno-0-13" name="__codelineno-0-13" href="#__codelineno-0-13"></a><span class="w">    </span><span class="n">stages</span><span class="w"> </span><span class="o">{</span>
+<a id="__codelineno-0-14" name="__codelineno-0-14" href="#__codelineno-0-14"></a><span class="w">        </span><span class="n">stage</span><span class="o">(</span><span class="s1">&#39;Checkout&#39;</span><span class="o">)</span><span class="w"> </span><span class="o">{</span>
+<a id="__codelineno-0-15" name="__codelineno-0-15" href="#__codelineno-0-15"></a><span class="w">            </span><span class="n">steps</span><span class="w"> </span><span class="o">{</span>
+<a id="__codelineno-0-16" name="__codelineno-0-16" href="#__codelineno-0-16"></a><span class="w">                </span><span class="n">checkout</span><span class="w"> </span><span class="n">scm</span>
+<a id="__codelineno-0-17" name="__codelineno-0-17" href="#__codelineno-0-17"></a><span class="w">            </span><span class="o">}</span>
+<a id="__codelineno-0-18" name="__codelineno-0-18" href="#__codelineno-0-18"></a><span class="w">        </span><span class="o">}</span>
+<a id="__codelineno-0-19" name="__codelineno-0-19" href="#__codelineno-0-19"></a>
+<a id="__codelineno-0-20" name="__codelineno-0-20" href="#__codelineno-0-20"></a><span class="w">        </span><span class="n">stage</span><span class="o">(</span><span class="s1">&#39;Build &amp; Test&#39;</span><span class="o">)</span><span class="w"> </span><span class="o">{</span>
+<a id="__codelineno-0-21" name="__codelineno-0-21" href="#__codelineno-0-21"></a><span class="w">            </span><span class="n">steps</span><span class="w"> </span><span class="o">{</span>
+<a id="__codelineno-0-22" name="__codelineno-0-22" href="#__codelineno-0-22"></a><span class="w">                </span><span class="n">sh</span><span class="w"> </span><span class="s1">&#39;mvn clean package&#39;</span>
+<a id="__codelineno-0-23" name="__codelineno-0-23" href="#__codelineno-0-23"></a><span class="w">            </span><span class="o">}</span>
+<a id="__codelineno-0-24" name="__codelineno-0-24" href="#__codelineno-0-24"></a><span class="w">            </span><span class="n">post</span><span class="w"> </span><span class="o">{</span>
+<a id="__codelineno-0-25" name="__codelineno-0-25" href="#__codelineno-0-25"></a><span class="w">                </span><span class="n">always</span><span class="w"> </span><span class="o">{</span>
+<a id="__codelineno-0-26" name="__codelineno-0-26" href="#__codelineno-0-26"></a><span class="w">                    </span><span class="n">junit</span><span class="w"> </span><span class="s1">&#39;target/surefire-reports/*.xml&#39;</span>
+<a id="__codelineno-0-27" name="__codelineno-0-27" href="#__codelineno-0-27"></a><span class="w">                </span><span class="o">}</span>
+<a id="__codelineno-0-28" name="__codelineno-0-28" href="#__codelineno-0-28"></a><span class="w">            </span><span class="o">}</span>
+<a id="__codelineno-0-29" name="__codelineno-0-29" href="#__codelineno-0-29"></a><span class="w">        </span><span class="o">}</span>
+<a id="__codelineno-0-30" name="__codelineno-0-30" href="#__codelineno-0-30"></a>
+<a id="__codelineno-0-31" name="__codelineno-0-31" href="#__codelineno-0-31"></a><span class="w">        </span><span class="n">stage</span><span class="o">(</span><span class="s1">&#39;Docker Image&#39;</span><span class="o">)</span><span class="w"> </span><span class="o">{</span>
+<a id="__codelineno-0-32" name="__codelineno-0-32" href="#__codelineno-0-32"></a><span class="w">            </span><span class="n">steps</span><span class="w"> </span><span class="o">{</span>
+<a id="__codelineno-0-33" name="__codelineno-0-33" href="#__codelineno-0-33"></a><span class="w">                </span><span class="n">sh</span><span class="w"> </span><span class="s1">&#39;docker build -t myapp:${APP_VERSION} .&#39;</span>
+<a id="__codelineno-0-34" name="__codelineno-0-34" href="#__codelineno-0-34"></a><span class="w">            </span><span class="o">}</span>
+<a id="__codelineno-0-35" name="__codelineno-0-35" href="#__codelineno-0-35"></a><span class="w">        </span><span class="o">}</span>
+<a id="__codelineno-0-36" name="__codelineno-0-36" href="#__codelineno-0-36"></a><span class="w">    </span><span class="o">}</span>
+<a id="__codelineno-0-37" name="__codelineno-0-37" href="#__codelineno-0-37"></a>
+<a id="__codelineno-0-38" name="__codelineno-0-38" href="#__codelineno-0-38"></a><span class="w">    </span><span class="n">post</span><span class="w"> </span><span class="o">{</span>
+<a id="__codelineno-0-39" name="__codelineno-0-39" href="#__codelineno-0-39"></a><span class="w">        </span><span class="n">success</span><span class="w"> </span><span class="o">{</span>
+<a id="__codelineno-0-40" name="__codelineno-0-40" href="#__codelineno-0-40"></a><span class="w">            </span><span class="n">echo</span><span class="w"> </span><span class="s2">&quot;Build successful! Version: ${APP_VERSION}&quot;</span>
+<a id="__codelineno-0-41" name="__codelineno-0-41" href="#__codelineno-0-41"></a><span class="w">        </span><span class="o">}</span>
+<a id="__codelineno-0-42" name="__codelineno-0-42" href="#__codelineno-0-42"></a><span class="w">        </span><span class="n">failure</span><span class="w"> </span><span class="o">{</span>
+<a id="__codelineno-0-43" name="__codelineno-0-43" href="#__codelineno-0-43"></a><span class="w">            </span><span class="n">echo</span><span class="w"> </span><span class="s2">&quot;Build failed!&quot;</span>
+<a id="__codelineno-0-44" name="__codelineno-0-44" href="#__codelineno-0-44"></a><span class="w">            </span><span class="n">slackSend</span><span class="o">(</span><span class="nl">channel:</span><span class="w"> </span><span class="s1">&#39;#builds&#39;</span><span class="o">,</span><span class="w"> </span><span class="nl">message:</span><span class="w"> </span><span class="s2">&quot;Failed: ${env.JOB_NAME} [${env.BUILD_NUMBER}]&quot;</span><span class="o">)</span>
+<a id="__codelineno-0-45" name="__codelineno-0-45" href="#__codelineno-0-45"></a><span class="w">        </span><span class="o">}</span>
+<a id="__codelineno-0-46" name="__codelineno-0-46" href="#__codelineno-0-46"></a><span class="w">    </span><span class="o">}</span>
+<a id="__codelineno-0-47" name="__codelineno-0-47" href="#__codelineno-0-47"></a><span class="o">}</span>
+</code></pre></div>
+<hr />
+<h2 id="3-kubernetes-dynamic-agents">3. Kubernetes Dynamic Agents<a class="headerlink" href="#3-kubernetes-dynamic-agents" title="Permanent link">&para;</a></h2>
+<p>Using the Kubernetes Plugin to spin up ephemeral pods per build.</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="n">pipeline</span><span class="w"> </span><span class="o">{</span>
+<a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a><span class="w">    </span><span class="n">agent</span><span class="w"> </span><span class="o">{</span>
+<a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a><span class="w">        </span><span class="n">kubernetes</span><span class="w"> </span><span class="o">{</span>
+<a id="__codelineno-1-4" name="__codelineno-1-4" href="#__codelineno-1-4"></a><span class="w">            </span><span class="n">yaml</span><span class="w"> </span><span class="s1">&#39;&#39;&#39;</span>
+<a id="__codelineno-1-5" name="__codelineno-1-5" href="#__codelineno-1-5"></a><span class="s1">apiVersion: v1</span>
+<a id="__codelineno-1-6" name="__codelineno-1-6" href="#__codelineno-1-6"></a><span class="s1">kind: Pod</span>
+<a id="__codelineno-1-7" name="__codelineno-1-7" href="#__codelineno-1-7"></a><span class="s1">metadata:</span>
+<a id="__codelineno-1-8" name="__codelineno-1-8" href="#__codelineno-1-8"></a><span class="s1">  labels:</span>
+<a id="__codelineno-1-9" name="__codelineno-1-9" href="#__codelineno-1-9"></a><span class="s1">    app: jenkins-agent</span>
+<a id="__codelineno-1-10" name="__codelineno-1-10" href="#__codelineno-1-10"></a><span class="s1">spec:</span>
+<a id="__codelineno-1-11" name="__codelineno-1-11" href="#__codelineno-1-11"></a><span class="s1">  containers:</span>
+<a id="__codelineno-1-12" name="__codelineno-1-12" href="#__codelineno-1-12"></a><span class="s1">  - name: maven</span>
+<a id="__codelineno-1-13" name="__codelineno-1-13" href="#__codelineno-1-13"></a><span class="s1">    image: maven:3.8.1-jdk-11</span>
+<a id="__codelineno-1-14" name="__codelineno-1-14" href="#__codelineno-1-14"></a><span class="s1">    command:</span>
+<a id="__codelineno-1-15" name="__codelineno-1-15" href="#__codelineno-1-15"></a><span class="s1">    - cat</span>
+<a id="__codelineno-1-16" name="__codelineno-1-16" href="#__codelineno-1-16"></a><span class="s1">    tty: true</span>
+<a id="__codelineno-1-17" name="__codelineno-1-17" href="#__codelineno-1-17"></a><span class="s1">  - name: docker</span>
+<a id="__codelineno-1-18" name="__codelineno-1-18" href="#__codelineno-1-18"></a><span class="s1">    image: docker:19.03.12</span>
+<a id="__codelineno-1-19" name="__codelineno-1-19" href="#__codelineno-1-19"></a><span class="s1">    command:</span>
+<a id="__codelineno-1-20" name="__codelineno-1-20" href="#__codelineno-1-20"></a><span class="s1">    - cat</span>
+<a id="__codelineno-1-21" name="__codelineno-1-21" href="#__codelineno-1-21"></a><span class="s1">    tty: true</span>
+<a id="__codelineno-1-22" name="__codelineno-1-22" href="#__codelineno-1-22"></a><span class="s1">&#39;&#39;&#39;</span>
+<a id="__codelineno-1-23" name="__codelineno-1-23" href="#__codelineno-1-23"></a><span class="w">        </span><span class="o">}</span>
+<a id="__codelineno-1-24" name="__codelineno-1-24" href="#__codelineno-1-24"></a><span class="w">    </span><span class="o">}</span>
+<a id="__codelineno-1-25" name="__codelineno-1-25" href="#__codelineno-1-25"></a><span class="w">    </span><span class="n">stages</span><span class="w"> </span><span class="o">{</span>
+<a id="__codelineno-1-26" name="__codelineno-1-26" href="#__codelineno-1-26"></a><span class="w">        </span><span class="n">stage</span><span class="o">(</span><span class="s1">&#39;Build&#39;</span><span class="o">)</span><span class="w"> </span><span class="o">{</span>
+<a id="__codelineno-1-27" name="__codelineno-1-27" href="#__codelineno-1-27"></a><span class="w">            </span><span class="n">steps</span><span class="w"> </span><span class="o">{</span>
+<a id="__codelineno-1-28" name="__codelineno-1-28" href="#__codelineno-1-28"></a><span class="w">                </span><span class="n">container</span><span class="o">(</span><span class="s1">&#39;maven&#39;</span><span class="o">)</span><span class="w"> </span><span class="o">{</span>
+<a id="__codelineno-1-29" name="__codelineno-1-29" href="#__codelineno-1-29"></a><span class="w">                    </span><span class="n">sh</span><span class="w"> </span><span class="s1">&#39;mvn --version&#39;</span>
+<a id="__codelineno-1-30" name="__codelineno-1-30" href="#__codelineno-1-30"></a><span class="w">                </span><span class="o">}</span>
+<a id="__codelineno-1-31" name="__codelineno-1-31" href="#__codelineno-1-31"></a><span class="w">            </span><span class="o">}</span>
+<a id="__codelineno-1-32" name="__codelineno-1-32" href="#__codelineno-1-32"></a><span class="w">        </span><span class="o">}</span>
+<a id="__codelineno-1-33" name="__codelineno-1-33" href="#__codelineno-1-33"></a><span class="w">    </span><span class="o">}</span>
+<a id="__codelineno-1-34" name="__codelineno-1-34" href="#__codelineno-1-34"></a><span class="o">}</span>
+</code></pre></div>
+<hr />
+<h2 id="4-useful-global-variables">4. Useful Global Variables<a class="headerlink" href="#4-useful-global-variables" title="Permanent link">&para;</a></h2>
 <ul>
-<li><strong>Ring 0 (Kernel Mode):</strong> Operating systems execute their core in Ring 0. Instructions that modify system state, manage memory (like manipulating CR3 for page tables), or interact with I/O devices can only be executed here.</li>
-<li><strong>Ring 3 (User Mode):</strong> User applications run in Ring 3. They are restricted from executing privileged instructions.</li>
+<li><code>env.BUILD_NUMBER</code> - The current build number (e.g. 153)</li>
+<li><code>env.JOB_NAME</code> - Name of the project</li>
+<li><code>env.BRANCH_NAME</code> - Branch currently being built</li>
+<li><code>env.WORKSPACE</code> - Absolute path to the workspace directory</li>
+<li><code>currentBuild.result</code> - Status of the build (<code>SUCCESS</code>, <code>FAILURE</code>, <code>ABORTED</code>)</li>
 </ul>
-<pre class="mermaid"><code>graph TD
-    A[Ring 3: User Applications] --&gt;|System Call| B(Ring 0: Operating System Kernel)
-    B --&gt; C{Hardware}
-    style A fill:#f9f,stroke:#333,stroke-width:2px
-    style B fill:#bbf,stroke:#333,stroke-width:2px
-    style C fill:#bfb,stroke:#333,stroke-width:2px</code></pre>
-<h3 id="system-calls">System Calls<a class="headerlink" href="#system-calls" title="Permanent link">&para;</a></h3>
-<p>A system call (syscall) is the programmatic mechanism through which a computer program requests a service from the kernel of the operating system it is executed on. It provides the essential interface between a process and the operating system.</p>
-<p>When a user application needs to perform an action like reading a file, it issues a system call. This involves:
-1. Setting up arguments in specific CPU registers (e.g., <code>RAX</code> for the syscall number on x86_64).
-2. Executing a specialized instruction (e.g., <code>syscall</code> or <code>sysenter</code>) which triggers a software interrupt.
-3. The CPU transitions from Ring 3 to Ring 0, saving the user state and jumping to a predefined kernel entry point (the system call handler).
-4. The kernel validates the request, performs the operation, and then returns execution to User Space.</p>
-<p><strong>Example with <code>strace</code>:</strong>
-The <code>strace</code> utility intercepts and records the system calls which are called by a process. For example, running <code>strace ls</code> will output numerous syscalls like <code>execve</code>, <code>mmap</code>, <code>openat</code>, and <code>write</code>.</p>
-<h3 id="virtual-memory-paging-and-the-mmu">Virtual Memory, Paging, and the MMU<a class="headerlink" href="#virtual-memory-paging-and-the-mmu" title="Permanent link">&para;</a></h3>
-<p>Virtual Memory abstracts physical memory into a contiguous address space for each process, ensuring process isolation and allowing the system to use more memory than physically available via swapping.</p>
-<ul>
-<li><strong>Paging:</strong> Memory is divided into fixed-size blocks called pages (typically 4KB). Physical memory is divided into page frames of the same size. The OS maintains a Page Table for each process, mapping virtual pages to physical frames.</li>
-<li><strong>Memory Management Unit (MMU):</strong> The MMU is hardware that translates virtual addresses to physical addresses on the fly using the Page Table. If a virtual page is not currently in physical memory, the MMU triggers a Page Fault interrupt, prompting the kernel to fetch it from disk (swap).</li>
-</ul>
-<pre class="mermaid"><code>graph LR
-    VA[Virtual Address] --&gt; MMU[Memory Management Unit]
-    MMU --&gt;|Translation| PT[Page Table]
-    PT --&gt;|Physical Frame Number| PA[Physical Address]
-    MMU --&gt;|Page Fault| OS[OS Kernel]</code></pre>
-<h3 id="completely-fair-scheduler-cfs">Completely Fair Scheduler (CFS)<a class="headerlink" href="#completely-fair-scheduler-cfs" title="Permanent link">&para;</a></h3>
-<p>The CFS is the default process scheduler in Linux for normal tasks. It models an "ideal, precise multi-tasking CPU" on real hardware.
-- Instead of using timeslices and priority queues, CFS uses a Red-Black Tree to track the "virtual runtime" (<code>vruntime</code>) of each runnable task.
-- Tasks that have run less (smaller <code>vruntime</code>) are placed on the left side of the tree and are chosen next.
-- Priority is handled via weights; higher priority tasks have their <code>vruntime</code> increase more slowly, allowing them to be scheduled more frequently.</p>
-<h2 id="2-windows-nt-internals">2. Windows NT Internals<a class="headerlink" href="#2-windows-nt-internals" title="Permanent link">&para;</a></h2>
-<h3 id="nt-kernel-architecture">NT Kernel Architecture<a class="headerlink" href="#nt-kernel-architecture" title="Permanent link">&para;</a></h3>
-<p>Windows NT is a highly modular, hybrid kernel architecture.
-- <strong>Executive:</strong> Contains base OS services like Memory Management, Process and Thread Management, I/O Manager, and Security Reference Monitor.
-- <strong>Microkernel:</strong> Handles basic thread scheduling, interrupt and exception dispatching, and multiprocessor synchronization.
-- <strong>Hardware Abstraction Layer (HAL):</strong> Isolates the kernel and executive from hardware differences.</p>
-<h3 id="registry-structure">Registry Structure<a class="headerlink" href="#registry-structure" title="Permanent link">&para;</a></h3>
-<p>The Windows Registry is a hierarchical database used to store low-level settings for the OS and applications.
-It is organized into Hives (e.g., <code>HKEY_LOCAL_MACHINE</code>, <code>HKEY_CURRENT_USER</code>), Keys (acting like folders), and Values (acting like files). Internally, the registry is heavily memory-mapped to ensure fast access and is critical to the boot process.</p>
-<h3 id="ntfs-features">NTFS Features<a class="headerlink" href="#ntfs-features" title="Permanent link">&para;</a></h3>
-<p>New Technology File System (NTFS) provides enterprise-class features over FAT32:
-- <strong>Journaling:</strong> Logs changes before they are committed, preventing corruption during power loss.
-- <strong>Security:</strong> Access Control Lists (ACLs) per file/folder.
-- <strong>Alternate Data Streams (ADS):</strong> Allows multiple data streams within a single file.
-- <strong>Volume Shadow Copy:</strong> Allows creating point-in-time snapshots of files, enabling backups even when files are in use.</p>
-<h3 id="windows-services-lifecycle">Windows Services Lifecycle<a class="headerlink" href="#windows-services-lifecycle" title="Permanent link">&para;</a></h3>
-<p>Services are long-running executables operating in the background. The Service Control Manager (SCM) manages them.
-State transitions: <code>START_PENDING</code> -&gt; <code>RUNNING</code> -&gt; <code>STOP_PENDING</code> -&gt; <code>STOPPED</code>. Services can be configured to start automatically at boot or manually, and run under specific user accounts (like <code>LocalSystem</code>, <code>NetworkService</code>).</p>
-<h2 id="3-concurrency-ipc">3. Concurrency &amp; IPC<a class="headerlink" href="#3-concurrency-ipc" title="Permanent link">&para;</a></h2>
-<h3 id="inter-process-communication-ipc">Inter-Process Communication (IPC)<a class="headerlink" href="#inter-process-communication-ipc" title="Permanent link">&para;</a></h3>
-<p>Processes have isolated memory spaces; IPC mechanisms are required for them to share data.
-- <strong>Pipes:</strong> Unidirectional byte streams. Anonymous pipes are for related processes (parent/child), while Named Pipes (FIFOs) can be used between unrelated processes.
-- <strong>Shared Memory:</strong> The fastest IPC method. Multiple processes map the same physical memory segment into their virtual address spaces. Requires explicit synchronization.
-- <strong>Unix Domain Sockets:</strong> Used for data exchange between processes executing on the same host operating system, providing a robust stream or datagram interface similar to network sockets but avoiding network stack overhead.
-- <strong>Signals:</strong> Asynchronous notifications sent to a process to notify it of an event (e.g., <code>SIGKILL</code>, <code>SIGTERM</code>, <code>SIGSEGV</code>).</p>
-<h3 id="concurrency-pitfalls">Concurrency Pitfalls<a class="headerlink" href="#concurrency-pitfalls" title="Permanent link">&para;</a></h3>
-<ul>
-<li><strong>Race Conditions:</strong> Occurs when multiple threads/processes access and manipulate shared data concurrently, and the outcome depends on the execution order.</li>
-<li><strong>Deadlocks:</strong> A situation where two or more processes are unable to proceed because each is waiting for a resource held by another.</li>
-<li><strong>Mutexes (Mutual Exclusion):</strong> Synchronization primitives used to prevent multiple threads from concurrently accessing a shared resource (critical section).</li>
-</ul>
-<pre class="mermaid"><code>stateDiagram-v2
-    [*] --&gt; Thread1_Acquires_LockA
-    Thread1_Acquires_LockA --&gt; Thread1_Waits_For_LockB
-    [*] --&gt; Thread2_Acquires_LockB
-    Thread2_Acquires_LockB --&gt; Thread2_Waits_For_LockA
-    Thread1_Waits_For_LockB --&gt; Deadlock
-    Thread2_Waits_For_LockA --&gt; Deadlock
-    Deadlock --&gt; [*]</code></pre>
-<h2 id="4-embedded-os-bare-metal-vs-rtos">4. Embedded OS (Bare Metal vs. RTOS)<a class="headerlink" href="#4-embedded-os-bare-metal-vs-rtos" title="Permanent link">&para;</a></h2>
-<h3 id="bare-metal-super-loops-vs-rtos">Bare Metal Super-loops vs. RTOS<a class="headerlink" href="#bare-metal-super-loops-vs-rtos" title="Permanent link">&para;</a></h3>
-<ul>
-<li><strong>Bare Metal:</strong> The application runs directly on hardware without an OS. Typically implemented as an infinite <code>while(1)</code> super-loop containing polling logic, intermixed with Interrupt Service Routines (ISRs). Suitable for extremely resource-constrained or simple systems.</li>
-<li><strong>Real-Time Operating System (RTOS):</strong> Provides deterministic task scheduling, guaranteeing response times within strict deadlines. Uses preemptive scheduling based on priorities.</li>
-</ul>
-<h3 id="task-scheduling-context-switching">Task Scheduling &amp; Context Switching<a class="headerlink" href="#task-scheduling-context-switching" title="Permanent link">&para;</a></h3>
-<p>An RTOS manages multiple Tasks (threads).
-- <strong>Context Switching:</strong> The process of saving the CPU state (registers, program counter) of a running task and restoring the state of the next task to run. This overhead must be minimized in an RTOS.
-- <strong>States:</strong> A task is typically in one of several states: Running, Ready (waiting for CPU), or Blocked (waiting for an event/resource).</p>
-<pre class="mermaid"><code>stateDiagram-v2
-    Ready --&gt; Running : Scheduler dispatches
-    Running --&gt; Ready : Preempted by higher priority task
-    Running --&gt; Blocked : Wait for resource/event
-    Blocked --&gt; Ready : Resource/event available</code></pre>
-<h3 id="priority-inversion-solutions">Priority Inversion Solutions<a class="headerlink" href="#priority-inversion-solutions" title="Permanent link">&para;</a></h3>
-<p>Priority Inversion occurs when a low-priority task holds a resource needed by a high-priority task, and a medium-priority task preempts the low-priority task, effectively delaying the high-priority task indefinitely.
-- <strong>Priority Inheritance:</strong> The low-priority task holding the resource temporarily inherits the priority of the highest-priority task waiting for it, preventing preemption by medium-priority tasks.
-- <strong>Priority Ceiling:</strong> A resource is assigned a priority equal to the highest priority of any task that might access it. When a task acquires the resource, its priority is immediately raised to the ceiling priority.</p>
-<h2 id="5-ros2">5. ROS2<a class="headerlink" href="#5-ros2" title="Permanent link">&para;</a></h2>
-<h3 id="architecture">Architecture<a class="headerlink" href="#architecture" title="Permanent link">&para;</a></h3>
-<p>Robot Operating System 2 (ROS2) is a flexible framework for writing robot software. It is not an OS itself, but a middleware layer that provides services expected from an OS, like hardware abstraction, low-level device control, implementation of commonly used functionality, message-passing between processes, and package management.</p>
-<h3 id="nodes-topics-publishers-and-subscribers">Nodes, Topics, Publishers, and Subscribers<a class="headerlink" href="#nodes-topics-publishers-and-subscribers" title="Permanent link">&para;</a></h3>
-<ul>
-<li><strong>Nodes:</strong> Individual processes that perform computation. A robot control system comprises many nodes.</li>
-<li><strong>Topics:</strong> Named buses over which nodes exchange messages. Topics have strong types.</li>
-<li><strong>Publishers:</strong> Nodes that generate data send it by publishing to a topic.</li>
-<li><strong>Subscribers:</strong> Nodes that need data subscribe to a topic.</li>
-</ul>
-<pre class="mermaid"><code>graph LR
-    N1[Node 1: Camera Sensor] --&gt;|Publishes| T1(Topic: /camera/image_raw)
-    T1 --&gt;|Subscribes| N2[Node 2: Object Detection]
-    N2 --&gt;|Publishes| T2(Topic: /detected_objects)
-    T2 --&gt;|Subscribes| N3[Node 3: Robot Controller]</code></pre>
-<h3 id="data-distribution-service-dds">Data Distribution Service (DDS)<a class="headerlink" href="#data-distribution-service-dds" title="Permanent link">&para;</a></h3>
-<p>ROS2 differs from ROS1 by using DDS as its underlying communication middleware. DDS is an industry standard for data-centric connectivity, providing:
-- <strong>Decentralized Architecture:</strong> No single master node (unlike <code>roscore</code> in ROS1), eliminating a single point of failure.
-- <strong>Quality of Service (QoS):</strong> Fine-grained control over message delivery, including reliability (Reliable vs. Best Effort), durability (Transient Local vs. Volatile), and history limits.
-- <strong>Discovery:</strong> Automatic discovery of nodes and topics on the network.</p>
+<hr />
+<h2 id="5-jenkins-cli">5. Jenkins CLI<a class="headerlink" href="#5-jenkins-cli" title="Permanent link">&para;</a></h2>
+<p>Interact with Jenkins from the terminal using the JAR CLI:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a><span class="c1"># Download CLI</span>
+<a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a>wget<span class="w"> </span>http://jenkins-url:8080/jnlpJars/jenkins-cli.jar
+<a id="__codelineno-2-3" name="__codelineno-2-3" href="#__codelineno-2-3"></a>
+<a id="__codelineno-2-4" name="__codelineno-2-4" href="#__codelineno-2-4"></a><span class="c1"># Build a job</span>
+<a id="__codelineno-2-5" name="__codelineno-2-5" href="#__codelineno-2-5"></a>java<span class="w"> </span>-jar<span class="w"> </span>jenkins-cli.jar<span class="w"> </span>-s<span class="w"> </span>http://jenkins-url:8080/<span class="w"> </span>-auth<span class="w"> </span>admin:TOKEN<span class="w"> </span>build<span class="w"> </span>my-pipeline
+<a id="__codelineno-2-6" name="__codelineno-2-6" href="#__codelineno-2-6"></a>
+<a id="__codelineno-2-7" name="__codelineno-2-7" href="#__codelineno-2-7"></a><span class="c1"># Restart Jenkins</span>
+<a id="__codelineno-2-8" name="__codelineno-2-8" href="#__codelineno-2-8"></a>java<span class="w"> </span>-jar<span class="w"> </span>jenkins-cli.jar<span class="w"> </span>-s<span class="w"> </span>http://jenkins-url:8080/<span class="w"> </span>-auth<span class="w"> </span>admin:TOKEN<span class="w"> </span>safe-restart
+</code></pre></div>
 
 
 

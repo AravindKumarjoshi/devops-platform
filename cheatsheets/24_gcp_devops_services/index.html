@@ -12,13 +12,13 @@
         <meta name="author" content="Platform SRE Team">
       
       
-        <link rel="canonical" href="https://AravindKumarjoshi.github.io/devops-platform/cheatsheets/21_OS_Architecture/">
+        <link rel="canonical" href="https://AravindKumarjoshi.github.io/devops-platform/cheatsheets/24_gcp_devops_services/">
       
       
-        <link rel="prev" href="../20_PowerShell_Mastery/">
+        <link rel="prev" href="../23_jenkins_cheatsheet/">
       
       
-        <link rel="next" href="../23_jenkins_cheatsheet/">
+        <link rel="next" href="../06_networking_cheatsheet/">
       
       
       <link rel="icon" href="../../assets/images/favicon.png">
@@ -26,7 +26,7 @@
     
     
       
-        <title>OS Architecture - Enterprise GCP DevOps & SRE Platform</title>
+        <title>GCP DevOps Services - Enterprise GCP DevOps & SRE Platform</title>
       
     
     
@@ -80,7 +80,7 @@
     <div data-md-component="skip">
       
         
-        <a href="#chapter-21-operating-system-architecture" class="md-skip">
+        <a href="#gcp-devops-services-cheat-sheet" class="md-skip">
           Skip to content
         </a>
       
@@ -116,7 +116,7 @@
         <div class="md-header__topic" data-md-component="header-topic">
           <span class="md-ellipsis">
             
-              OS Architecture
+              GCP DevOps Services
             
           </span>
         </div>
@@ -715,8 +715,6 @@
                 
   
   
-    
-  
   
   
     
@@ -731,11 +729,13 @@
       
     
     
-    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3_3" checked>
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_3_3" >
         
           
           <label class="md-nav__link" for="__nav_3_3" id="__nav_3_3_label" tabindex="">
@@ -749,7 +749,7 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_3_3_label" aria-expanded="true">
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_3_3_label" aria-expanded="false">
           <label class="md-nav__title" for="__nav_3_3">
             <span class="md-nav__icon md-icon"></span>
             OS & Automation
@@ -844,30 +844,10 @@
                 
   
   
-    
   
   
-  
-    <li class="md-nav__item md-nav__item--active">
-      
-      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
-      
-      
-        
-      
-      
-        <label class="md-nav__link md-nav__link--active" for="__toc">
-          
-  
-  <span class="md-ellipsis">
-    OS Architecture
-  </span>
-  
-
-          <span class="md-nav__icon md-icon"></span>
-        </label>
-      
-      <a href="./" class="md-nav__link md-nav__link--active">
+    <li class="md-nav__item">
+      <a href="../21_OS_Architecture/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
@@ -876,254 +856,6 @@
   
 
       </a>
-      
-        
-
-<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
-  
-  
-  
-    
-  
-  
-    <label class="md-nav__title" for="__toc">
-      <span class="md-nav__icon md-icon"></span>
-      Table of contents
-    </label>
-    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
-      
-        <li class="md-nav__item">
-  <a href="#1-linux-internals" class="md-nav__link">
-    <span class="md-ellipsis">
-      1. Linux Internals
-    </span>
-  </a>
-  
-    <nav class="md-nav" aria-label="1. Linux Internals">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#user-space-vs-kernel-space" class="md-nav__link">
-    <span class="md-ellipsis">
-      User Space vs. Kernel Space
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#ring-0-vs-ring-3" class="md-nav__link">
-    <span class="md-ellipsis">
-      Ring 0 vs. Ring 3
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#system-calls" class="md-nav__link">
-    <span class="md-ellipsis">
-      System Calls
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#virtual-memory-paging-and-the-mmu" class="md-nav__link">
-    <span class="md-ellipsis">
-      Virtual Memory, Paging, and the MMU
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#completely-fair-scheduler-cfs" class="md-nav__link">
-    <span class="md-ellipsis">
-      Completely Fair Scheduler (CFS)
-    </span>
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#2-windows-nt-internals" class="md-nav__link">
-    <span class="md-ellipsis">
-      2. Windows NT Internals
-    </span>
-  </a>
-  
-    <nav class="md-nav" aria-label="2. Windows NT Internals">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#nt-kernel-architecture" class="md-nav__link">
-    <span class="md-ellipsis">
-      NT Kernel Architecture
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#registry-structure" class="md-nav__link">
-    <span class="md-ellipsis">
-      Registry Structure
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#ntfs-features" class="md-nav__link">
-    <span class="md-ellipsis">
-      NTFS Features
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#windows-services-lifecycle" class="md-nav__link">
-    <span class="md-ellipsis">
-      Windows Services Lifecycle
-    </span>
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#3-concurrency-ipc" class="md-nav__link">
-    <span class="md-ellipsis">
-      3. Concurrency &amp; IPC
-    </span>
-  </a>
-  
-    <nav class="md-nav" aria-label="3. Concurrency & IPC">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#inter-process-communication-ipc" class="md-nav__link">
-    <span class="md-ellipsis">
-      Inter-Process Communication (IPC)
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#concurrency-pitfalls" class="md-nav__link">
-    <span class="md-ellipsis">
-      Concurrency Pitfalls
-    </span>
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#4-embedded-os-bare-metal-vs-rtos" class="md-nav__link">
-    <span class="md-ellipsis">
-      4. Embedded OS (Bare Metal vs. RTOS)
-    </span>
-  </a>
-  
-    <nav class="md-nav" aria-label="4. Embedded OS (Bare Metal vs. RTOS)">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#bare-metal-super-loops-vs-rtos" class="md-nav__link">
-    <span class="md-ellipsis">
-      Bare Metal Super-loops vs. RTOS
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#task-scheduling-context-switching" class="md-nav__link">
-    <span class="md-ellipsis">
-      Task Scheduling &amp; Context Switching
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#priority-inversion-solutions" class="md-nav__link">
-    <span class="md-ellipsis">
-      Priority Inversion Solutions
-    </span>
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#5-ros2" class="md-nav__link">
-    <span class="md-ellipsis">
-      5. ROS2
-    </span>
-  </a>
-  
-    <nav class="md-nav" aria-label="5. ROS2">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#architecture" class="md-nav__link">
-    <span class="md-ellipsis">
-      Architecture
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#nodes-topics-publishers-and-subscribers" class="md-nav__link">
-    <span class="md-ellipsis">
-      Nodes, Topics, Publishers, and Subscribers
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#data-distribution-service-dds" class="md-nav__link">
-    <span class="md-ellipsis">
-      Data Distribution Service (DDS)
-    </span>
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
-  
-</li>
-      
-    </ul>
-  
-</nav>
-      
     </li>
   
 
@@ -1141,8 +873,10 @@
                 
   
   
+    
   
   
+  
     
     
     
@@ -1155,13 +889,11 @@
       
     
     
-    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
       
         
         
-          
-        
-        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_3_4" >
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3_4" checked>
         
           
           <label class="md-nav__link" for="__nav_3_4" id="__nav_3_4_label" tabindex="">
@@ -1175,7 +907,7 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_3_4_label" aria-expanded="false">
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_3_4_label" aria-expanded="true">
           <label class="md-nav__title" for="__nav_3_4">
             <span class="md-nav__icon md-icon"></span>
             DevOps & Infrastructure
@@ -1207,10 +939,30 @@
                 
   
   
+    
   
   
-    <li class="md-nav__item">
-      <a href="../24_gcp_devops_services/" class="md-nav__link">
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  <span class="md-ellipsis">
+    GCP DevOps Services
+  </span>
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
         
   
   <span class="md-ellipsis">
@@ -1219,6 +971,173 @@
   
 
       </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#1-cloud-build-cloudbuildyaml" class="md-nav__link">
+    <span class="md-ellipsis">
+      1. Cloud Build (cloudbuild.yaml)
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="1. Cloud Build (cloudbuild.yaml)">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#basic-build-push-pipeline" class="md-nav__link">
+    <span class="md-ellipsis">
+      Basic Build &amp; Push Pipeline
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#accessing-secrets-in-cloud-build" class="md-nav__link">
+    <span class="md-ellipsis">
+      Accessing Secrets in Cloud Build
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#2-cloud-run" class="md-nav__link">
+    <span class="md-ellipsis">
+      2. Cloud Run
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="2. Cloud Run">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#deploy-via-cli" class="md-nav__link">
+    <span class="md-ellipsis">
+      Deploy via CLI
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#traffic-splitting-canary-blue-green" class="md-nav__link">
+    <span class="md-ellipsis">
+      Traffic Splitting (Canary / Blue-Green)
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#3-artifact-registry" class="md-nav__link">
+    <span class="md-ellipsis">
+      3. Artifact Registry
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="3. Artifact Registry">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#creating-a-repository" class="md-nav__link">
+    <span class="md-ellipsis">
+      Creating a Repository
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#authentication-for-local-docker" class="md-nav__link">
+    <span class="md-ellipsis">
+      Authentication for Local Docker
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#4-secret-manager" class="md-nav__link">
+    <span class="md-ellipsis">
+      4. Secret Manager
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="4. Secret Manager">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#creating-and-accessing-secrets" class="md-nav__link">
+    <span class="md-ellipsis">
+      Creating and Accessing Secrets
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#5-cloud-deploy-continuous-delivery" class="md-nav__link">
+    <span class="md-ellipsis">
+      5. Cloud Deploy (Continuous Delivery)
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="5. Cloud Deploy (Continuous Delivery)">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#delivery-pipeline-yaml-clouddeployyaml" class="md-nav__link">
+    <span class="md-ellipsis">
+      Delivery Pipeline YAML (clouddeploy.yaml)
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
     </li>
   
 
@@ -1698,55 +1617,28 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#1-linux-internals" class="md-nav__link">
+  <a href="#1-cloud-build-cloudbuildyaml" class="md-nav__link">
     <span class="md-ellipsis">
-      1. Linux Internals
+      1. Cloud Build (cloudbuild.yaml)
     </span>
   </a>
   
-    <nav class="md-nav" aria-label="1. Linux Internals">
+    <nav class="md-nav" aria-label="1. Cloud Build (cloudbuild.yaml)">
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#user-space-vs-kernel-space" class="md-nav__link">
+  <a href="#basic-build-push-pipeline" class="md-nav__link">
     <span class="md-ellipsis">
-      User Space vs. Kernel Space
+      Basic Build &amp; Push Pipeline
     </span>
   </a>
   
 </li>
         
           <li class="md-nav__item">
-  <a href="#ring-0-vs-ring-3" class="md-nav__link">
+  <a href="#accessing-secrets-in-cloud-build" class="md-nav__link">
     <span class="md-ellipsis">
-      Ring 0 vs. Ring 3
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#system-calls" class="md-nav__link">
-    <span class="md-ellipsis">
-      System Calls
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#virtual-memory-paging-and-the-mmu" class="md-nav__link">
-    <span class="md-ellipsis">
-      Virtual Memory, Paging, and the MMU
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#completely-fair-scheduler-cfs" class="md-nav__link">
-    <span class="md-ellipsis">
-      Completely Fair Scheduler (CFS)
+      Accessing Secrets in Cloud Build
     </span>
   </a>
   
@@ -1758,46 +1650,28 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#2-windows-nt-internals" class="md-nav__link">
+  <a href="#2-cloud-run" class="md-nav__link">
     <span class="md-ellipsis">
-      2. Windows NT Internals
+      2. Cloud Run
     </span>
   </a>
   
-    <nav class="md-nav" aria-label="2. Windows NT Internals">
+    <nav class="md-nav" aria-label="2. Cloud Run">
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#nt-kernel-architecture" class="md-nav__link">
+  <a href="#deploy-via-cli" class="md-nav__link">
     <span class="md-ellipsis">
-      NT Kernel Architecture
+      Deploy via CLI
     </span>
   </a>
   
 </li>
         
           <li class="md-nav__item">
-  <a href="#registry-structure" class="md-nav__link">
+  <a href="#traffic-splitting-canary-blue-green" class="md-nav__link">
     <span class="md-ellipsis">
-      Registry Structure
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#ntfs-features" class="md-nav__link">
-    <span class="md-ellipsis">
-      NTFS Features
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#windows-services-lifecycle" class="md-nav__link">
-    <span class="md-ellipsis">
-      Windows Services Lifecycle
+      Traffic Splitting (Canary / Blue-Green)
     </span>
   </a>
   
@@ -1809,28 +1683,28 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#3-concurrency-ipc" class="md-nav__link">
+  <a href="#3-artifact-registry" class="md-nav__link">
     <span class="md-ellipsis">
-      3. Concurrency &amp; IPC
+      3. Artifact Registry
     </span>
   </a>
   
-    <nav class="md-nav" aria-label="3. Concurrency & IPC">
+    <nav class="md-nav" aria-label="3. Artifact Registry">
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#inter-process-communication-ipc" class="md-nav__link">
+  <a href="#creating-a-repository" class="md-nav__link">
     <span class="md-ellipsis">
-      Inter-Process Communication (IPC)
+      Creating a Repository
     </span>
   </a>
   
 </li>
         
           <li class="md-nav__item">
-  <a href="#concurrency-pitfalls" class="md-nav__link">
+  <a href="#authentication-for-local-docker" class="md-nav__link">
     <span class="md-ellipsis">
-      Concurrency Pitfalls
+      Authentication for Local Docker
     </span>
   </a>
   
@@ -1842,37 +1716,19 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#4-embedded-os-bare-metal-vs-rtos" class="md-nav__link">
+  <a href="#4-secret-manager" class="md-nav__link">
     <span class="md-ellipsis">
-      4. Embedded OS (Bare Metal vs. RTOS)
+      4. Secret Manager
     </span>
   </a>
   
-    <nav class="md-nav" aria-label="4. Embedded OS (Bare Metal vs. RTOS)">
+    <nav class="md-nav" aria-label="4. Secret Manager">
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#bare-metal-super-loops-vs-rtos" class="md-nav__link">
+  <a href="#creating-and-accessing-secrets" class="md-nav__link">
     <span class="md-ellipsis">
-      Bare Metal Super-loops vs. RTOS
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#task-scheduling-context-switching" class="md-nav__link">
-    <span class="md-ellipsis">
-      Task Scheduling &amp; Context Switching
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#priority-inversion-solutions" class="md-nav__link">
-    <span class="md-ellipsis">
-      Priority Inversion Solutions
+      Creating and Accessing Secrets
     </span>
   </a>
   
@@ -1884,37 +1740,19 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#5-ros2" class="md-nav__link">
+  <a href="#5-cloud-deploy-continuous-delivery" class="md-nav__link">
     <span class="md-ellipsis">
-      5. ROS2
+      5. Cloud Deploy (Continuous Delivery)
     </span>
   </a>
   
-    <nav class="md-nav" aria-label="5. ROS2">
+    <nav class="md-nav" aria-label="5. Cloud Deploy (Continuous Delivery)">
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#architecture" class="md-nav__link">
+  <a href="#delivery-pipeline-yaml-clouddeployyaml" class="md-nav__link">
     <span class="md-ellipsis">
-      Architecture
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#nodes-topics-publishers-and-subscribers" class="md-nav__link">
-    <span class="md-ellipsis">
-      Nodes, Topics, Publishers, and Subscribers
-    </span>
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#data-distribution-service-dds" class="md-nav__link">
-    <span class="md-ellipsis">
-      Data Distribution Service (DDS)
+      Delivery Pipeline YAML (clouddeploy.yaml)
     </span>
   </a>
   
@@ -1943,129 +1781,106 @@
   
 
 
-<h1 id="chapter-21-operating-system-architecture">Chapter 21: Operating System Architecture<a class="headerlink" href="#chapter-21-operating-system-architecture" title="Permanent link">&para;</a></h1>
-<h2 id="1-linux-internals">1. Linux Internals<a class="headerlink" href="#1-linux-internals" title="Permanent link">&para;</a></h2>
-<h3 id="user-space-vs-kernel-space">User Space vs. Kernel Space<a class="headerlink" href="#user-space-vs-kernel-space" title="Permanent link">&para;</a></h3>
-<p>Modern operating systems fundamentally divide system memory and execution context into two primary domains: User Space and Kernel Space. This bifurcation is the cornerstone of system security, stability, and resource management.</p>
-<ul>
-<li><strong>User Space:</strong> This is the unprivileged area where all user applications (e.g., web browsers, text editors, user-level daemons) execute. Code running here cannot directly access hardware or critical system structures. If an application crashes in User Space, it generally does not bring down the entire system.</li>
-<li><strong>Kernel Space:</strong> This is a privileged area reserved strictly for the core operating system kernel, kernel extensions, and most device drivers. Code here has unrestricted access to the underlying hardware and all memory. A crash or fatal error in Kernel Space typically results in a system-wide panic (Kernel Panic).</li>
-</ul>
-<h3 id="ring-0-vs-ring-3">Ring 0 vs. Ring 3<a class="headerlink" href="#ring-0-vs-ring-3" title="Permanent link">&para;</a></h3>
-<p>The x86 architecture implements hardware-level privilege rings, ranging from Ring 0 (most privileged) to Ring 3 (least privileged).</p>
-<ul>
-<li><strong>Ring 0 (Kernel Mode):</strong> Operating systems execute their core in Ring 0. Instructions that modify system state, manage memory (like manipulating CR3 for page tables), or interact with I/O devices can only be executed here.</li>
-<li><strong>Ring 3 (User Mode):</strong> User applications run in Ring 3. They are restricted from executing privileged instructions.</li>
-</ul>
-<pre class="mermaid"><code>graph TD
-    A[Ring 3: User Applications] --&gt;|System Call| B(Ring 0: Operating System Kernel)
-    B --&gt; C{Hardware}
-    style A fill:#f9f,stroke:#333,stroke-width:2px
-    style B fill:#bbf,stroke:#333,stroke-width:2px
-    style C fill:#bfb,stroke:#333,stroke-width:2px</code></pre>
-<h3 id="system-calls">System Calls<a class="headerlink" href="#system-calls" title="Permanent link">&para;</a></h3>
-<p>A system call (syscall) is the programmatic mechanism through which a computer program requests a service from the kernel of the operating system it is executed on. It provides the essential interface between a process and the operating system.</p>
-<p>When a user application needs to perform an action like reading a file, it issues a system call. This involves:
-1. Setting up arguments in specific CPU registers (e.g., <code>RAX</code> for the syscall number on x86_64).
-2. Executing a specialized instruction (e.g., <code>syscall</code> or <code>sysenter</code>) which triggers a software interrupt.
-3. The CPU transitions from Ring 3 to Ring 0, saving the user state and jumping to a predefined kernel entry point (the system call handler).
-4. The kernel validates the request, performs the operation, and then returns execution to User Space.</p>
-<p><strong>Example with <code>strace</code>:</strong>
-The <code>strace</code> utility intercepts and records the system calls which are called by a process. For example, running <code>strace ls</code> will output numerous syscalls like <code>execve</code>, <code>mmap</code>, <code>openat</code>, and <code>write</code>.</p>
-<h3 id="virtual-memory-paging-and-the-mmu">Virtual Memory, Paging, and the MMU<a class="headerlink" href="#virtual-memory-paging-and-the-mmu" title="Permanent link">&para;</a></h3>
-<p>Virtual Memory abstracts physical memory into a contiguous address space for each process, ensuring process isolation and allowing the system to use more memory than physically available via swapping.</p>
-<ul>
-<li><strong>Paging:</strong> Memory is divided into fixed-size blocks called pages (typically 4KB). Physical memory is divided into page frames of the same size. The OS maintains a Page Table for each process, mapping virtual pages to physical frames.</li>
-<li><strong>Memory Management Unit (MMU):</strong> The MMU is hardware that translates virtual addresses to physical addresses on the fly using the Page Table. If a virtual page is not currently in physical memory, the MMU triggers a Page Fault interrupt, prompting the kernel to fetch it from disk (swap).</li>
-</ul>
-<pre class="mermaid"><code>graph LR
-    VA[Virtual Address] --&gt; MMU[Memory Management Unit]
-    MMU --&gt;|Translation| PT[Page Table]
-    PT --&gt;|Physical Frame Number| PA[Physical Address]
-    MMU --&gt;|Page Fault| OS[OS Kernel]</code></pre>
-<h3 id="completely-fair-scheduler-cfs">Completely Fair Scheduler (CFS)<a class="headerlink" href="#completely-fair-scheduler-cfs" title="Permanent link">&para;</a></h3>
-<p>The CFS is the default process scheduler in Linux for normal tasks. It models an "ideal, precise multi-tasking CPU" on real hardware.
-- Instead of using timeslices and priority queues, CFS uses a Red-Black Tree to track the "virtual runtime" (<code>vruntime</code>) of each runnable task.
-- Tasks that have run less (smaller <code>vruntime</code>) are placed on the left side of the tree and are chosen next.
-- Priority is handled via weights; higher priority tasks have their <code>vruntime</code> increase more slowly, allowing them to be scheduled more frequently.</p>
-<h2 id="2-windows-nt-internals">2. Windows NT Internals<a class="headerlink" href="#2-windows-nt-internals" title="Permanent link">&para;</a></h2>
-<h3 id="nt-kernel-architecture">NT Kernel Architecture<a class="headerlink" href="#nt-kernel-architecture" title="Permanent link">&para;</a></h3>
-<p>Windows NT is a highly modular, hybrid kernel architecture.
-- <strong>Executive:</strong> Contains base OS services like Memory Management, Process and Thread Management, I/O Manager, and Security Reference Monitor.
-- <strong>Microkernel:</strong> Handles basic thread scheduling, interrupt and exception dispatching, and multiprocessor synchronization.
-- <strong>Hardware Abstraction Layer (HAL):</strong> Isolates the kernel and executive from hardware differences.</p>
-<h3 id="registry-structure">Registry Structure<a class="headerlink" href="#registry-structure" title="Permanent link">&para;</a></h3>
-<p>The Windows Registry is a hierarchical database used to store low-level settings for the OS and applications.
-It is organized into Hives (e.g., <code>HKEY_LOCAL_MACHINE</code>, <code>HKEY_CURRENT_USER</code>), Keys (acting like folders), and Values (acting like files). Internally, the registry is heavily memory-mapped to ensure fast access and is critical to the boot process.</p>
-<h3 id="ntfs-features">NTFS Features<a class="headerlink" href="#ntfs-features" title="Permanent link">&para;</a></h3>
-<p>New Technology File System (NTFS) provides enterprise-class features over FAT32:
-- <strong>Journaling:</strong> Logs changes before they are committed, preventing corruption during power loss.
-- <strong>Security:</strong> Access Control Lists (ACLs) per file/folder.
-- <strong>Alternate Data Streams (ADS):</strong> Allows multiple data streams within a single file.
-- <strong>Volume Shadow Copy:</strong> Allows creating point-in-time snapshots of files, enabling backups even when files are in use.</p>
-<h3 id="windows-services-lifecycle">Windows Services Lifecycle<a class="headerlink" href="#windows-services-lifecycle" title="Permanent link">&para;</a></h3>
-<p>Services are long-running executables operating in the background. The Service Control Manager (SCM) manages them.
-State transitions: <code>START_PENDING</code> -&gt; <code>RUNNING</code> -&gt; <code>STOP_PENDING</code> -&gt; <code>STOPPED</code>. Services can be configured to start automatically at boot or manually, and run under specific user accounts (like <code>LocalSystem</code>, <code>NetworkService</code>).</p>
-<h2 id="3-concurrency-ipc">3. Concurrency &amp; IPC<a class="headerlink" href="#3-concurrency-ipc" title="Permanent link">&para;</a></h2>
-<h3 id="inter-process-communication-ipc">Inter-Process Communication (IPC)<a class="headerlink" href="#inter-process-communication-ipc" title="Permanent link">&para;</a></h3>
-<p>Processes have isolated memory spaces; IPC mechanisms are required for them to share data.
-- <strong>Pipes:</strong> Unidirectional byte streams. Anonymous pipes are for related processes (parent/child), while Named Pipes (FIFOs) can be used between unrelated processes.
-- <strong>Shared Memory:</strong> The fastest IPC method. Multiple processes map the same physical memory segment into their virtual address spaces. Requires explicit synchronization.
-- <strong>Unix Domain Sockets:</strong> Used for data exchange between processes executing on the same host operating system, providing a robust stream or datagram interface similar to network sockets but avoiding network stack overhead.
-- <strong>Signals:</strong> Asynchronous notifications sent to a process to notify it of an event (e.g., <code>SIGKILL</code>, <code>SIGTERM</code>, <code>SIGSEGV</code>).</p>
-<h3 id="concurrency-pitfalls">Concurrency Pitfalls<a class="headerlink" href="#concurrency-pitfalls" title="Permanent link">&para;</a></h3>
-<ul>
-<li><strong>Race Conditions:</strong> Occurs when multiple threads/processes access and manipulate shared data concurrently, and the outcome depends on the execution order.</li>
-<li><strong>Deadlocks:</strong> A situation where two or more processes are unable to proceed because each is waiting for a resource held by another.</li>
-<li><strong>Mutexes (Mutual Exclusion):</strong> Synchronization primitives used to prevent multiple threads from concurrently accessing a shared resource (critical section).</li>
-</ul>
-<pre class="mermaid"><code>stateDiagram-v2
-    [*] --&gt; Thread1_Acquires_LockA
-    Thread1_Acquires_LockA --&gt; Thread1_Waits_For_LockB
-    [*] --&gt; Thread2_Acquires_LockB
-    Thread2_Acquires_LockB --&gt; Thread2_Waits_For_LockA
-    Thread1_Waits_For_LockB --&gt; Deadlock
-    Thread2_Waits_For_LockA --&gt; Deadlock
-    Deadlock --&gt; [*]</code></pre>
-<h2 id="4-embedded-os-bare-metal-vs-rtos">4. Embedded OS (Bare Metal vs. RTOS)<a class="headerlink" href="#4-embedded-os-bare-metal-vs-rtos" title="Permanent link">&para;</a></h2>
-<h3 id="bare-metal-super-loops-vs-rtos">Bare Metal Super-loops vs. RTOS<a class="headerlink" href="#bare-metal-super-loops-vs-rtos" title="Permanent link">&para;</a></h3>
-<ul>
-<li><strong>Bare Metal:</strong> The application runs directly on hardware without an OS. Typically implemented as an infinite <code>while(1)</code> super-loop containing polling logic, intermixed with Interrupt Service Routines (ISRs). Suitable for extremely resource-constrained or simple systems.</li>
-<li><strong>Real-Time Operating System (RTOS):</strong> Provides deterministic task scheduling, guaranteeing response times within strict deadlines. Uses preemptive scheduling based on priorities.</li>
-</ul>
-<h3 id="task-scheduling-context-switching">Task Scheduling &amp; Context Switching<a class="headerlink" href="#task-scheduling-context-switching" title="Permanent link">&para;</a></h3>
-<p>An RTOS manages multiple Tasks (threads).
-- <strong>Context Switching:</strong> The process of saving the CPU state (registers, program counter) of a running task and restoring the state of the next task to run. This overhead must be minimized in an RTOS.
-- <strong>States:</strong> A task is typically in one of several states: Running, Ready (waiting for CPU), or Blocked (waiting for an event/resource).</p>
-<pre class="mermaid"><code>stateDiagram-v2
-    Ready --&gt; Running : Scheduler dispatches
-    Running --&gt; Ready : Preempted by higher priority task
-    Running --&gt; Blocked : Wait for resource/event
-    Blocked --&gt; Ready : Resource/event available</code></pre>
-<h3 id="priority-inversion-solutions">Priority Inversion Solutions<a class="headerlink" href="#priority-inversion-solutions" title="Permanent link">&para;</a></h3>
-<p>Priority Inversion occurs when a low-priority task holds a resource needed by a high-priority task, and a medium-priority task preempts the low-priority task, effectively delaying the high-priority task indefinitely.
-- <strong>Priority Inheritance:</strong> The low-priority task holding the resource temporarily inherits the priority of the highest-priority task waiting for it, preventing preemption by medium-priority tasks.
-- <strong>Priority Ceiling:</strong> A resource is assigned a priority equal to the highest priority of any task that might access it. When a task acquires the resource, its priority is immediately raised to the ceiling priority.</p>
-<h2 id="5-ros2">5. ROS2<a class="headerlink" href="#5-ros2" title="Permanent link">&para;</a></h2>
-<h3 id="architecture">Architecture<a class="headerlink" href="#architecture" title="Permanent link">&para;</a></h3>
-<p>Robot Operating System 2 (ROS2) is a flexible framework for writing robot software. It is not an OS itself, but a middleware layer that provides services expected from an OS, like hardware abstraction, low-level device control, implementation of commonly used functionality, message-passing between processes, and package management.</p>
-<h3 id="nodes-topics-publishers-and-subscribers">Nodes, Topics, Publishers, and Subscribers<a class="headerlink" href="#nodes-topics-publishers-and-subscribers" title="Permanent link">&para;</a></h3>
-<ul>
-<li><strong>Nodes:</strong> Individual processes that perform computation. A robot control system comprises many nodes.</li>
-<li><strong>Topics:</strong> Named buses over which nodes exchange messages. Topics have strong types.</li>
-<li><strong>Publishers:</strong> Nodes that generate data send it by publishing to a topic.</li>
-<li><strong>Subscribers:</strong> Nodes that need data subscribe to a topic.</li>
-</ul>
-<pre class="mermaid"><code>graph LR
-    N1[Node 1: Camera Sensor] --&gt;|Publishes| T1(Topic: /camera/image_raw)
-    T1 --&gt;|Subscribes| N2[Node 2: Object Detection]
-    N2 --&gt;|Publishes| T2(Topic: /detected_objects)
-    T2 --&gt;|Subscribes| N3[Node 3: Robot Controller]</code></pre>
-<h3 id="data-distribution-service-dds">Data Distribution Service (DDS)<a class="headerlink" href="#data-distribution-service-dds" title="Permanent link">&para;</a></h3>
-<p>ROS2 differs from ROS1 by using DDS as its underlying communication middleware. DDS is an industry standard for data-centric connectivity, providing:
-- <strong>Decentralized Architecture:</strong> No single master node (unlike <code>roscore</code> in ROS1), eliminating a single point of failure.
-- <strong>Quality of Service (QoS):</strong> Fine-grained control over message delivery, including reliability (Reliable vs. Best Effort), durability (Transient Local vs. Volatile), and history limits.
-- <strong>Discovery:</strong> Automatic discovery of nodes and topics on the network.</p>
+<h1 id="gcp-devops-services-cheat-sheet">GCP DevOps Services Cheat Sheet<a class="headerlink" href="#gcp-devops-services-cheat-sheet" title="Permanent link">&para;</a></h1>
+<p>Google Cloud provides a managed suite of CI/CD and deployment services. This cheat sheet covers the most common implementations and YAML syntax for <strong>Cloud Build</strong>, <strong>Cloud Run</strong>, <strong>Artifact Registry</strong>, and <strong>Secret Manager</strong>.</p>
+<hr />
+<h2 id="1-cloud-build-cloudbuildyaml">1. Cloud Build (<code>cloudbuild.yaml</code>)<a class="headerlink" href="#1-cloud-build-cloudbuildyaml" title="Permanent link">&para;</a></h2>
+<p>Cloud Build executes your builds on GCP infrastructure. It natively runs Docker containers as steps.</p>
+<h3 id="basic-build-push-pipeline">Basic Build &amp; Push Pipeline<a class="headerlink" href="#basic-build-push-pipeline" title="Permanent link">&para;</a></h3>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="nt">steps</span><span class="p">:</span>
+<a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a><span class="w">  </span><span class="c1"># 1. Run unit tests</span>
+<a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a><span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="s">&#39;python:3.10-slim&#39;</span>
+<a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a><span class="w">    </span><span class="nt">entrypoint</span><span class="p">:</span><span class="w"> </span><span class="s">&#39;bash&#39;</span>
+<a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a><span class="w">    </span><span class="nt">args</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[</span><span class="s">&#39;-c&#39;</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="s">&#39;pip</span><span class="nv"> </span><span class="s">install</span><span class="nv"> </span><span class="s">-r</span><span class="nv"> </span><span class="s">requirements.txt</span><span class="nv"> </span><span class="s">&amp;&amp;</span><span class="nv"> </span><span class="s">pytest</span><span class="nv"> </span><span class="s">tests/&#39;</span><span class="p p-Indicator">]</span>
+<a id="__codelineno-0-6" name="__codelineno-0-6" href="#__codelineno-0-6"></a>
+<a id="__codelineno-0-7" name="__codelineno-0-7" href="#__codelineno-0-7"></a><span class="w">  </span><span class="c1"># 2. Build the Docker image</span>
+<a id="__codelineno-0-8" name="__codelineno-0-8" href="#__codelineno-0-8"></a><span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="s">&#39;gcr.io/cloud-builders/docker&#39;</span>
+<a id="__codelineno-0-9" name="__codelineno-0-9" href="#__codelineno-0-9"></a><span class="w">    </span><span class="nt">args</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[</span><span class="s">&#39;build&#39;</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="s">&#39;-t&#39;</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="s">&#39;us-central1-docker.pkg.dev/$PROJECT_ID/my-repo/api:$SHORT_SHA&#39;</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="s">&#39;.&#39;</span><span class="p p-Indicator">]</span>
+<a id="__codelineno-0-10" name="__codelineno-0-10" href="#__codelineno-0-10"></a>
+<a id="__codelineno-0-11" name="__codelineno-0-11" href="#__codelineno-0-11"></a><span class="w">  </span><span class="c1"># 3. Push the image to Artifact Registry</span>
+<a id="__codelineno-0-12" name="__codelineno-0-12" href="#__codelineno-0-12"></a><span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="s">&#39;gcr.io/cloud-builders/docker&#39;</span>
+<a id="__codelineno-0-13" name="__codelineno-0-13" href="#__codelineno-0-13"></a><span class="w">    </span><span class="nt">args</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[</span><span class="s">&#39;push&#39;</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="s">&#39;us-central1-docker.pkg.dev/$PROJECT_ID/my-repo/api:$SHORT_SHA&#39;</span><span class="p p-Indicator">]</span>
+<a id="__codelineno-0-14" name="__codelineno-0-14" href="#__codelineno-0-14"></a>
+<a id="__codelineno-0-15" name="__codelineno-0-15" href="#__codelineno-0-15"></a><span class="c1"># Automatically use Artifact Registry</span>
+<a id="__codelineno-0-16" name="__codelineno-0-16" href="#__codelineno-0-16"></a><span class="nt">images</span><span class="p">:</span>
+<a id="__codelineno-0-17" name="__codelineno-0-17" href="#__codelineno-0-17"></a><span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="s">&#39;us-central1-docker.pkg.dev/$PROJECT_ID/my-repo/api:$SHORT_SHA&#39;</span>
+</code></pre></div>
+<h3 id="accessing-secrets-in-cloud-build">Accessing Secrets in Cloud Build<a class="headerlink" href="#accessing-secrets-in-cloud-build" title="Permanent link">&para;</a></h3>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="nt">steps</span><span class="p">:</span>
+<a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a><span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="s">&#39;ubuntu&#39;</span>
+<a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a><span class="w">    </span><span class="nt">entrypoint</span><span class="p">:</span><span class="w"> </span><span class="s">&#39;bash&#39;</span>
+<a id="__codelineno-1-4" name="__codelineno-1-4" href="#__codelineno-1-4"></a><span class="w">    </span><span class="nt">args</span><span class="p">:</span>
+<a id="__codelineno-1-5" name="__codelineno-1-5" href="#__codelineno-1-5"></a><span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="s">&#39;-c&#39;</span>
+<a id="__codelineno-1-6" name="__codelineno-1-6" href="#__codelineno-1-6"></a><span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="p p-Indicator">|</span>
+<a id="__codelineno-1-7" name="__codelineno-1-7" href="#__codelineno-1-7"></a><span class="w">        </span><span class="no">echo &quot;My secret token is $$API_TOKEN&quot;</span>
+<a id="__codelineno-1-8" name="__codelineno-1-8" href="#__codelineno-1-8"></a><span class="w">    </span><span class="nt">secretEnv</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[</span><span class="s">&#39;API_TOKEN&#39;</span><span class="p p-Indicator">]</span>
+<a id="__codelineno-1-9" name="__codelineno-1-9" href="#__codelineno-1-9"></a>
+<a id="__codelineno-1-10" name="__codelineno-1-10" href="#__codelineno-1-10"></a><span class="nt">availableSecrets</span><span class="p">:</span>
+<a id="__codelineno-1-11" name="__codelineno-1-11" href="#__codelineno-1-11"></a><span class="w">  </span><span class="nt">secretManager</span><span class="p">:</span>
+<a id="__codelineno-1-12" name="__codelineno-1-12" href="#__codelineno-1-12"></a><span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">versionName</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">projects/$PROJECT_ID/secrets/my-api-token/versions/latest</span>
+<a id="__codelineno-1-13" name="__codelineno-1-13" href="#__codelineno-1-13"></a><span class="w">      </span><span class="nt">env</span><span class="p">:</span><span class="w"> </span><span class="s">&#39;API_TOKEN&#39;</span>
+</code></pre></div>
+<hr />
+<h2 id="2-cloud-run">2. Cloud Run<a class="headerlink" href="#2-cloud-run" title="Permanent link">&para;</a></h2>
+<p>Serverless container platform. Auto-scales from 0 to N.</p>
+<h3 id="deploy-via-cli">Deploy via CLI<a class="headerlink" href="#deploy-via-cli" title="Permanent link">&para;</a></h3>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a>gcloud<span class="w"> </span>run<span class="w"> </span>deploy<span class="w"> </span>my-service<span class="w"> </span><span class="se">\</span>
+<a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a><span class="w">  </span>--image<span class="w"> </span>us-central1-docker.pkg.dev/my-proj/repo/api:latest<span class="w"> </span><span class="se">\</span>
+<a id="__codelineno-2-3" name="__codelineno-2-3" href="#__codelineno-2-3"></a><span class="w">  </span>--region<span class="w"> </span>us-central1<span class="w"> </span><span class="se">\</span>
+<a id="__codelineno-2-4" name="__codelineno-2-4" href="#__codelineno-2-4"></a><span class="w">  </span>--allow-unauthenticated<span class="w"> </span><span class="se">\</span>
+<a id="__codelineno-2-5" name="__codelineno-2-5" href="#__codelineno-2-5"></a><span class="w">  </span>--cpu<span class="w"> </span><span class="m">2</span><span class="w"> </span>--memory<span class="w"> </span>1Gi<span class="w"> </span><span class="se">\</span>
+<a id="__codelineno-2-6" name="__codelineno-2-6" href="#__codelineno-2-6"></a><span class="w">  </span>--set-env-vars<span class="o">=</span><span class="s2">&quot;ENV=prod,LOG_LEVEL=info&quot;</span><span class="w"> </span><span class="se">\</span>
+<a id="__codelineno-2-7" name="__codelineno-2-7" href="#__codelineno-2-7"></a><span class="w">  </span>--set-secrets<span class="o">=</span><span class="s2">&quot;DB_PASS=db-password:latest&quot;</span><span class="w"> </span><span class="se">\</span>
+<a id="__codelineno-2-8" name="__codelineno-2-8" href="#__codelineno-2-8"></a><span class="w">  </span>--min-instances<span class="w"> </span><span class="m">1</span>
+</code></pre></div>
+<h3 id="traffic-splitting-canary-blue-green">Traffic Splitting (Canary / Blue-Green)<a class="headerlink" href="#traffic-splitting-canary-blue-green" title="Permanent link">&para;</a></h3>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a><span class="c1"># Send 10% of traffic to the new revision, 90% to the old</span>
+<a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a>gcloud<span class="w"> </span>run<span class="w"> </span>services<span class="w"> </span>update-traffic<span class="w"> </span>my-service<span class="w"> </span><span class="se">\</span>
+<a id="__codelineno-3-3" name="__codelineno-3-3" href="#__codelineno-3-3"></a><span class="w">  </span>--region<span class="w"> </span>us-central1<span class="w"> </span><span class="se">\</span>
+<a id="__codelineno-3-4" name="__codelineno-3-4" href="#__codelineno-3-4"></a><span class="w">  </span>--to-revisions<span class="o">=</span>my-service-00042-new<span class="o">=</span><span class="m">10</span>,my-service-00041-old<span class="o">=</span><span class="m">90</span>
+</code></pre></div>
+<hr />
+<h2 id="3-artifact-registry">3. Artifact Registry<a class="headerlink" href="#3-artifact-registry" title="Permanent link">&para;</a></h2>
+<p>The evolution of Container Registry. Supports Docker, Maven, npm, Python packages, etc.</p>
+<h3 id="creating-a-repository">Creating a Repository<a class="headerlink" href="#creating-a-repository" title="Permanent link">&para;</a></h3>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a>gcloud<span class="w"> </span>artifacts<span class="w"> </span>repositories<span class="w"> </span>create<span class="w"> </span>docker-repo<span class="w"> </span><span class="se">\</span>
+<a id="__codelineno-4-2" name="__codelineno-4-2" href="#__codelineno-4-2"></a><span class="w">  </span>--repository-format<span class="o">=</span>docker<span class="w"> </span><span class="se">\</span>
+<a id="__codelineno-4-3" name="__codelineno-4-3" href="#__codelineno-4-3"></a><span class="w">  </span>--location<span class="o">=</span>us-central1<span class="w"> </span><span class="se">\</span>
+<a id="__codelineno-4-4" name="__codelineno-4-4" href="#__codelineno-4-4"></a><span class="w">  </span>--description<span class="o">=</span><span class="s2">&quot;Main Docker registry&quot;</span>
+</code></pre></div>
+<h3 id="authentication-for-local-docker">Authentication for Local Docker<a class="headerlink" href="#authentication-for-local-docker" title="Permanent link">&para;</a></h3>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a><span class="c1"># Configure docker to use GCP credentials</span>
+<a id="__codelineno-5-2" name="__codelineno-5-2" href="#__codelineno-5-2"></a>gcloud<span class="w"> </span>auth<span class="w"> </span>configure-docker<span class="w"> </span>us-central1-docker.pkg.dev
+</code></pre></div>
+<hr />
+<h2 id="4-secret-manager">4. Secret Manager<a class="headerlink" href="#4-secret-manager" title="Permanent link">&para;</a></h2>
+<p>Centralized credential and secret storage.</p>
+<h3 id="creating-and-accessing-secrets">Creating and Accessing Secrets<a class="headerlink" href="#creating-and-accessing-secrets" title="Permanent link">&para;</a></h3>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a><span class="c1"># Create a secret</span>
+<a id="__codelineno-6-2" name="__codelineno-6-2" href="#__codelineno-6-2"></a>gcloud<span class="w"> </span>secrets<span class="w"> </span>create<span class="w"> </span>db-password<span class="w"> </span>--replication-policy<span class="o">=</span><span class="s2">&quot;automatic&quot;</span>
+<a id="__codelineno-6-3" name="__codelineno-6-3" href="#__codelineno-6-3"></a>
+<a id="__codelineno-6-4" name="__codelineno-6-4" href="#__codelineno-6-4"></a><span class="c1"># Add a value (version)</span>
+<a id="__codelineno-6-5" name="__codelineno-6-5" href="#__codelineno-6-5"></a><span class="nb">echo</span><span class="w"> </span>-n<span class="w"> </span><span class="s2">&quot;SuperSecret123&quot;</span><span class="w"> </span><span class="p">|</span><span class="w"> </span>gcloud<span class="w"> </span>secrets<span class="w"> </span>versions<span class="w"> </span>add<span class="w"> </span>db-password<span class="w"> </span>--data-file<span class="o">=</span>-
+<a id="__codelineno-6-6" name="__codelineno-6-6" href="#__codelineno-6-6"></a>
+<a id="__codelineno-6-7" name="__codelineno-6-7" href="#__codelineno-6-7"></a><span class="c1"># Read a secret value</span>
+<a id="__codelineno-6-8" name="__codelineno-6-8" href="#__codelineno-6-8"></a>gcloud<span class="w"> </span>secrets<span class="w"> </span>versions<span class="w"> </span>access<span class="w"> </span>latest<span class="w"> </span>--secret<span class="o">=</span><span class="s2">&quot;db-password&quot;</span>
+</code></pre></div>
+<hr />
+<h2 id="5-cloud-deploy-continuous-delivery">5. Cloud Deploy (Continuous Delivery)<a class="headerlink" href="#5-cloud-deploy-continuous-delivery" title="Permanent link">&para;</a></h2>
+<p>Manages releases and delivery pipelines to GKE, Cloud Run, and Anthos.</p>
+<h3 id="delivery-pipeline-yaml-clouddeployyaml">Delivery Pipeline YAML (<code>clouddeploy.yaml</code>)<a class="headerlink" href="#delivery-pipeline-yaml-clouddeployyaml" title="Permanent link">&para;</a></h3>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a><span class="nt">apiVersion</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">deploy.cloud.google.com/v1</span>
+<a id="__codelineno-7-2" name="__codelineno-7-2" href="#__codelineno-7-2"></a><span class="nt">kind</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">DeliveryPipeline</span>
+<a id="__codelineno-7-3" name="__codelineno-7-3" href="#__codelineno-7-3"></a><span class="nt">metadata</span><span class="p">:</span>
+<a id="__codelineno-7-4" name="__codelineno-7-4" href="#__codelineno-7-4"></a><span class="w">  </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">api-pipeline</span>
+<a id="__codelineno-7-5" name="__codelineno-7-5" href="#__codelineno-7-5"></a><span class="nt">description</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;Deployment</span><span class="nv"> </span><span class="s">pipeline</span><span class="nv"> </span><span class="s">for</span><span class="nv"> </span><span class="s">backend</span><span class="nv"> </span><span class="s">API&quot;</span>
+<a id="__codelineno-7-6" name="__codelineno-7-6" href="#__codelineno-7-6"></a><span class="nt">serialPipeline</span><span class="p">:</span>
+<a id="__codelineno-7-7" name="__codelineno-7-7" href="#__codelineno-7-7"></a><span class="w">  </span><span class="nt">stages</span><span class="p">:</span>
+<a id="__codelineno-7-8" name="__codelineno-7-8" href="#__codelineno-7-8"></a><span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">targetId</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">staging-cluster</span>
+<a id="__codelineno-7-9" name="__codelineno-7-9" href="#__codelineno-7-9"></a><span class="w">    </span><span class="nt">profiles</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[</span><span class="nv">staging</span><span class="p p-Indicator">]</span>
+<a id="__codelineno-7-10" name="__codelineno-7-10" href="#__codelineno-7-10"></a><span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">targetId</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">prod-cluster</span>
+<a id="__codelineno-7-11" name="__codelineno-7-11" href="#__codelineno-7-11"></a><span class="w">    </span><span class="nt">profiles</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[</span><span class="nv">prod</span><span class="p p-Indicator">]</span>
+</code></pre></div>
 
 
 
