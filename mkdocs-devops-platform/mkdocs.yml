@@ -24,11 +24,44 @@ theme:
 
 nav:
   - Home: index.md
-  - Architecture Diagrams: architecture-diagrams.md
-  - Jenkins on GKE Manifests: jenkins-gke-manifests.md
-  - SRE Automation Scripts: sre-automation-scripts.md
-  - Golden Image Pipeline: golden-image-pipeline.md
-  - Observability & Monitoring: observability-monitoring.md
+  - Platform Architecture:
+      - Architecture Diagrams: architecture-diagrams.md
+      - Jenkins on GKE Manifests: jenkins-gke-manifests.md
+      - SRE Automation Scripts: sre-automation-scripts.md
+      - Golden Image Pipeline: golden-image-pipeline.md
+      - Observability & Monitoring: observability-monitoring.md
+  - Knowledge Base:
+      - DevOps & Cloud Handbook: cheatsheets/devops_cloud_engineering_handbook.md
+      - Programming & Core:
+          - SQL: cheatsheets/01_sql_cheatsheet.md
+          - Python Core: cheatsheets/02_python_core_cheatsheet.md
+          - Python Modules: cheatsheets/03_python_modules_cheatsheet.md
+          - DSA with Python: cheatsheets/10_dsa_python_cheatsheet.md
+          - Regex Mastery: cheatsheets/18_Regex_Mastery.md
+          - Embedded C: cheatsheets/22_Embedded_C.md
+      - OS & Automation:
+          - Linux Bash: cheatsheets/05_bash_cheatsheet.md
+          - Linux Automation: cheatsheets/19_Linux_Automation.md
+          - PowerShell: cheatsheets/04_powershell_cheatsheet.md
+          - PowerShell Mastery: cheatsheets/20_PowerShell_Mastery.md
+          - OS Architecture: cheatsheets/21_OS_Architecture.md
+      - DevOps & Infrastructure:
+          - Networking: cheatsheets/06_networking_cheatsheet.md
+          - Docker: cheatsheets/07_docker_cheatsheet.md
+          - Kubernetes: cheatsheets/08_kubernetes_cheatsheet.md
+          - Git & CI/CD: cheatsheets/13_git_cicd_cheatsheet.md
+          - Development Methodologies: cheatsheets/12_development_methodologies_cheatsheet.md
+      - APIs & Formats:
+          - Backend API: cheatsheets/09_backend_api_cheatsheet.md
+          - Data Serialization: cheatsheets/14_data_serialization_formats_cheatsheet.md
+          - Markdown & Mermaid: cheatsheets/15_markdown_mermaid_documentation_cheatsheet.md
+      - Specialized:
+          - Cybersecurity & Forensics: cheatsheets/16_cybersecurity_hacking_forensics_manual.md
+          - Data Science Foundations: cheatsheets/17_data_science_foundations_cheatsheet.md
+          - Testing & Playwright: cheatsheets/11_testing_playwright_cheatsheet.md
+      - Interview & Context:
+          - Interview Questions: cheatsheets/interview_questions.md
+          - Context Tracker: cheatsheets/CONTEXT_TRACKER.md
 
 markdown_extensions:
   - pymdownx.superfences:
