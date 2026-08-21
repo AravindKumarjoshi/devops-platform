@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+    <url>
+         <loc>https://AravindKumarjoshi.github.io/devops-platform/</loc>
+         <lastmod>2026-08-21</lastmod>
+    </url>
+    <url>
+         <loc>https://AravindKumarjoshi.github.io/devops-platform/architecture-diagrams/</loc>
+         <lastmod>2026-08-21</lastmod>
+    </url>
+    <url>
+         <loc>https://AravindKumarjoshi.github.io/devops-platform/golden-image-pipeline/</loc>
+         <lastmod>2026-08-21</lastmod>
+    </url>
+    <url>
+         <loc>https://AravindKumarjoshi.github.io/devops-platform/jenkins-gke-manifests/</loc>
+         <lastmod>2026-08-21</lastmod>
+    </url>
+    <url>
+         <loc>https://AravindKumarjoshi.github.io/devops-platform/observability-monitoring/</loc>
+         <lastmod>2026-08-21</lastmod>
+    </url>
+    <url>
+         <loc>https://AravindKumarjoshi.github.io/devops-platform/sre-automation-scripts/</loc>
+         <lastmod>2026-08-21</lastmod>
+    </url>
+</urlset>

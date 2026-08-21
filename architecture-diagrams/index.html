@@ -1,0 +1,953 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="Production-ready reference architecture, manifests, scripts and pipelines for a GCP enterprise DevOps/SRE platform">
+      
+      
+        <meta name="author" content="Platform SRE Team">
+      
+      
+        <link rel="canonical" href="https://AravindKumarjoshi.github.io/devops-platform/architecture-diagrams/">
+      
+      
+        <link rel="prev" href="..">
+      
+      
+        <link rel="next" href="../jenkins-gke-manifests/">
+      
+      
+      <link rel="icon" href="../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.5.34">
+    
+    
+      
+        <title>Architecture Diagrams - Enterprise GCP DevOps & SRE Platform</title>
+      
+    
+    
+      <link rel="stylesheet" href="../assets/stylesheets/main.35f28582.min.css">
+      
+        
+        <link rel="stylesheet" href="../assets/stylesheets/palette.06af60db.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+      <link rel="stylesheet" href="../assets/_mkdocstrings.css">
+    
+    <script>__md_scope=new URL("..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+    
+  </head>
+  
+  
+    
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="cyan">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#architecture-diagrams" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+<header class="md-header" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href=".." title="Enterprise GCP DevOps &amp; SRE Platform" class="md-header__button md-logo" aria-label="Enterprise GCP DevOps & SRE Platform" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            Enterprise GCP DevOps & SRE Platform
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Architecture Diagrams
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+    
+    
+    
+    
+      <label class="md-header__button md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+      </label>
+      <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+    
+    
+      <div class="md-header__source">
+        <a href="https://github.com/AravindKumarjoshi/devops-platform" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 6.6.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2024 Fonticons, Inc.--><path d="M439.55 236.05 244 40.45a28.87 28.87 0 0 0-40.81 0l-40.66 40.63 51.52 51.52c27.06-9.14 52.68 16.77 43.39 43.68l49.66 49.66c34.23-11.8 61.18 31 35.47 56.69-26.49 26.49-70.21-2.87-56-37.34L240.22 199v121.85c25.3 12.54 22.26 41.85 9.08 55a34.34 34.34 0 0 1-48.55 0c-17.57-17.6-11.07-46.91 11.25-56v-123c-20.8-8.51-24.6-30.74-18.64-45L142.57 101 8.45 235.14a28.86 28.86 0 0 0 0 40.81l195.61 195.6a28.86 28.86 0 0 0 40.8 0l194.69-194.69a28.86 28.86 0 0 0 0-40.81"/></svg>
+  </div>
+  <div class="md-source__repository">
+    GitHub
+  </div>
+</a>
+      </div>
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+            
+<nav class="md-tabs" aria-label="Tabs" data-md-component="tabs">
+  <div class="md-grid">
+    <ul class="md-tabs__list">
+      
+        
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href=".." class="md-tabs__link">
+        
+  
+    
+  
+  Home
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+    
+  
+  
+    <li class="md-tabs__item md-tabs__item--active">
+      <a href="./" class="md-tabs__link">
+        
+  
+    
+  
+  Architecture Diagrams
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../jenkins-gke-manifests/" class="md-tabs__link">
+        
+  
+    
+  
+  Jenkins on GKE Manifests
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../sre-automation-scripts/" class="md-tabs__link">
+        
+  
+    
+  
+  SRE Automation Scripts
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../golden-image-pipeline/" class="md-tabs__link">
+        
+  
+    
+  
+  Golden Image Pipeline
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../observability-monitoring/" class="md-tabs__link">
+        
+  
+    
+  
+  Observability & Monitoring
+
+      </a>
+    </li>
+  
+
+      
+    </ul>
+  </div>
+</nav>
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+  
+
+
+<nav class="md-nav md-nav--primary md-nav--lifted" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href=".." title="Enterprise GCP DevOps &amp; SRE Platform" class="md-nav__button md-logo" aria-label="Enterprise GCP DevOps & SRE Platform" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    Enterprise GCP DevOps & SRE Platform
+  </label>
+  
+    <div class="md-nav__source">
+      <a href="https://github.com/AravindKumarjoshi/devops-platform" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 6.6.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2024 Fonticons, Inc.--><path d="M439.55 236.05 244 40.45a28.87 28.87 0 0 0-40.81 0l-40.66 40.63 51.52 51.52c27.06-9.14 52.68 16.77 43.39 43.68l49.66 49.66c34.23-11.8 61.18 31 35.47 56.69-26.49 26.49-70.21-2.87-56-37.34L240.22 199v121.85c25.3 12.54 22.26 41.85 9.08 55a34.34 34.34 0 0 1-48.55 0c-17.57-17.6-11.07-46.91 11.25-56v-123c-20.8-8.51-24.6-30.74-18.64-45L142.57 101 8.45 235.14a28.86 28.86 0 0 0 0 40.81l195.61 195.6a28.86 28.86 0 0 0 40.8 0l194.69-194.69a28.86 28.86 0 0 0 0-40.81"/></svg>
+  </div>
+  <div class="md-source__repository">
+    GitHub
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href=".." class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Home
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  <span class="md-ellipsis">
+    Architecture Diagrams
+  </span>
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  <span class="md-ellipsis">
+    Architecture Diagrams
+  </span>
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#1-gcp-centralized-shared-vpc-platform-overview" class="md-nav__link">
+    <span class="md-ellipsis">
+      1. GCP Centralized Shared VPC — Platform Overview
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#2-jenkins-on-gke-controller-dynamic-agent-architecture" class="md-nav__link">
+    <span class="md-ellipsis">
+      2. Jenkins on GKE — Controller &amp; Dynamic Agent Architecture
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#3-cicd-pipeline-git-to-genesis-platform-gke" class="md-nav__link">
+    <span class="md-ellipsis">
+      3. CI/CD Pipeline — Git to Genesis Platform (GKE)
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#4-sre-alert-flow-slack-to-pagerduty-to-engineer" class="md-nav__link">
+    <span class="md-ellipsis">
+      4. SRE Alert Flow — Slack to PagerDuty to Engineer
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#5-golden-image-baking-gitops-flow" class="md-nav__link">
+    <span class="md-ellipsis">
+      5. Golden Image Baking — GitOps Flow
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#key-design-principles" class="md-nav__link">
+    <span class="md-ellipsis">
+      Key Design Principles
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../jenkins-gke-manifests/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Jenkins on GKE Manifests
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../sre-automation-scripts/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    SRE Automation Scripts
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../golden-image-pipeline/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Golden Image Pipeline
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../observability-monitoring/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Observability & Monitoring
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#1-gcp-centralized-shared-vpc-platform-overview" class="md-nav__link">
+    <span class="md-ellipsis">
+      1. GCP Centralized Shared VPC — Platform Overview
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#2-jenkins-on-gke-controller-dynamic-agent-architecture" class="md-nav__link">
+    <span class="md-ellipsis">
+      2. Jenkins on GKE — Controller &amp; Dynamic Agent Architecture
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#3-cicd-pipeline-git-to-genesis-platform-gke" class="md-nav__link">
+    <span class="md-ellipsis">
+      3. CI/CD Pipeline — Git to Genesis Platform (GKE)
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#4-sre-alert-flow-slack-to-pagerduty-to-engineer" class="md-nav__link">
+    <span class="md-ellipsis">
+      4. SRE Alert Flow — Slack to PagerDuty to Engineer
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#5-golden-image-baking-gitops-flow" class="md-nav__link">
+    <span class="md-ellipsis">
+      5. Golden Image Baking — GitOps Flow
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#key-design-principles" class="md-nav__link">
+    <span class="md-ellipsis">
+      Key Design Principles
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+  
+  
+
+
+<h1 id="architecture-diagrams">Architecture Diagrams<a class="headerlink" href="#architecture-diagrams" title="Permanent link">&para;</a></h1>
+<p>Welcome to the Enterprise GCP DevOps &amp; SRE Platform architecture documentation. This platform embodies a strong GitOps culture, ensuring that all infrastructure and platform changes are version-controlled, auditable, and peer-reviewed. The diagrams below map out the critical systems within our environment, illustrating how the centralized shared VPC, CI/CD pipelines, SRE alert flows, and golden image pipelines are orchestrated to deliver a secure, scalable, and resilient platform.</p>
+<hr />
+<h2 id="1-gcp-centralized-shared-vpc-platform-overview">1. GCP Centralized Shared VPC — Platform Overview<a class="headerlink" href="#1-gcp-centralized-shared-vpc-platform-overview" title="Permanent link">&para;</a></h2>
+<p>Our GCP infrastructure leverages a Centralized Shared VPC model to maintain strict network isolation and centralized security controls. The Shared VPC Host Project provides the core networking infrastructure, including the shared-vpc network, Cloud NAT, Cloud Router, and Interconnect/VPN back to our on-premises data centers. Service projects are attached to this host, allowing the GKE Platform, Data Platform, and App Platform to consume the shared network while remaining logically isolated. Additionally, VPC Service Controls establish a security perimeter around these projects to prevent data exfiltration, and Private Google Access ensures secure communication with Google APIs.</p>
+<pre class="mermaid"><code>graph TD
+    subgraph On-Premises
+        SNOW[ServiceNow]
+        GHE[GitHub Enterprise]
+    end
+
+    subgraph Cross-Cutting Services
+        KMS[Cloud KMS]
+        IAM[IAM &amp; Workload Identity]
+    end
+
+    subgraph VPC-SC Perimeter
+        subgraph SharedVPC_Host_Project
+            SVPC[shared-vpc network]
+            NAT[Cloud NAT]
+            CR[Cloud Router]
+            VPN[Interconnect/VPN]
+        end
+
+        subgraph GKE-Platform-Project
+            GKE[GKE Cluster]
+            AR[Artifact Registry]
+            CB[Cloud Build]
+            subgraph GKE_Namespaces
+                JNS[jenkins-prod]
+                APPNS[app namespaces]
+            end
+            GKE --&gt; GKE_Namespaces
+        end
+
+        subgraph Data-Platform-Project
+            DP[Dataproc]
+            BQ[BigQuery]
+            GCS[Cloud Storage]
+        end
+
+        subgraph App-Platform-Project
+            CRUN[Cloud Run]
+            CF_SNOW[Cloud Function - SNOW Webhook]
+            CF_SLACK[Cloud Function - Slack PD Bot]
+        end
+    end
+
+    SVPC --&gt; GKE-Platform-Project
+    SVPC --&gt; Data-Platform-Project
+    SVPC --&gt; App-Platform-Project
+
+    CR --&gt; NAT
+    CR --&gt; VPN
+    VPN &lt;--&gt; On-Premises
+
+    SNOW --&gt; |API Calls| API_GW[API Gateway]
+    API_GW --&gt; |Trigger| CF_SNOW
+
+    GHE --&gt; |Webhooks| CB
+    CB --&gt; |Push Images| AR
+
+    KMS -.-&gt; |Key Mgmt| GKE-Platform-Project
+    KMS -.-&gt; |Key Mgmt| Data-Platform-Project
+    KMS -.-&gt; |Key Mgmt| App-Platform-Project
+
+    IAM -.-&gt; |AuthZ &amp; GSA bindings| GKE-Platform-Project
+    IAM -.-&gt; |AuthZ &amp; GSA bindings| Data-Platform-Project
+    IAM -.-&gt; |AuthZ &amp; GSA bindings| App-Platform-Project</code></pre>
+<hr />
+<h2 id="2-jenkins-on-gke-controller-dynamic-agent-architecture">2. Jenkins on GKE — Controller &amp; Dynamic Agent Architecture<a class="headerlink" href="#2-jenkins-on-gke-controller-dynamic-agent-architecture" title="Permanent link">&para;</a></h2>
+<p>Our CI/CD workhorse is Jenkins running securely on Google Kubernetes Engine. Configuration is managed strictly via Jenkins Configuration as Code (JCasC), minimizing drift and manual UI changes. The setup relies on the Kubernetes Cloud plugin to dynamically provision ephemeral build agents tailored to specific tasks, minimizing resource usage and attack surface. Agents authenticate to Google services, such as Artifact Registry, seamlessly and securely via Workload Identity without needing static service account keys, while the Jenkins Controller relies on a resilient regional SSD PersistentVolumeClaim (PVC) for configuration and job history persistence.</p>
+<pre class="mermaid"><code>graph TD
+    DEV[Developer Browser]
+    GHE[GitHub Enterprise]
+    SONAR[SonarQube External]
+    GCP_AR[Artifact Registry]
+    WI[Workload Identity Binding]
+
+    subgraph GKE Cluster
+        subgraph ingress-nginx namespace
+            ING[Ingress Resource]
+            ILB[Internal GCP HTTPS LB]
+        end
+
+        subgraph jenkins-prod namespace
+            JC[Jenkins Controller Pod\nJCasC mounted]
+            PVC[(PVC jenkins-home 100Gi SSD)]
+            JUI[Jenkins UI Service\nClusterIP 8080]
+            JJNLP[Jenkins JNLP Service\nClusterIP 50000]
+            JC --- PVC
+        end
+
+        subgraph jenkins-agents namespace
+            KAN[Kaniko Agent Pod]
+            MAV[Maven Agent Pod]
+            NOD[NodeJS Agent Pod]
+            SON[SonarScanner Agent Pod]
+            TF[Terraform Agent Pod]
+        end
+    end
+
+    DEV --&gt; ILB
+    ILB --&gt; ING
+    ING --&gt; JUI
+    JUI --&gt; JC
+
+    JC --&gt; |Spawns Pods| KAN
+    JC --&gt; |Spawns Pods| MAV
+    JC --&gt; |Spawns Pods| NOD
+    JC --&gt; |Spawns Pods| SON
+    JC --&gt; |Spawns Pods| TF
+
+    JJNLP &lt;--&gt; |Agent Communication| KAN
+    JJNLP &lt;--&gt; |Agent Communication| MAV
+    JJNLP &lt;--&gt; |Agent Communication| NOD
+    JJNLP &lt;--&gt; |Agent Communication| SON
+    JJNLP &lt;--&gt; |Agent Communication| TF
+
+    KAN --&gt; |Push| GCP_AR
+    MAV -.-&gt; |WI Auth| WI
+    NOD -.-&gt; |WI Auth| WI
+
+    WI -.-&gt; GCP_AR
+    SON --&gt; |Scan| SONAR</code></pre>
+<hr />
+<h2 id="3-cicd-pipeline-git-to-genesis-platform-gke">3. CI/CD Pipeline — Git to Genesis Platform (GKE)<a class="headerlink" href="#3-cicd-pipeline-git-to-genesis-platform-gke" title="Permanent link">&para;</a></h2>
+<p>The core deployment pipeline enforces a strict progression from version control to the production Genesis GKE platform. It guarantees that all code is validated, scanned, and formally approved before taking effect. Upon a Git push, Jenkins orchestrates linting, unit tests, and a rigorous SonarQube SAST and coverage analysis. Failure at the quality gate blocks the pipeline and alerts the developer; success triggers the creation and storage of an immutable artifact in Artifactory. Following manual or policy-engine approval, Jenkins initiates a Helm-based deployment to the Genesis cluster, equipped with automated rollback in case the new release fails to stabilize.</p>
+<pre class="mermaid"><code>sequenceDiagram
+    participant Developer
+    participant GitHub_Enterprise
+    participant Jenkins
+    participant SonarQube
+    participant Artifactory
+    participant ApprovalGate
+    participant GenesisGKE
+    participant Slack
+
+    Developer-&gt;&gt;GitHub_Enterprise: git push / PR open
+    GitHub_Enterprise-&gt;&gt;Jenkins: Webhook trigger (push event)
+    Jenkins-&gt;&gt;Jenkins: Checkout, Dockerfile lint, Unit Tests
+    Jenkins-&gt;&gt;SonarQube: SAST scan + coverage analysis
+    SonarQube--&gt;&gt;Jenkins: Quality Gate result (pass/fail)
+
+    alt Quality Gate FAILED
+        Jenkins-&gt;&gt;Slack: Notify failure
+        Jenkins-&gt;&gt;Developer: Annotate PR with failures
+    else Quality Gate PASSED
+        Jenkins-&gt;&gt;Artifactory: Push artifact/Docker image (tagged with build number + git SHA)
+        Artifactory--&gt;&gt;Jenkins: Artifact URL confirmed
+        Jenkins-&gt;&gt;ApprovalGate: Request manual approval (Prod deploy)
+        ApprovalGate--&gt;&gt;Jenkins: Approved (human or policy engine)
+        Jenkins-&gt;&gt;GenesisGKE: helm upgrade --install (with image tag)
+        GenesisGKE--&gt;&gt;Jenkins: Rollout status
+
+        alt Rollout FAILED
+            Jenkins-&gt;&gt;GenesisGKE: helm rollback
+            Jenkins-&gt;&gt;Slack: Alert rollback
+        else Rollout SUCCESS
+            Jenkins-&gt;&gt;Slack: Deploy success notification with image tag + duration
+        end
+    end</code></pre>
+<hr />
+<h2 id="4-sre-alert-flow-slack-to-pagerduty-to-engineer">4. SRE Alert Flow — Slack to PagerDuty to Engineer<a class="headerlink" href="#4-sre-alert-flow-slack-to-pagerduty-to-engineer" title="Permanent link">&para;</a></h2>
+<p>In high-pressure situations, manual incident escalation is prone to delays. Our custom Slack bot streamlines the process by integrating directly with the PagerDuty API v2. When an engineer triggers an alert via Slack, a Cloud Function verifies the payload security and parses the request. It then dynamically looks up the current on-call engineer using PagerDuty's schedule and on-call endpoints before creating a high-urgency incident. Simultaneously, a formal notification is broadcasted to the SRE distribution list via SendGrid, and the engineer in Slack receives a thread reply confirming the incident assignment.</p>
+<pre class="mermaid"><code>sequenceDiagram
+    participant SRE_Engineer
+    participant Slack
+    participant CloudFunction_Bot
+    participant PagerDuty_API
+    participant SendGrid
+    participant OnCall_Engineer
+
+    SRE_Engineer-&gt;&gt;Slack: @pagerduty platform-sre P1: DB connection pool exhausted
+    Slack-&gt;&gt;CloudFunction_Bot: Events API POST (event_callback)
+    CloudFunction_Bot-&gt;&gt;CloudFunction_Bot: Verify Slack signing secret (HMAC-SHA256)
+    CloudFunction_Bot-&gt;&gt;CloudFunction_Bot: Regex parse team=platform-sre, message body
+    CloudFunction_Bot-&gt;&gt;PagerDuty_API: GET /schedules?query=platform-sre
+    PagerDuty_API--&gt;&gt;CloudFunction_Bot: Schedule ID list
+    CloudFunction_Bot-&gt;&gt;PagerDuty_API: GET /oncalls?schedule_ids[]=SCH001&amp;earliest=true
+    PagerDuty_API--&gt;&gt;CloudFunction_Bot: on_call: Jane Smith (jane@enterprise.com)
+    CloudFunction_Bot-&gt;&gt;PagerDuty_API: POST /incidents {title, service_id, urgency:high}
+    PagerDuty_API--&gt;&gt;CloudFunction_Bot: Incident URL INC-4821
+    PagerDuty_API-&gt;&gt;OnCall_Engineer: Page / push notification
+    CloudFunction_Bot-&gt;&gt;SendGrid: Send HTML email to platform-sre-dl@enterprise.com
+    SendGrid--&gt;&gt;CloudFunction_Bot: 202 Accepted
+    CloudFunction_Bot-&gt;&gt;Slack: Reply in thread: Incident INC-4821 created. On-call: Jane Smith.</code></pre>
+<hr />
+<h2 id="5-golden-image-baking-gitops-flow">5. Golden Image Baking — GitOps Flow<a class="headerlink" href="#5-golden-image-baking-gitops-flow" title="Permanent link">&para;</a></h2>
+<p>To ensure all compute instances comply with enterprise security standards, we employ an automated GitOps workflow for building Golden Images. The process is fully auditable, originating from a ServiceNow ticket and progressing through mandatory peer and SecOps reviews on GitHub. Cloud Build coordinates the execution of Packer and Ansible, which harden the base image according to CIS Level 1 benchmarks, configure firewalls, install necessary toolchains (like Node.js, Docker, Kubernetes tools), and embed monitoring agents. The resulting immutable image serves as the single source of truth for VM deployments, and the provisioning system automatically updates CMDB records upon success.</p>
+<pre class="mermaid"><code>sequenceDiagram
+    participant Developer
+    participant ServiceNow
+    participant GitHub_PR
+    participant SecOps_Reviewer
+    participant SRE_Reviewer
+    participant CloudBuild
+    participant Packer
+    participant Ansible
+    participant GCP_Images
+
+    Developer-&gt;&gt;ServiceNow: Create RITM/CHG ticket (package addition request)
+    ServiceNow--&gt;&gt;Developer: Ticket RITM0042819 approved for PR
+    Developer-&gt;&gt;GitHub_PR: git checkout -b feat/RITM0042819-add-nodejs20 &amp;&amp; git push
+    Developer-&gt;&gt;GitHub_PR: Open PR (fill PULL_REQUEST_TEMPLATE.md)
+    GitHub_PR-&gt;&gt;SecOps_Reviewer: Review request (mandatory)
+    SecOps_Reviewer-&gt;&gt;GitHub_PR: Review: CIS L1 checklist verified, CVE scan clean ✓
+    GitHub_PR-&gt;&gt;SRE_Reviewer: Review request (2 SRE approvals required)
+    SRE_Reviewer-&gt;&gt;GitHub_PR: Approve ✓
+    GitHub_PR-&gt;&gt;CloudBuild: PR merged → Cloud Build trigger fires
+    CloudBuild-&gt;&gt;Packer: packer init &amp;&amp; packer validate
+    Packer--&gt;&gt;CloudBuild: Validation OK
+    CloudBuild-&gt;&gt;Packer: packer build (GCP builder, IAP tunnel, no external IP)
+    Packer-&gt;&gt;Ansible: Invoke ansible-playbook provisioner
+
+    Ansible-&gt;&gt;Ansible: Play 1: CIS L1 hardening (sysctl, auditd, SSH, AppArmor)
+    Ansible-&gt;&gt;Ansible: Play 2: UFW firewall rules
+    Ansible-&gt;&gt;Ansible: Play 3: Install packages (nodejs20, docker, kubectl, helm)
+    Ansible-&gt;&gt;Ansible: Play 4: GCP Ops Agent
+    Ansible-&gt;&gt;Ansible: Play 5: Datadog Agent
+    Ansible-&gt;&gt;Ansible: Play 6: Pre-snapshot cleanup (bash_history, SSH host keys, logs)
+
+    Ansible--&gt;&gt;Packer: Provisioning complete
+    Packer-&gt;&gt;GCP_Images: Capture image → enterprise-debian12-base-{build}-{sha}
+    GCP_Images--&gt;&gt;CloudBuild: Image family updated
+    CloudBuild-&gt;&gt;ServiceNow: REST API: Update RITM0042819 → Implemented
+    CloudBuild-&gt;&gt;GitHub_PR: Post success comment with image name</code></pre>
+<hr />
+<h2 id="key-design-principles">Key Design Principles<a class="headerlink" href="#key-design-principles" title="Permanent link">&para;</a></h2>
+<p>The architecture illustrated above is governed by a set of core engineering principles designed to meet enterprise compliance and availability requirements:</p>
+<ul>
+<li><strong>GitOps Single Source of Truth:</strong> All infrastructure and platform configurations are declared in version control. Direct manual changes to resources are prohibited.</li>
+<li><strong>Immutable Images:</strong> Virtual machines and containers are deployed from immutable golden images that pass rigorous security checks during the build phase.</li>
+<li><strong>Workload Identity:</strong> Services authenticate dynamically using Google Cloud Workload Identity. No static, long-lived service account keys are stored or transmitted.</li>
+<li><strong>Least-Privilege IAM:</strong> Access to resources and APIs is strictly limited by fine-grained Identity and Access Management policies, enforcing minimum necessary permissions.</li>
+<li><strong>VPC Service Controls:</strong> Cloud resources are encapsulated within a secure perimeter, preventing unauthorized data access or exfiltration.</li>
+<li><strong>CIS L1 Baseline Mandatory:</strong> All OS images and Kubernetes clusters are continuously audited against the Center for Internet Security Level 1 benchmarks.</li>
+<li><strong>Peer and SecOps Review Required:</strong> Changes to critical infrastructure code require multiple layers of automated checks and manual approvals from relevant domain experts.</li>
+<li><strong>Automated CMDB Updates:</strong> Infrastructure state changes and deployment events automatically synchronize with the central Configuration Management Database (ServiceNow) for audit and tracking.</li>
+</ul>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8z"/></svg>
+  Back to top
+</button>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    <script id="__config" type="application/json">{"base": "..", "features": ["navigation.tabs", "navigation.sections", "navigation.expand", "navigation.top", "search.highlight", "content.code.copy", "content.code.annotate"], "search": "../assets/javascripts/workers/search.07f07601.min.js", "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}}</script>
+    
+    
+      <script src="../assets/javascripts/bundle.56dfad97.min.js"></script>
+      
+        <script src="https://unpkg.com/mermaid@10/dist/mermaid.min.js"></script>
+      
+    
+  </body>
+</html>
