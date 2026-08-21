@@ -641,13 +641,13 @@
 <hr />
 <h2 id="platform-overview">Platform Overview<a class="headerlink" href="#platform-overview" title="Permanent link">&para;</a></h2>
 <pre class="mermaid"><code>graph LR
-    GH["GitHub Enterprise\n(Source of Truth)"]
-    CB["Cloud Build\n(CI/CD Orchestrator)"]
-    AR["Artifact Registry\n(Image &amp; Artifact Store)"]
-    GKE["GKE\n(Genesis Platform)"]
-    IMG["GCP Image Family\n(Golden VM Images)"]
-    MON["Monitoring Stack\n(Prometheus/Datadog/Cloud Monitoring)"]
-    SNOW["ServiceNow\n(ITSM &amp; CMDB)"]
+    GH["GitHub Enterprise&lt;br&gt;(Source of Truth)"]
+    CB["Cloud Build&lt;br&gt;(CI/CD Orchestrator)"]
+    AR["Artifact Registry&lt;br&gt;(Image &amp; Artifact Store)"]
+    GKE["GKE&lt;br&gt;(Genesis Platform)"]
+    IMG["GCP Image Family&lt;br&gt;(Golden VM Images)"]
+    MON["Monitoring Stack&lt;br&gt;(Prometheus/Datadog/Cloud Monitoring)"]
+    SNOW["ServiceNow&lt;br&gt;(ITSM &amp; CMDB)"]
 
     GH --&gt;|"Webhook trigger"| CB
     CB --&gt;|"Push images"| AR
