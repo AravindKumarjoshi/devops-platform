@@ -1,0 +1,2121 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="Production-ready reference architecture, manifests, scripts and pipelines for a GCP enterprise DevOps/SRE platform">
+      
+      
+        <meta name="author" content="Platform SRE Team">
+      
+      
+        <link rel="canonical" href="https://AravindKumarjoshi.github.io/devops-platform/cheatsheets/15_markdown_mermaid_documentation_cheatsheet/">
+      
+      
+        <link rel="prev" href="../14_data_serialization_formats_cheatsheet/">
+      
+      
+        <link rel="next" href="../16_cybersecurity_hacking_forensics_manual/">
+      
+      
+      <link rel="icon" href="../../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.5.34">
+    
+    
+      
+        <title>Markdown & Mermaid - Enterprise GCP DevOps & SRE Platform</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../assets/stylesheets/main.35f28582.min.css">
+      
+        
+        <link rel="stylesheet" href="../../assets/stylesheets/palette.06af60db.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+      <link rel="stylesheet" href="../../assets/_mkdocstrings.css">
+    
+      <link rel="stylesheet" href="../../stylesheets/extra.css">
+    
+    <script>__md_scope=new URL("../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+    
+  </head>
+  
+  
+    
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="cyan">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#technical-documentation-markdown-mermaid-comprehensive-cheat-sheet" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+<header class="md-header" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href="../.." title="Enterprise GCP DevOps &amp; SRE Platform" class="md-header__button md-logo" aria-label="Enterprise GCP DevOps & SRE Platform" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            Enterprise GCP DevOps & SRE Platform
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Markdown & Mermaid
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+    
+    
+    
+    
+      <label class="md-header__button md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+      </label>
+      <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+    
+    
+      <div class="md-header__source">
+        <a href="https://github.com/AravindKumarjoshi/devops-platform" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 6.6.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2024 Fonticons, Inc.--><path d="M439.55 236.05 244 40.45a28.87 28.87 0 0 0-40.81 0l-40.66 40.63 51.52 51.52c27.06-9.14 52.68 16.77 43.39 43.68l49.66 49.66c34.23-11.8 61.18 31 35.47 56.69-26.49 26.49-70.21-2.87-56-37.34L240.22 199v121.85c25.3 12.54 22.26 41.85 9.08 55a34.34 34.34 0 0 1-48.55 0c-17.57-17.6-11.07-46.91 11.25-56v-123c-20.8-8.51-24.6-30.74-18.64-45L142.57 101 8.45 235.14a28.86 28.86 0 0 0 0 40.81l195.61 195.6a28.86 28.86 0 0 0 40.8 0l194.69-194.69a28.86 28.86 0 0 0 0-40.81"/></svg>
+  </div>
+  <div class="md-source__repository">
+    GitHub
+  </div>
+</a>
+      </div>
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+            
+<nav class="md-tabs" aria-label="Tabs" data-md-component="tabs">
+  <div class="md-grid">
+    <ul class="md-tabs__list">
+      
+        
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../.." class="md-tabs__link">
+        
+  
+    
+  
+  Home
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../architecture-diagrams/" class="md-tabs__link">
+          
+  
+  Platform Architecture
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+    
+  
+  
+    
+    
+      <li class="md-tabs__item md-tabs__item--active">
+        <a href="../devops_cloud_engineering_handbook/" class="md-tabs__link">
+          
+  
+  Knowledge Base
+
+        </a>
+      </li>
+    
+  
+
+      
+    </ul>
+  </div>
+</nav>
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+  
+
+
+<nav class="md-nav md-nav--primary md-nav--lifted" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../.." title="Enterprise GCP DevOps &amp; SRE Platform" class="md-nav__button md-logo" aria-label="Enterprise GCP DevOps & SRE Platform" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    Enterprise GCP DevOps & SRE Platform
+  </label>
+  
+    <div class="md-nav__source">
+      <a href="https://github.com/AravindKumarjoshi/devops-platform" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 6.6.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2024 Fonticons, Inc.--><path d="M439.55 236.05 244 40.45a28.87 28.87 0 0 0-40.81 0l-40.66 40.63 51.52 51.52c27.06-9.14 52.68 16.77 43.39 43.68l49.66 49.66c34.23-11.8 61.18 31 35.47 56.69-26.49 26.49-70.21-2.87-56-37.34L240.22 199v121.85c25.3 12.54 22.26 41.85 9.08 55a34.34 34.34 0 0 1-48.55 0c-17.57-17.6-11.07-46.91 11.25-56v-123c-20.8-8.51-24.6-30.74-18.64-45L142.57 101 8.45 235.14a28.86 28.86 0 0 0 0 40.81l195.61 195.6a28.86 28.86 0 0 0 40.8 0l194.69-194.69a28.86 28.86 0 0 0 0-40.81"/></svg>
+  </div>
+  <div class="md-source__repository">
+    GitHub
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../.." class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Home
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_2" >
+        
+          
+          <label class="md-nav__link" for="__nav_2" id="__nav_2_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    Platform Architecture
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2">
+            <span class="md-nav__icon md-icon"></span>
+            Platform Architecture
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../architecture-diagrams/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Architecture Diagrams
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../jenkins-gke-manifests/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Jenkins on GKE Manifests
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../sre-automation-scripts/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    SRE Automation Scripts
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../golden-image-pipeline/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Golden Image Pipeline
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../observability-monitoring/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Observability & Monitoring
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    
+    
+    
+      
+        
+        
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_3" id="__nav_3_label" tabindex="">
+            
+  
+  <span class="md-ellipsis">
+    Knowledge Base
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_3">
+            <span class="md-nav__icon md-icon"></span>
+            Knowledge Base
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../devops_cloud_engineering_handbook/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    DevOps & Cloud Handbook
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+      
+      
+        
+          
+          
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_3_2" >
+        
+          
+          <label class="md-nav__link" for="__nav_3_2" id="__nav_3_2_label" tabindex="">
+            
+  
+  <span class="md-ellipsis">
+    Programming & Core
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_3_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_3_2">
+            <span class="md-nav__icon md-icon"></span>
+            Programming & Core
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../01_sql_cheatsheet/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    SQL
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../02_python_core_cheatsheet/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Python Core
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../03_python_modules_cheatsheet/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Python Modules
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../10_dsa_python_cheatsheet/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    DSA with Python
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../18_Regex_Mastery/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Regex Mastery
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../22_Embedded_C/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Embedded C
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+      
+      
+        
+          
+          
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_3_3" >
+        
+          
+          <label class="md-nav__link" for="__nav_3_3" id="__nav_3_3_label" tabindex="">
+            
+  
+  <span class="md-ellipsis">
+    OS & Automation
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_3_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_3_3">
+            <span class="md-nav__icon md-icon"></span>
+            OS & Automation
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../05_bash_cheatsheet/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Linux Bash
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../19_Linux_Automation/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Linux Automation
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../04_powershell_cheatsheet/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    PowerShell
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../20_PowerShell_Mastery/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    PowerShell Mastery
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../21_OS_Architecture/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    OS Architecture
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+      
+      
+        
+          
+          
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_3_4" >
+        
+          
+          <label class="md-nav__link" for="__nav_3_4" id="__nav_3_4_label" tabindex="">
+            
+  
+  <span class="md-ellipsis">
+    DevOps & Infrastructure
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_3_4_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_3_4">
+            <span class="md-nav__icon md-icon"></span>
+            DevOps & Infrastructure
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../06_networking_cheatsheet/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Networking
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../07_docker_cheatsheet/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Docker
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../08_kubernetes_cheatsheet/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Kubernetes
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../13_git_cicd_cheatsheet/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Git & CI/CD
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../12_development_methodologies_cheatsheet/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Development Methodologies
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    
+    
+    
+      
+      
+        
+          
+          
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3_5" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_3_5" id="__nav_3_5_label" tabindex="">
+            
+  
+  <span class="md-ellipsis">
+    APIs & Formats
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_3_5_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_3_5">
+            <span class="md-nav__icon md-icon"></span>
+            APIs & Formats
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../09_backend_api_cheatsheet/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Backend API
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../14_data_serialization_formats_cheatsheet/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Data Serialization
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  <span class="md-ellipsis">
+    Markdown & Mermaid
+  </span>
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  <span class="md-ellipsis">
+    Markdown & Mermaid
+  </span>
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#table-of-contents" class="md-nav__link">
+    <span class="md-ellipsis">
+      📑 Table of Contents
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#1-the-engineering-documentation-as-code-philosophy" class="md-nav__link">
+    <span class="md-ellipsis">
+      1. The Engineering Documentation-As-Code Philosophy
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#2-markdown-github-flavored-markdown-gfm-mastery" class="md-nav__link">
+    <span class="md-ellipsis">
+      2. Markdown &amp; GitHub Flavored Markdown (GFM) Mastery
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#implementation-checklist" class="md-nav__link">
+    <span class="md-ellipsis">
+      Implementation Checklist
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#4-mermaid-diagramming-masterclass-i-flowcharts-architecture-graphs" class="md-nav__link">
+    <span class="md-ellipsis">
+      4. Mermaid Diagramming Masterclass I — Flowcharts &amp; Architecture Graphs
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#5-mermaid-diagramming-masterclass-ii-sequence-diagrams-rest-apis-auth-sagas" class="md-nav__link">
+    <span class="md-ellipsis">
+      5. Mermaid Diagramming Masterclass II — Sequence Diagrams (REST APIs &amp; Auth Sagas)
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#6-mermaid-diagramming-masterclass-iii-class-state-er-database-diagrams" class="md-nav__link">
+    <span class="md-ellipsis">
+      6. Mermaid Diagramming Masterclass III — Class, State, &amp; ER Database Diagrams
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#7-mermaid-diagramming-masterclass-iv-git-graphs-gantt-charts-mindmaps" class="md-nav__link">
+    <span class="md-ellipsis">
+      7. Mermaid Diagramming Masterclass IV — Git Graphs, Gantt Charts &amp; Mindmaps
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#8-documentation-cli-tooling-automated-linter-rendering-reference" class="md-nav__link">
+    <span class="md-ellipsis">
+      8. Documentation CLI Tooling, Automated Linter &amp; Rendering Reference
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+      
+      
+        
+          
+          
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_3_6" >
+        
+          
+          <label class="md-nav__link" for="__nav_3_6" id="__nav_3_6_label" tabindex="">
+            
+  
+  <span class="md-ellipsis">
+    Specialized
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_3_6_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_3_6">
+            <span class="md-nav__icon md-icon"></span>
+            Specialized
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../16_cybersecurity_hacking_forensics_manual/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Cybersecurity & Forensics
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../17_data_science_foundations_cheatsheet/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Data Science Foundations
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../11_testing_playwright_cheatsheet/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Testing & Playwright
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+      
+      
+        
+          
+          
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_3_7" >
+        
+          
+          <label class="md-nav__link" for="__nav_3_7" id="__nav_3_7_label" tabindex="">
+            
+  
+  <span class="md-ellipsis">
+    Interview & Context
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_3_7_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_3_7">
+            <span class="md-nav__icon md-icon"></span>
+            Interview & Context
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../interview_questions/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Interview Questions
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../CONTEXT_TRACKER/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Context Tracker
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#table-of-contents" class="md-nav__link">
+    <span class="md-ellipsis">
+      📑 Table of Contents
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#1-the-engineering-documentation-as-code-philosophy" class="md-nav__link">
+    <span class="md-ellipsis">
+      1. The Engineering Documentation-As-Code Philosophy
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#2-markdown-github-flavored-markdown-gfm-mastery" class="md-nav__link">
+    <span class="md-ellipsis">
+      2. Markdown &amp; GitHub Flavored Markdown (GFM) Mastery
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#implementation-checklist" class="md-nav__link">
+    <span class="md-ellipsis">
+      Implementation Checklist
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#4-mermaid-diagramming-masterclass-i-flowcharts-architecture-graphs" class="md-nav__link">
+    <span class="md-ellipsis">
+      4. Mermaid Diagramming Masterclass I — Flowcharts &amp; Architecture Graphs
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#5-mermaid-diagramming-masterclass-ii-sequence-diagrams-rest-apis-auth-sagas" class="md-nav__link">
+    <span class="md-ellipsis">
+      5. Mermaid Diagramming Masterclass II — Sequence Diagrams (REST APIs &amp; Auth Sagas)
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#6-mermaid-diagramming-masterclass-iii-class-state-er-database-diagrams" class="md-nav__link">
+    <span class="md-ellipsis">
+      6. Mermaid Diagramming Masterclass III — Class, State, &amp; ER Database Diagrams
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#7-mermaid-diagramming-masterclass-iv-git-graphs-gantt-charts-mindmaps" class="md-nav__link">
+    <span class="md-ellipsis">
+      7. Mermaid Diagramming Masterclass IV — Git Graphs, Gantt Charts &amp; Mindmaps
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#8-documentation-cli-tooling-automated-linter-rendering-reference" class="md-nav__link">
+    <span class="md-ellipsis">
+      8. Documentation CLI Tooling, Automated Linter &amp; Rendering Reference
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+  
+  
+
+
+<h1 id="technical-documentation-markdown-mermaid-comprehensive-cheat-sheet">📘 Technical Documentation, Markdown &amp; Mermaid — Comprehensive Cheat Sheet<a class="headerlink" href="#technical-documentation-markdown-mermaid-comprehensive-cheat-sheet" title="Permanent link">&para;</a></h1>
+<blockquote>
+<p><strong>Author</strong>: AI-Generated for DevOps &amp; Cloud Engineers
+<strong>Last Updated</strong>: 2026-08-05
+<strong>Pages</strong>: ~50+ pages (Equivalent Depth &amp; Coverage) | <strong>Sections</strong>: 8 | <strong>Examples</strong>: Comprehensive Production Snippets</p>
+</blockquote>
+<h2 id="table-of-contents">📑 Table of Contents<a class="headerlink" href="#table-of-contents" title="Permanent link">&para;</a></h2>
+<ol>
+<li><a href="#1-the-engineering-documentation-as-code-philosophy">The Engineering Documentation-As-Code Philosophy</a></li>
+<li><a href="#2-markdown--github-flavored-markdown-gfm-mastery">Markdown &amp; GitHub Flavored Markdown (GFM) Mastery</a></li>
+<li><a href="#3-obsidian--vs-code-engineering-workflows-pdf-exporting--auto-scale-styling">Obsidian &amp; VS Code Engineering Workflows (PDF Exporting &amp; Auto-Scale Styling)</a></li>
+<li><a href="#4-mermaid-diagramming-masterclass-i--flowcharts--architecture-graphs">Mermaid Diagramming Masterclass I — Flowcharts &amp; Architecture Graphs</a></li>
+<li><a href="#5-mermaid-diagramming-masterclass-ii--sequence-diagrams-rest-apis--auth-sagas">Mermaid Diagramming Masterclass II — Sequence Diagrams (REST APIs &amp; Auth Sagas)</a></li>
+<li><a href="#6-mermaid-diagramming-masterclass-iii--class-state--er-database-diagrams">Mermaid Diagramming Masterclass III — Class, State, &amp; ER Database Diagrams</a></li>
+<li><a href="#7-mermaid-diagramming-masterclass-iv--git-graphs-gantt-charts--mindmaps">Mermaid Diagramming Masterclass IV — Git Graphs, Gantt Charts &amp; Mindmaps</a></li>
+<li><a href="#8-documentation-cli-tooling-automated-linter--rendering-reference">Documentation CLI Tooling, Automated Linter &amp; Rendering Reference</a></li>
+</ol>
+<hr />
+<h2 id="1-the-engineering-documentation-as-code-philosophy">1. The Engineering Documentation-As-Code Philosophy<a class="headerlink" href="#1-the-engineering-documentation-as-code-philosophy" title="Permanent link">&para;</a></h2>
+<p><strong>🌐 Intuitive Real-World Analogy</strong>
+The Architect's Construction Blueprint vs. The Marketing Brochure. Engineering documentation is an undeniable technical truth source—it must be version-controlled in Git alongside source code, written in universal plain-text languages (Markdown/Mermaid), reviewed via pull requests, and transformed dynamically into interactive portals or printed paper manuals!</p>
+<p><strong>What is it? (What &amp; Why)</strong>
+Documentation-as-Code (Docs-as-Code) is the philosophy that writing documentation should leverage the exact same tools and pipelines as writing software. Word documents and PDFs are binary blobs that cannot be properly diffed, merged, or verified. By writing in Markdown and Mermaid, engineers can manage documentation state natively in Git, apply linting rules, and automatically publish to web portals using Static Site Generators (SSGs) in CI/CD pipelines.</p>
+<p><strong>Workflow &amp; Production Working Example</strong>
+Here is how a standard Docs-as-Code Continuous Integration pipeline flows:</p>
+<pre class="mermaid"><code>graph LR
+    %% Nodes
+    Dev["Developer (Git Push)"]
+    Lint["Linter (markdownlint)"]
+    Render["Diagram Render (mmdc)"]
+    SSG["Static Site Generator (Hugo/MkDocs)"]
+    Web["Web Documentation Hub"]
+    PDF["PDF Artifact Foundry"]
+
+    %% Edges
+    Dev --&gt;|"Push .md / .mmd"| Lint
+    Lint --&gt;|"Lint Pass"| Render
+    Render --&gt;|"SVG/PNG Assets"| SSG
+    SSG --&gt;|"Deploy HTML"| Web
+    SSG --&gt;|"Pandoc/WeasyPrint"| PDF
+
+    %% Styling
+    style Dev fill:#1f2937,stroke:#3b82f6,stroke-width:2px,color:#ffffff
+    style Web fill:#065f46,stroke:#10b981,stroke-width:2px,color:#ffffff</code></pre>
+<p><strong>💡 Best Practice</strong>
+Keep documentation adjacent to the code it describes. Use <code>/docs</code> directories at the root of your repositories. Write READMEs that answer <em>What</em>, <em>Why</em>, and <em>How to run it locally</em>.</p>
+<p><strong>⚠️ Common Pitfalls</strong>
+Drift between code and documentation. Avoid manual architecture diagrams drawn in drag-and-drop tools like Visio or Draw.io; they will immediately go out of date and no one will know how to update them.</p>
+<p><strong>🔧 DevOps Pro Tip</strong>
+Integrate <code>markdown-link-check</code> into your GitHub Actions or GitLab CI. If a PR breaks a documentation link, fail the build to enforce documentation integrity.</p>
+<hr />
+<h2 id="2-markdown-github-flavored-markdown-gfm-mastery">2. Markdown &amp; GitHub Flavored Markdown (GFM) Mastery<a class="headerlink" href="#2-markdown-github-flavored-markdown-gfm-mastery" title="Permanent link">&para;</a></h2>
+<p><strong>🌐 Intuitive Real-World Analogy</strong>
+Universal Typewriter Stenography Shorthand. Using common keyboard punctuation characters (<code>#</code>, <code>*</code>, <code>|</code>, <code>[</code>, <code>&gt;</code>) to cleanly declare structural headings, font weights, hyperlinks, and grid layouts without needing complex binary word processing files!</p>
+<p><strong>What is it? (What &amp; Why)</strong>
+Markdown is a lightweight markup language with plain-text formatting syntax. GitHub Flavored Markdown (GFM) extends standard Markdown to include highly functional engineering features like task lists, tables, strikethrough, auto-linked references, and callout alerts.</p>
+<p><strong>Syntax &amp; How to Write It (Beginner to Advanced)</strong>
+*   <strong>Typography</strong>: Headings (<code>#</code> to <code>######</code>), emphasis (<code>*bold*</code>, <code>_italic_</code>, <code>~~strikethrough~~</code>), blockquotes (<code>&gt;</code>), horizontal separators (<code>---</code>), code spans (<code>`code`</code>).
+*   <strong>Advanced Tables</strong>: Alignment syntax (<code>| :--- | :---: | ---: |</code>), injecting multi-line content inside table cells using <code>&lt;br&gt;</code> tags.
+*   <strong>GitHub Flavored Callout Alerts</strong>:
+    *   <code>&gt; [!NOTE]</code> (Blue info)
+    *   <code>&gt; [!TIP]</code> (Green hint)
+    *   <code>&gt; [!IMPORTANT]</code> (Purple required reading)
+    *   <code>&gt; [!WARNING]</code> (Yellow caution)
+    *   <code>&gt; [!CAUTION]</code> (Red danger)
+*   <strong>Collapsible UI Blocks</strong>: Using HTML details for long stack traces.
+*   <strong>LaTeX Mathematics</strong>: Inline Math (<code>$E = mc^2$</code>) and Block Equation Math (<code>$$\sum_{i=0}^n T(n) = O(N \log N)$$</code>).</p>
+<p><strong>Production Working Example</strong>
+An Architecture Decision Record (ADR) template showcasing GFM:</p>
+<p><div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="gh"># ADR 042: Migrate Stateful Sessions to Redis Elasticache</span>
+<a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a>
+<a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a><span class="k">&gt; </span><span class="ge">[!IMPORTANT]</span>
+<a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a><span class="k">&gt; </span><span class="ge">This decision applies to all Kubernetes microservices operating in the `us-east-1` cluster.</span>
+<a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a>
+<a id="__codelineno-0-6" name="__codelineno-0-6" href="#__codelineno-0-6"></a><span class="gu">## Context</span>
+<a id="__codelineno-0-7" name="__codelineno-0-7" href="#__codelineno-0-7"></a>Current in-memory session state is breaking under high horizontal pod scaling.
+<a id="__codelineno-0-8" name="__codelineno-0-8" href="#__codelineno-0-8"></a>
+<a id="__codelineno-0-9" name="__codelineno-0-9" href="#__codelineno-0-9"></a>| Strategy | Latency | Horizontal Scaling | Cost Profile |
+<a id="__codelineno-0-10" name="__codelineno-0-10" href="#__codelineno-0-10"></a>| :--- | :---: | ---: |
+<a id="__codelineno-0-11" name="__codelineno-0-11" href="#__codelineno-0-11"></a>| Sticky Sessions | &lt;1ms | Poor | Low |
+<a id="__codelineno-0-12" name="__codelineno-0-12" href="#__codelineno-0-12"></a>| <span class="gs">**Redis Elasticache**</span> | <span class="gs">**~2ms**</span> | <span class="gs">**Excellent**</span> | <span class="gs">**Medium**</span> |
+<a id="__codelineno-0-13" name="__codelineno-0-13" href="#__codelineno-0-13"></a>
+<a id="__codelineno-0-14" name="__codelineno-0-14" href="#__codelineno-0-14"></a>&lt;details&gt;
+<a id="__codelineno-0-15" name="__codelineno-0-15" href="#__codelineno-0-15"></a>&lt;summary&gt;Click to view previous outage stack trace&lt;/summary&gt;
+<a id="__codelineno-0-16" name="__codelineno-0-16" href="#__codelineno-0-16"></a>
+<a id="__codelineno-0-17" name="__codelineno-0-17" href="#__codelineno-0-17"></a>```java
+<a id="__codelineno-0-18" name="__codelineno-0-18" href="#__codelineno-0-18"></a>Exception in thread &quot;main&quot; java.lang.IllegalStateException: Session ID 49A3B not found.
+<a id="__codelineno-0-19" name="__codelineno-0-19" href="#__codelineno-0-19"></a>    at com.auth.SessionManager.validate(SessionManager.java:42)
+</code></pre></div>
+</details></p>
+<h2 id="implementation-checklist">Implementation Checklist<a class="headerlink" href="#implementation-checklist" title="Permanent link">&para;</a></h2>
+<ul class="task-list">
+<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled checked/><span class="task-list-indicator"></span></label> Provision Redis cluster via Terraform</li>
+<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled/><span class="task-list-indicator"></span></label> Update <code>auth-service</code> Helm charts</li>
+<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled/><span class="task-list-indicator"></span></label> Migrate traffic via Canary deployment
+<div class="highlight"><pre><span></span><code><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a>**💡 Best Practice**
+<a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a>Limit line length to 80-100 characters using semantic line breaks (one sentence per line). This makes Git diffs incredibly readable.
+<a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a>
+<a id="__codelineno-1-4" name="__codelineno-1-4" href="#__codelineno-1-4"></a>**⚠️ Common Pitfalls**
+<a id="__codelineno-1-5" name="__codelineno-1-5" href="#__codelineno-1-5"></a>Inconsistent heading levels. Do not jump from `##` to `####`. It breaks Table of Contents generation and accessibility screen readers.
+<a id="__codelineno-1-6" name="__codelineno-1-6" href="#__codelineno-1-6"></a>
+<a id="__codelineno-1-7" name="__codelineno-1-7" href="#__codelineno-1-7"></a>**🔧 DevOps Pro Tip**
+<a id="__codelineno-1-8" name="__codelineno-1-8" href="#__codelineno-1-8"></a>Use `.markdownlint.json` to strictly enforce spacing around headings, lists, and tables across your entire engineering organization.
+<a id="__codelineno-1-9" name="__codelineno-1-9" href="#__codelineno-1-9"></a>
+<a id="__codelineno-1-10" name="__codelineno-1-10" href="#__codelineno-1-10"></a>---
+<a id="__codelineno-1-11" name="__codelineno-1-11" href="#__codelineno-1-11"></a>
+<a id="__codelineno-1-12" name="__codelineno-1-12" href="#__codelineno-1-12"></a>## 3. Obsidian &amp; VS Code Engineering Workflows (PDF Exporting &amp; Auto-Scale Styling)
+<a id="__codelineno-1-13" name="__codelineno-1-13" href="#__codelineno-1-13"></a>
+<a id="__codelineno-1-14" name="__codelineno-1-14" href="#__codelineno-1-14"></a>**🌐 Intuitive Real-World Analogy**
+<a id="__codelineno-1-15" name="__codelineno-1-15" href="#__codelineno-1-15"></a>The Personal Digital Exocortex &amp; Printing Foundry. Using a local filesystem directory of markdown notes as an interconnected second brain, empowered with custom browser rendering engines!
+<a id="__codelineno-1-16" name="__codelineno-1-16" href="#__codelineno-1-16"></a>
+<a id="__codelineno-1-17" name="__codelineno-1-17" href="#__codelineno-1-17"></a>**What is it? (What &amp; Why)**
+<a id="__codelineno-1-18" name="__codelineno-1-18" href="#__codelineno-1-18"></a>Obsidian and VS Code treat your local folder of Markdown files as a knowledge base. However, when exporting these to PDF to distribute to enterprise stakeholders, default engines often crop wide Mermaid diagrams or tables because standard A4/Letter paper is portrait-oriented, whereas screens scroll infinitely horizontally.
+<a id="__codelineno-1-19" name="__codelineno-1-19" href="#__codelineno-1-19"></a>
+<a id="__codelineno-1-20" name="__codelineno-1-20" href="#__codelineno-1-20"></a>**Syntax &amp; Code Solutions**
+<a id="__codelineno-1-21" name="__codelineno-1-21" href="#__codelineno-1-21"></a>To force unclipped vector scaling on paper, you must override the rendering engine&#39;s CSS for the `@media print` query. 
+<a id="__codelineno-1-22" name="__codelineno-1-22" href="#__codelineno-1-22"></a>
+<a id="__codelineno-1-23" name="__codelineno-1-23" href="#__codelineno-1-23"></a>In Obsidian, add this to `.obsidian/snippets/print-fix.css`:
+<a id="__codelineno-1-24" name="__codelineno-1-24" href="#__codelineno-1-24"></a>
+<a id="__codelineno-1-25" name="__codelineno-1-25" href="#__codelineno-1-25"></a>```css
+<a id="__codelineno-1-26" name="__codelineno-1-26" href="#__codelineno-1-26"></a>@media print {
+<a id="__codelineno-1-27" name="__codelineno-1-27" href="#__codelineno-1-27"></a>    /* Force diagrams to fit within the page width */
+<a id="__codelineno-1-28" name="__codelineno-1-28" href="#__codelineno-1-28"></a>    .mermaid, 
+<a id="__codelineno-1-29" name="__codelineno-1-29" href="#__codelineno-1-29"></a>    .mermaid svg {
+<a id="__codelineno-1-30" name="__codelineno-1-30" href="#__codelineno-1-30"></a>        max-width: 100% !important;
+<a id="__codelineno-1-31" name="__codelineno-1-31" href="#__codelineno-1-31"></a>        height: auto !important;
+<a id="__codelineno-1-32" name="__codelineno-1-32" href="#__codelineno-1-32"></a>        page-break-inside: avoid !important;
+<a id="__codelineno-1-33" name="__codelineno-1-33" href="#__codelineno-1-33"></a>        overflow: visible !important;
+<a id="__codelineno-1-34" name="__codelineno-1-34" href="#__codelineno-1-34"></a>    }
+<a id="__codelineno-1-35" name="__codelineno-1-35" href="#__codelineno-1-35"></a>
+<a id="__codelineno-1-36" name="__codelineno-1-36" href="#__codelineno-1-36"></a>    /* Prevent tables from bleeding off the page */
+<a id="__codelineno-1-37" name="__codelineno-1-37" href="#__codelineno-1-37"></a>    table {
+<a id="__codelineno-1-38" name="__codelineno-1-38" href="#__codelineno-1-38"></a>        width: 100% !important;
+<a id="__codelineno-1-39" name="__codelineno-1-39" href="#__codelineno-1-39"></a>        max-width: 100% !important;
+<a id="__codelineno-1-40" name="__codelineno-1-40" href="#__codelineno-1-40"></a>        word-break: break-word !important;
+<a id="__codelineno-1-41" name="__codelineno-1-41" href="#__codelineno-1-41"></a>        page-break-inside: avoid !important;
+<a id="__codelineno-1-42" name="__codelineno-1-42" href="#__codelineno-1-42"></a>    }
+<a id="__codelineno-1-43" name="__codelineno-1-43" href="#__codelineno-1-43"></a>
+<a id="__codelineno-1-44" name="__codelineno-1-44" href="#__codelineno-1-44"></a>    /* Keep code blocks together */
+<a id="__codelineno-1-45" name="__codelineno-1-45" href="#__codelineno-1-45"></a>    pre, code {
+<a id="__codelineno-1-46" name="__codelineno-1-46" href="#__codelineno-1-46"></a>        page-break-inside: avoid !important;
+<a id="__codelineno-1-47" name="__codelineno-1-47" href="#__codelineno-1-47"></a>        white-space: pre-wrap !important;
+<a id="__codelineno-1-48" name="__codelineno-1-48" href="#__codelineno-1-48"></a>    }
+<a id="__codelineno-1-49" name="__codelineno-1-49" href="#__codelineno-1-49"></a>}
+</code></pre></div></li>
+</ul>
+<p><strong>Workflow &amp; Production Working Example</strong>
+1.  <strong>VS Code</strong>: Install the <em>Markdown Preview Enhanced</em> extension. Use the <code>Puppeteer (PDF)</code> export option and inject the above CSS snippet into your customized <code>style.less</code> file.
+2.  <strong>Obsidian</strong>: Install the <em>Better Export PDF</em> community plugin. It natively supports injecting headers/footers and compiling Markdown heading trees into clickable PDF bookmarks.</p>
+<p><strong>💡 Best Practice</strong>
+Always use relative links (e.g., <code>[Setup Guide](./setup.md)</code>) instead of absolute filesystem links so your documentation remains portable across machines and platforms.</p>
+<p><strong>⚠️ Common Pitfalls</strong>
+Forgetting to enable background graphics in your browser/PDF engine print settings. Without it, your syntax highlighting and callout alert background colors will disappear!</p>
+<p><strong>🔧 DevOps Pro Tip</strong>
+Automate this. You can run Pandoc locally or in CI with a custom LaTeX template to convert your <code>.md</code> files to beautifully typeset enterprise PDFs with zero manual CSS tuning.</p>
+<hr />
+<h2 id="4-mermaid-diagramming-masterclass-i-flowcharts-architecture-graphs">4. Mermaid Diagramming Masterclass I — Flowcharts &amp; Architecture Graphs<a class="headerlink" href="#4-mermaid-diagramming-masterclass-i-flowcharts-architecture-graphs" title="Permanent link">&para;</a></h2>
+<p><strong>🌐 Intuitive Real-World Analogy</strong>
+Plumbing Topography and Highway Traffic Mapping. Visualizing decision branch points and network data packet routing paths from inlet servers to backend storage vaults!</p>
+<p><strong>What is it? (What &amp; Why)</strong>
+Mermaid Flowcharts (<code>graph</code> / <code>flowchart</code>) are directed graphs perfect for system architectures, decision trees, and network layouts. They use nodes and connecting edges, calculating optimal layouts automatically.</p>
+<p><strong>Syntax &amp; How to Write It (Beginner to Advanced)</strong>
+*   <strong>Directions</strong>: <code>graph TD</code> (Top-Down), <code>graph LR</code> (Left-Right).
+*   <strong>Nodes</strong>: <code>[Square]</code>, <code>(Round)</code>, <code>{Decision}</code>, <code>[(Database)]</code>, <code>[[Subroutine]]</code>, <code>((Circle))</code>.
+*   <strong>Edges</strong>: <code>--&gt;</code> (Arrow), <code>-.-&gt;</code> (Dotted arrow), <code>==&gt;</code> (Thick arrow), <code>-- "Text" --&gt;</code> (Labeled arrow).
+*   <strong>Clustering</strong>: <code>subgraph Name ... end</code>.
+*   <strong>⚠️ GOLDEN SYNTAX RULE</strong>: Node labels containing parentheses, brackets, or special symbols MUST always be enclosed in double quotation marks!
+    *   <em>Correct</em>: <code>id1["API Gateway (Port 443)"]</code>
+    *   <em>Incorrect (Will Break)</em>: <code>id1[API Gateway (Port 443)]</code></p>
+<p><strong>Production Working Example</strong>
+An AWS Zero-Trust Cloud Kubernetes Architecture:</p>
+<pre class="mermaid"><code>graph LR
+    %% External
+    User["Internet User"]
+
+    subgraph AWS_Cloud ["AWS Cloud (eu-central-1)"]
+        direction LR
+
+        %% Edge Layer
+        WAF["AWS WAF (Web App Firewall)"]
+        ALB["Application Load Balancer"]
+
+        subgraph EKS_Cluster ["EKS Kubernetes Cluster"]
+            direction TB
+            Ingress["Nginx Ingress Controller"]
+
+            subgraph Namespace_App ["Namespace: production-app"]
+                AuthSvc["Auth Service (gRPC)"]
+                PaymentSvc["Payment Service (REST)"]
+            end
+        end
+
+        %% Persistence Layer
+        DB[(Amazon Aurora PostgreSQL)]
+        Cache[(ElastiCache Redis)]
+    end
+
+    %% Connections
+    User == "HTTPS / 443" ==&gt; WAF
+    WAF --&gt; ALB
+    ALB --&gt; Ingress
+    Ingress --&gt; AuthSvc
+    Ingress --&gt; PaymentSvc
+
+    AuthSvc -. "Read/Write" .-&gt; Cache
+    PaymentSvc -- "TCP 5432" --&gt; DB
+
+    %% Styling
+    style AWS_Cloud fill:#f8f9fa,stroke:#e5e7eb,stroke-width:2px,stroke-dasharray: 5 5
+    style EKS_Cluster fill:#e0f2fe,stroke:#0284c7,stroke-width:2px
+    style DB fill:#1e40af,color:#ffffff</code></pre>
+<p><strong>💡 Best Practice</strong>
+Use <code>flowchart</code> instead of <code>graph</code> for newer Mermaid rendering engines. <code>flowchart</code> supports more advanced routing algorithms and better edge crossings.</p>
+<p><strong>⚠️ Common Pitfalls</strong>
+Overcrowding a single diagram. If a graph has more than 15-20 nodes, break it down into a high-level context diagram and multiple low-level component diagrams (C4 Model methodology).</p>
+<p><strong>🔧 DevOps Pro Tip</strong>
+Apply universal branding. You can declare <code>classDef</code> at the top of your markdown files to standardize node colors to your company's palette across all diagrams.</p>
+<hr />
+<h2 id="5-mermaid-diagramming-masterclass-ii-sequence-diagrams-rest-apis-auth-sagas">5. Mermaid Diagramming Masterclass II — Sequence Diagrams (REST APIs &amp; Auth Sagas)<a class="headerlink" href="#5-mermaid-diagramming-masterclass-ii-sequence-diagrams-rest-apis-auth-sagas" title="Permanent link">&para;</a></h2>
+<p><strong>🌐 Intuitive Real-World Analogy</strong>
+A Theater Script and Chronological Dialogue Timeline. Tracing step-by-step conversational messages back and forth across independent actors over time!</p>
+<p><strong>What is it? (What &amp; Why)</strong>
+Sequence diagrams trace the exact procedural execution of a system, mapping out synchronous and asynchronous calls between microservices, APIs, and databases. They are mandatory for explaining authentication flows, distributed transactions, and event-driven architectures.</p>
+<p><strong>Syntax &amp; How to Write It (Beginner to Advanced)</strong>
+*   <code>sequenceDiagram</code> and <code>autonumber</code> (auto-numbers all arrows).
+*   <strong>Participants</strong>: <code>participant A as Alias</code> (Internal), <code>actor U as User</code> (External human).
+*   <strong>Messages</strong>: <code>-&gt;&gt;</code> (Solid synchronous), <code>--&gt;&gt;</code> (Dotted return), <code>-x</code> (Async / no return).
+*   <strong>Activation Boxes</strong>: Represent compute time. <code>activate A</code> / <code>deactivate A</code> or shorthand <code>+</code> and <code>-</code> (e.g., <code>A-&gt;&gt;+B: Call</code>).
+*   <strong>Notes</strong>: <code>Note over A,B: Contextual explanation</code>.
+*   <strong>Logic</strong>: <code>alt</code> (if/else), <code>opt</code> (optional), <code>loop</code> (iteration), <code>par</code> (parallel execution).</p>
+<p><strong>Production Working Example</strong>
+OAuth2 Proof Key for Code Exchange (PKCE) flow:</p>
+<pre class="mermaid"><code>sequenceDiagram
+    autonumber
+    actor User as User Browser
+    participant SPA as Single Page App
+    participant API as API Gateway
+    participant IDP as Auth0 (IdP)
+
+    User-&gt;&gt;+SPA: Clicks "Login"
+    SPA-&gt;&gt;SPA: Generate Code Verifier &amp; Challenge
+    SPA-&gt;&gt;+IDP: Redirect to /authorize?code_challenge=xyz
+
+    alt User is Not Authenticated
+        IDP--&gt;&gt;User: Show Login Page
+        User-&gt;&gt;IDP: Enters Credentials
+    end
+
+    IDP--&gt;&gt;-SPA: Redirect back with Auth Code (HTTP 302)
+    SPA-&gt;&gt;+IDP: POST /token (Auth Code + Code Verifier)
+
+    Note over SPA,IDP: IDP validates that Verifier matches original Challenge
+    IDP--&gt;&gt;-SPA: Return JWT Access &amp; ID Tokens
+
+    SPA-&gt;&gt;+API: GET /api/data (Header: Bearer JWT)
+    API--&gt;&gt;-SPA: Return 200 OK + JSON Payload
+    SPA--&gt;&gt;-User: Render Dashboard</code></pre>
+<p><strong>💡 Best Practice</strong>
+Always use <code>autonumber</code>. When reviewing PRs or discussing architectures in meetings, it is vastly easier to say "Let's look at Step 7" than "Let's look at the third arrow from the Auth0 node."</p>
+<p><strong>⚠️ Common Pitfalls</strong>
+Forgetting to deactivate (<code>deactivate</code> or <code>-</code>) a participant. The activation box will extend infinitely to the bottom of the diagram, making it visually confusing.</p>
+<p><strong>🔧 DevOps Pro Tip</strong>
+Combine sequence diagrams with your integration tests! Generate the mermaid script dynamically from real HTTP traffic captured during end-to-end tests to guarantee your documentation perfectly matches reality.</p>
+<hr />
+<h2 id="6-mermaid-diagramming-masterclass-iii-class-state-er-database-diagrams">6. Mermaid Diagramming Masterclass III — Class, State, &amp; ER Database Diagrams<a class="headerlink" href="#6-mermaid-diagramming-masterclass-iii-class-state-er-database-diagrams" title="Permanent link">&para;</a></h2>
+<p><strong>🌐 Intuitive Real-World Analogy</strong>
+Object Taxonomic Blueprints (Class Diagrams), Automated Traffic Light Mechanics (State Diagrams), and Relational Database Schema Blueprints (Entity-Relationship ERDs)!</p>
+<p><strong>What is it? (What &amp; Why)</strong>
+These diagrams map the structural data and state machinery of a system, rather than temporal or network flows. </p>
+<p><strong>Syntax &amp; How to Write It (Beginner to Advanced)</strong>
+*   <strong>Class Diagram (<code>classDiagram</code>)</strong>: <code>&lt;|--</code> (Inheritance), <code>*--</code> (Composition). Use <code>+</code> (Public), <code>-</code> (Private).
+*   <strong>State Diagram (<code>stateDiagram-v2</code>)</strong>: <code>[*]</code> denotes start/end. Transitions use <code>--&gt;</code>.
+*   <strong>ER Diagram (<code>erDiagram</code>)</strong>: Entities and relationships. <code>||--o{</code> (One-to-Many), <code>}|..|{</code> (Many-to-Many).</p>
+<p><strong>Production Working Examples</strong></p>
+<p><em>1. E-Commerce Relational Database ERD</em>
+<pre class="mermaid"><code>erDiagram
+    CUSTOMER ||--o{ ORDER : places
+    CUSTOMER {
+        uuid id PK
+        string email
+        string hashed_password
+    }
+    ORDER ||--|{ ORDER_ITEM : contains
+    ORDER {
+        uuid id PK
+        uuid customer_id FK
+        datetime created_at
+        enum status
+    }
+    ORDER_ITEM }|..|| PRODUCT : references
+    ORDER_ITEM {
+        uuid id PK
+        uuid order_id FK
+        uuid product_id FK
+        int quantity
+    }</code></pre></p>
+<p><em>2. DevOps Deployment Pipeline State Machine</em>
+<pre class="mermaid"><code>stateDiagram-v2
+    [*] --&gt; Code_Commit
+    Code_Commit --&gt; CI_Pipeline : Webhook Triggered
+
+    state CI_Pipeline {
+        [*] --&gt; Linting
+        Linting --&gt; UnitTests
+        UnitTests --&gt; BuildDockerImage
+        BuildDockerImage --&gt; [*]
+    }
+
+    CI_Pipeline --&gt; Staging : Success
+    CI_Pipeline --&gt; Failed : Error
+
+    Staging --&gt; Production_Approval : Integration Tests Pass
+    Production_Approval --&gt; Production : Manual Approval
+    Production_Approval --&gt; Failed : Rejected
+
+    Production --&gt; [*]
+    Failed --&gt; [*]</code></pre></p>
+<p><strong>💡 Best Practice</strong>
+For ER Diagrams, always explicitly denote Primary Keys (<code>PK</code>) and Foreign Keys (<code>FK</code>) next to the column names. </p>
+<p><strong>⚠️ Common Pitfalls</strong>
+Overcomplicating State Diagrams. Avoid spaghetti transitions. If an entity has more than 10 states, you likely need composite nested states to group logical phases.</p>
+<p><strong>🔧 DevOps Pro Tip</strong>
+Database ORMs (like Prisma, Django, SQLAlchemy) and infrastructure tools (like Terraform) often have community plugins that can auto-generate Mermaid ER diagrams directly from your source code schemas!</p>
+<hr />
+<h2 id="7-mermaid-diagramming-masterclass-iv-git-graphs-gantt-charts-mindmaps">7. Mermaid Diagramming Masterclass IV — Git Graphs, Gantt Charts &amp; Mindmaps<a class="headerlink" href="#7-mermaid-diagramming-masterclass-iv-git-graphs-gantt-charts-mindmaps" title="Permanent link">&para;</a></h2>
+<p><strong>🌐 Intuitive Real-World Analogy</strong>
+Historical Railway Branch Switches (Git Graphs), Construction Scheduling Calendars (Gantt Charts), and Brainstorming Constellation Hubs (Mindmaps)!</p>
+<p><strong>Syntax &amp; Working Production Examples</strong></p>
+<p><em>1. Git Graphs (<code>gitGraph</code>)</em>
+Perfect for explaining branching strategies (e.g., GitFlow, Trunk-Based Development) and conflict resolution scenarios.
+<pre class="mermaid"><code>gitGraph
+    commit id: "Initial Project Setup"
+    branch feature/user-auth
+    checkout feature/user-auth
+    commit id: "Add JWT token generation"
+    commit id: "Add Login UI"
+    checkout main
+    commit id: "Hotfix: Update dependencies"
+    merge feature/user-auth
+    commit id: "Release v1.1.0" tag: "v1.1.0"</code></pre></p>
+<p><em>2. Gantt Charts (<code>gantt</code>)</em>
+Used for Sprint Planning and Infrastructure Migration timelines.
+<pre class="mermaid"><code>gantt
+    title Q3 Cloud Migration Schedule
+    dateFormat  YYYY-MM-DD
+    axisFormat  %m/%d
+
+    section AWS Foundations
+    VPC Provisioning           :done,    task1, 2026-07-01, 7d
+    IAM Roles &amp; Policies       :done,    task2, after task1, 5d
+
+    section Kubernetes
+    EKS Cluster Bootstrap      :active,  task3, after task2, 10d
+    Ingress &amp; CertManager      :         task4, after task3, 5d
+
+    section Data Migration
+    Postgres Snapshot          :crit,    task5, 2026-07-25, 2d
+    Data Verification          :         task6, after task5, 3d</code></pre></p>
+<p><em>3. Mindmaps (<code>mindmap</code>)</em>
+For radiating architectural brainstorming or dependency trees.
+<pre class="mermaid"><code>mindmap
+  root((Cloud Infrastructure))
+    Compute
+      EKS Kubernetes
+      Lambda Serverless
+    Storage
+      S3 Object Storage
+      EBS Block Storage
+    Networking
+      VPC
+      Route53 DNS
+      CloudFront CDN
+    Observability
+      Datadog
+      Prometheus</code></pre></p>
+<p><strong>💡 Best Practice</strong>
+Use <code>timeline</code> (not shown here due to space, but natively supported) for mapping historical organizational events and post-mortem timelines. </p>
+<p><strong>⚠️ Common Pitfalls</strong>
+Hardcoding strict dates in Gantt charts when dependencies shift. Use relative linking (e.g., <code>after task1</code>) so adjusting one task automatically reflows the entire schedule.</p>
+<p><strong>🔧 DevOps Pro Tip</strong>
+Embed Gantt charts directly in your GitHub Issues or Epic descriptions. It provides stakeholders an instant visual understanding of the critical path without navigating to JIRA or MS Project.</p>
+<hr />
+<h2 id="8-documentation-cli-tooling-automated-linter-rendering-reference">8. Documentation CLI Tooling, Automated Linter &amp; Rendering Reference<a class="headerlink" href="#8-documentation-cli-tooling-automated-linter-rendering-reference" title="Permanent link">&para;</a></h2>
+<p><strong>🌐 Intuitive Real-World Analogy</strong>
+The Grammar Police and the Printing Press. Tools that automatically catch sloppy formatting and compile raw text into beautiful, standardized artifacts.</p>
+<p><strong>📦 Essential Linter &amp; Compilation Tools Table</strong></p>
+<table>
+<thead>
+<tr>
+<th style="text-align: left;">Tool</th>
+<th style="text-align: left;">CLI Command / Workflow Example</th>
+<th style="text-align: left;">Purpose in CI/CD</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;"><strong><code>markdownlint-cli</code></strong></td>
+<td style="text-align: left;"><code>markdownlint -c .markdownlint.json **/*.md</code></td>
+<td style="text-align: left;">Enforces stylistic formatting consistency across the repo (heading spaces, line lengths, table alignment).</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong><code>mermaid-cli</code> (<code>mmdc</code>)</strong></td>
+<td style="text-align: left;"><code>mmdc -i arch.mmd -o arch.pdf -t dark -b transparent -w 2048</code></td>
+<td style="text-align: left;">Headless Puppeteer browser compilation converting <code>.mmd</code> scripts into ultra-high-resolution PDF/SVG/PNG assets.</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong><code>markdown-link-check</code></strong></td>
+<td style="text-align: left;"><code>markdown-link-check ./docs/*.md</code></td>
+<td style="text-align: left;">Validates all internal and external URLs to prevent documentation link rot. Fails CI if a URL returns 404.</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong><code>pandoc</code></strong></td>
+<td style="text-align: left;"><code>pandoc input.md -o output.pdf --template=eisvogel</code></td>
+<td style="text-align: left;">The universal document converter. Transforms Markdown into perfectly typeset LaTeX PDFs.</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Workflow &amp; Production Working Example</strong>
+A typical GitHub Actions (<code>.github/workflows/docs-ci.yml</code>) snippet to enforce documentation quality:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Documentation CI</span>
+<a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a><span class="nt">on</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[</span><span class="nv">push</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="nv">pull_request</span><span class="p p-Indicator">]</span>
+<a id="__codelineno-2-3" name="__codelineno-2-3" href="#__codelineno-2-3"></a>
+<a id="__codelineno-2-4" name="__codelineno-2-4" href="#__codelineno-2-4"></a><span class="nt">jobs</span><span class="p">:</span>
+<a id="__codelineno-2-5" name="__codelineno-2-5" href="#__codelineno-2-5"></a><span class="w">  </span><span class="nt">lint-and-validate</span><span class="p">:</span>
+<a id="__codelineno-2-6" name="__codelineno-2-6" href="#__codelineno-2-6"></a><span class="w">    </span><span class="nt">runs-on</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">ubuntu-latest</span>
+<a id="__codelineno-2-7" name="__codelineno-2-7" href="#__codelineno-2-7"></a><span class="w">    </span><span class="nt">steps</span><span class="p">:</span>
+<a id="__codelineno-2-8" name="__codelineno-2-8" href="#__codelineno-2-8"></a><span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Checkout Code</span>
+<a id="__codelineno-2-9" name="__codelineno-2-9" href="#__codelineno-2-9"></a><span class="w">        </span><span class="nt">uses</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">actions/checkout@v4</span>
+<a id="__codelineno-2-10" name="__codelineno-2-10" href="#__codelineno-2-10"></a>
+<a id="__codelineno-2-11" name="__codelineno-2-11" href="#__codelineno-2-11"></a><span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Run Markdown Lint</span>
+<a id="__codelineno-2-12" name="__codelineno-2-12" href="#__codelineno-2-12"></a><span class="w">        </span><span class="nt">uses</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">DavidAnson/markdownlint-cli2-action@v15</span>
+<a id="__codelineno-2-13" name="__codelineno-2-13" href="#__codelineno-2-13"></a><span class="w">        </span><span class="nt">with</span><span class="p">:</span>
+<a id="__codelineno-2-14" name="__codelineno-2-14" href="#__codelineno-2-14"></a><span class="w">          </span><span class="nt">globs</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;**/*.md&quot;</span>
+<a id="__codelineno-2-15" name="__codelineno-2-15" href="#__codelineno-2-15"></a>
+<a id="__codelineno-2-16" name="__codelineno-2-16" href="#__codelineno-2-16"></a><span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Check Broken Links</span>
+<a id="__codelineno-2-17" name="__codelineno-2-17" href="#__codelineno-2-17"></a><span class="w">        </span><span class="nt">uses</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">gaurav-nelson/github-action-markdown-link-check@v1</span>
+<a id="__codelineno-2-18" name="__codelineno-2-18" href="#__codelineno-2-18"></a><span class="w">        </span><span class="nt">with</span><span class="p">:</span>
+<a id="__codelineno-2-19" name="__codelineno-2-19" href="#__codelineno-2-19"></a><span class="w">          </span><span class="nt">use-quiet-mode</span><span class="p">:</span><span class="w"> </span><span class="s">&#39;yes&#39;</span>
+<a id="__codelineno-2-20" name="__codelineno-2-20" href="#__codelineno-2-20"></a>
+<a id="__codelineno-2-21" name="__codelineno-2-21" href="#__codelineno-2-21"></a><span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Render Mermaid Artifacts</span>
+<a id="__codelineno-2-22" name="__codelineno-2-22" href="#__codelineno-2-22"></a><span class="w">        </span><span class="nt">run</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">|</span>
+<a id="__codelineno-2-23" name="__codelineno-2-23" href="#__codelineno-2-23"></a><span class="w">          </span><span class="no">npm install -g @mermaid-js/mermaid-cli</span>
+<a id="__codelineno-2-24" name="__codelineno-2-24" href="#__codelineno-2-24"></a><span class="w">          </span><span class="no">for file in docs/diagrams/*.mmd; do</span>
+<a id="__codelineno-2-25" name="__codelineno-2-25" href="#__codelineno-2-25"></a><span class="w">            </span><span class="no">mmdc -i &quot;$file&quot; -o &quot;${file%.mmd}.svg&quot; -b transparent</span>
+<a id="__codelineno-2-26" name="__codelineno-2-26" href="#__codelineno-2-26"></a><span class="w">          </span><span class="no">done</span>
+</code></pre></div>
+<p><strong>💡 Best Practice</strong>
+Run linting and link checking on <em>every</em> Pull Request. Do not merge code if the documentation fails validation.</p>
+<p><strong>⚠️ Common Pitfalls</strong>
+Running <code>mmdc</code> in CI environments without necessary dependencies. Puppeteer requires system-level libraries (like <code>libx11-xcb1</code>, <code>libxcomposite1</code>, <code>libxcursor1</code> on Debian/Ubuntu) to launch Chromium headlessly. Always use the official Docker image <code>minlag/mermaid-cli</code> in CI pipelines to avoid dependency hell.</p>
+<p><strong>🔧 DevOps Pro Tip</strong>
+Publish your <code>.svg</code> Mermaid outputs to a dedicated branch (e.g., <code>gh-pages</code>) or an S3 bucket. You can then reference these compiled, high-resolution SVG URLs in your READMEs, ensuring diagrams render instantly in GitHub without relying on native runtime rendering, which can occasionally time out or crop images on slower connections.</p>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8z"/></svg>
+  Back to top
+</button>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    <script id="__config" type="application/json">{"base": "../..", "features": ["navigation.tabs", "navigation.sections", "navigation.expand", "navigation.top", "search.highlight", "content.code.copy", "content.code.annotate"], "search": "../../assets/javascripts/workers/search.07f07601.min.js", "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}}</script>
+    
+    
+      <script src="../../assets/javascripts/bundle.56dfad97.min.js"></script>
+      
+        <script src="https://unpkg.com/mermaid@10/dist/mermaid.min.js"></script>
+      
+    
+  </body>
+</html>

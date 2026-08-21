@@ -1,0 +1,2086 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="Production-ready reference architecture, manifests, scripts and pipelines for a GCP enterprise DevOps/SRE platform">
+      
+      
+        <meta name="author" content="Platform SRE Team">
+      
+      
+        <link rel="canonical" href="https://AravindKumarjoshi.github.io/devops-platform/cheatsheets/21_OS_Architecture/">
+      
+      
+        <link rel="prev" href="../20_PowerShell_Mastery/">
+      
+      
+        <link rel="next" href="../06_networking_cheatsheet/">
+      
+      
+      <link rel="icon" href="../../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.5.34">
+    
+    
+      
+        <title>OS Architecture - Enterprise GCP DevOps & SRE Platform</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../assets/stylesheets/main.35f28582.min.css">
+      
+        
+        <link rel="stylesheet" href="../../assets/stylesheets/palette.06af60db.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+      <link rel="stylesheet" href="../../assets/_mkdocstrings.css">
+    
+      <link rel="stylesheet" href="../../stylesheets/extra.css">
+    
+    <script>__md_scope=new URL("../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+    
+  </head>
+  
+  
+    
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="cyan">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#chapter-21-operating-system-architecture" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+<header class="md-header" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href="../.." title="Enterprise GCP DevOps &amp; SRE Platform" class="md-header__button md-logo" aria-label="Enterprise GCP DevOps & SRE Platform" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            Enterprise GCP DevOps & SRE Platform
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              OS Architecture
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+    
+    
+    
+    
+      <label class="md-header__button md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+      </label>
+      <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+    
+    
+      <div class="md-header__source">
+        <a href="https://github.com/AravindKumarjoshi/devops-platform" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 6.6.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2024 Fonticons, Inc.--><path d="M439.55 236.05 244 40.45a28.87 28.87 0 0 0-40.81 0l-40.66 40.63 51.52 51.52c27.06-9.14 52.68 16.77 43.39 43.68l49.66 49.66c34.23-11.8 61.18 31 35.47 56.69-26.49 26.49-70.21-2.87-56-37.34L240.22 199v121.85c25.3 12.54 22.26 41.85 9.08 55a34.34 34.34 0 0 1-48.55 0c-17.57-17.6-11.07-46.91 11.25-56v-123c-20.8-8.51-24.6-30.74-18.64-45L142.57 101 8.45 235.14a28.86 28.86 0 0 0 0 40.81l195.61 195.6a28.86 28.86 0 0 0 40.8 0l194.69-194.69a28.86 28.86 0 0 0 0-40.81"/></svg>
+  </div>
+  <div class="md-source__repository">
+    GitHub
+  </div>
+</a>
+      </div>
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+            
+<nav class="md-tabs" aria-label="Tabs" data-md-component="tabs">
+  <div class="md-grid">
+    <ul class="md-tabs__list">
+      
+        
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../.." class="md-tabs__link">
+        
+  
+    
+  
+  Home
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../architecture-diagrams/" class="md-tabs__link">
+          
+  
+  Platform Architecture
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+    
+  
+  
+    
+    
+      <li class="md-tabs__item md-tabs__item--active">
+        <a href="../devops_cloud_engineering_handbook/" class="md-tabs__link">
+          
+  
+  Knowledge Base
+
+        </a>
+      </li>
+    
+  
+
+      
+    </ul>
+  </div>
+</nav>
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+  
+
+
+<nav class="md-nav md-nav--primary md-nav--lifted" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../.." title="Enterprise GCP DevOps &amp; SRE Platform" class="md-nav__button md-logo" aria-label="Enterprise GCP DevOps & SRE Platform" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    Enterprise GCP DevOps & SRE Platform
+  </label>
+  
+    <div class="md-nav__source">
+      <a href="https://github.com/AravindKumarjoshi/devops-platform" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 6.6.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2024 Fonticons, Inc.--><path d="M439.55 236.05 244 40.45a28.87 28.87 0 0 0-40.81 0l-40.66 40.63 51.52 51.52c27.06-9.14 52.68 16.77 43.39 43.68l49.66 49.66c34.23-11.8 61.18 31 35.47 56.69-26.49 26.49-70.21-2.87-56-37.34L240.22 199v121.85c25.3 12.54 22.26 41.85 9.08 55a34.34 34.34 0 0 1-48.55 0c-17.57-17.6-11.07-46.91 11.25-56v-123c-20.8-8.51-24.6-30.74-18.64-45L142.57 101 8.45 235.14a28.86 28.86 0 0 0 0 40.81l195.61 195.6a28.86 28.86 0 0 0 40.8 0l194.69-194.69a28.86 28.86 0 0 0 0-40.81"/></svg>
+  </div>
+  <div class="md-source__repository">
+    GitHub
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../.." class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Home
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_2" >
+        
+          
+          <label class="md-nav__link" for="__nav_2" id="__nav_2_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    Platform Architecture
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2">
+            <span class="md-nav__icon md-icon"></span>
+            Platform Architecture
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../architecture-diagrams/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Architecture Diagrams
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../jenkins-gke-manifests/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Jenkins on GKE Manifests
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../sre-automation-scripts/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    SRE Automation Scripts
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../golden-image-pipeline/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Golden Image Pipeline
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../observability-monitoring/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Observability & Monitoring
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    
+    
+    
+      
+        
+        
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_3" id="__nav_3_label" tabindex="">
+            
+  
+  <span class="md-ellipsis">
+    Knowledge Base
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_3">
+            <span class="md-nav__icon md-icon"></span>
+            Knowledge Base
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../devops_cloud_engineering_handbook/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    DevOps & Cloud Handbook
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+      
+      
+        
+          
+          
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_3_2" >
+        
+          
+          <label class="md-nav__link" for="__nav_3_2" id="__nav_3_2_label" tabindex="">
+            
+  
+  <span class="md-ellipsis">
+    Programming & Core
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_3_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_3_2">
+            <span class="md-nav__icon md-icon"></span>
+            Programming & Core
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../01_sql_cheatsheet/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    SQL
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../02_python_core_cheatsheet/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Python Core
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../03_python_modules_cheatsheet/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Python Modules
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../10_dsa_python_cheatsheet/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    DSA with Python
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../18_Regex_Mastery/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Regex Mastery
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../22_Embedded_C/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Embedded C
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    
+    
+    
+      
+      
+        
+          
+          
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3_3" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_3_3" id="__nav_3_3_label" tabindex="">
+            
+  
+  <span class="md-ellipsis">
+    OS & Automation
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_3_3_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_3_3">
+            <span class="md-nav__icon md-icon"></span>
+            OS & Automation
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../05_bash_cheatsheet/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Linux Bash
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../19_Linux_Automation/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Linux Automation
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../04_powershell_cheatsheet/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    PowerShell
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../20_PowerShell_Mastery/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    PowerShell Mastery
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  <span class="md-ellipsis">
+    OS Architecture
+  </span>
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  <span class="md-ellipsis">
+    OS Architecture
+  </span>
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#1-linux-internals" class="md-nav__link">
+    <span class="md-ellipsis">
+      1. Linux Internals
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="1. Linux Internals">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#user-space-vs-kernel-space" class="md-nav__link">
+    <span class="md-ellipsis">
+      User Space vs. Kernel Space
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#ring-0-vs-ring-3" class="md-nav__link">
+    <span class="md-ellipsis">
+      Ring 0 vs. Ring 3
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#system-calls" class="md-nav__link">
+    <span class="md-ellipsis">
+      System Calls
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#virtual-memory-paging-and-the-mmu" class="md-nav__link">
+    <span class="md-ellipsis">
+      Virtual Memory, Paging, and the MMU
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#completely-fair-scheduler-cfs" class="md-nav__link">
+    <span class="md-ellipsis">
+      Completely Fair Scheduler (CFS)
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#2-windows-nt-internals" class="md-nav__link">
+    <span class="md-ellipsis">
+      2. Windows NT Internals
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="2. Windows NT Internals">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#nt-kernel-architecture" class="md-nav__link">
+    <span class="md-ellipsis">
+      NT Kernel Architecture
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#registry-structure" class="md-nav__link">
+    <span class="md-ellipsis">
+      Registry Structure
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#ntfs-features" class="md-nav__link">
+    <span class="md-ellipsis">
+      NTFS Features
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#windows-services-lifecycle" class="md-nav__link">
+    <span class="md-ellipsis">
+      Windows Services Lifecycle
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#3-concurrency-ipc" class="md-nav__link">
+    <span class="md-ellipsis">
+      3. Concurrency &amp; IPC
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="3. Concurrency & IPC">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#inter-process-communication-ipc" class="md-nav__link">
+    <span class="md-ellipsis">
+      Inter-Process Communication (IPC)
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#concurrency-pitfalls" class="md-nav__link">
+    <span class="md-ellipsis">
+      Concurrency Pitfalls
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#4-embedded-os-bare-metal-vs-rtos" class="md-nav__link">
+    <span class="md-ellipsis">
+      4. Embedded OS (Bare Metal vs. RTOS)
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="4. Embedded OS (Bare Metal vs. RTOS)">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#bare-metal-super-loops-vs-rtos" class="md-nav__link">
+    <span class="md-ellipsis">
+      Bare Metal Super-loops vs. RTOS
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#task-scheduling-context-switching" class="md-nav__link">
+    <span class="md-ellipsis">
+      Task Scheduling &amp; Context Switching
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#priority-inversion-solutions" class="md-nav__link">
+    <span class="md-ellipsis">
+      Priority Inversion Solutions
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#5-ros2" class="md-nav__link">
+    <span class="md-ellipsis">
+      5. ROS2
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="5. ROS2">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#architecture" class="md-nav__link">
+    <span class="md-ellipsis">
+      Architecture
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#nodes-topics-publishers-and-subscribers" class="md-nav__link">
+    <span class="md-ellipsis">
+      Nodes, Topics, Publishers, and Subscribers
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#data-distribution-service-dds" class="md-nav__link">
+    <span class="md-ellipsis">
+      Data Distribution Service (DDS)
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+      
+      
+        
+          
+          
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_3_4" >
+        
+          
+          <label class="md-nav__link" for="__nav_3_4" id="__nav_3_4_label" tabindex="">
+            
+  
+  <span class="md-ellipsis">
+    DevOps & Infrastructure
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_3_4_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_3_4">
+            <span class="md-nav__icon md-icon"></span>
+            DevOps & Infrastructure
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../06_networking_cheatsheet/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Networking
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../07_docker_cheatsheet/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Docker
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../08_kubernetes_cheatsheet/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Kubernetes
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../13_git_cicd_cheatsheet/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Git & CI/CD
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../12_development_methodologies_cheatsheet/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Development Methodologies
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+      
+      
+        
+          
+          
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_3_5" >
+        
+          
+          <label class="md-nav__link" for="__nav_3_5" id="__nav_3_5_label" tabindex="">
+            
+  
+  <span class="md-ellipsis">
+    APIs & Formats
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_3_5_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_3_5">
+            <span class="md-nav__icon md-icon"></span>
+            APIs & Formats
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../09_backend_api_cheatsheet/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Backend API
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../14_data_serialization_formats_cheatsheet/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Data Serialization
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../15_markdown_mermaid_documentation_cheatsheet/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Markdown & Mermaid
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+      
+      
+        
+          
+          
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_3_6" >
+        
+          
+          <label class="md-nav__link" for="__nav_3_6" id="__nav_3_6_label" tabindex="">
+            
+  
+  <span class="md-ellipsis">
+    Specialized
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_3_6_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_3_6">
+            <span class="md-nav__icon md-icon"></span>
+            Specialized
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../16_cybersecurity_hacking_forensics_manual/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Cybersecurity & Forensics
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../17_data_science_foundations_cheatsheet/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Data Science Foundations
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../11_testing_playwright_cheatsheet/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Testing & Playwright
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+      
+      
+        
+          
+          
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_3_7" >
+        
+          
+          <label class="md-nav__link" for="__nav_3_7" id="__nav_3_7_label" tabindex="">
+            
+  
+  <span class="md-ellipsis">
+    Interview & Context
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_3_7_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_3_7">
+            <span class="md-nav__icon md-icon"></span>
+            Interview & Context
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../interview_questions/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Interview Questions
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../CONTEXT_TRACKER/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Context Tracker
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#1-linux-internals" class="md-nav__link">
+    <span class="md-ellipsis">
+      1. Linux Internals
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="1. Linux Internals">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#user-space-vs-kernel-space" class="md-nav__link">
+    <span class="md-ellipsis">
+      User Space vs. Kernel Space
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#ring-0-vs-ring-3" class="md-nav__link">
+    <span class="md-ellipsis">
+      Ring 0 vs. Ring 3
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#system-calls" class="md-nav__link">
+    <span class="md-ellipsis">
+      System Calls
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#virtual-memory-paging-and-the-mmu" class="md-nav__link">
+    <span class="md-ellipsis">
+      Virtual Memory, Paging, and the MMU
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#completely-fair-scheduler-cfs" class="md-nav__link">
+    <span class="md-ellipsis">
+      Completely Fair Scheduler (CFS)
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#2-windows-nt-internals" class="md-nav__link">
+    <span class="md-ellipsis">
+      2. Windows NT Internals
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="2. Windows NT Internals">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#nt-kernel-architecture" class="md-nav__link">
+    <span class="md-ellipsis">
+      NT Kernel Architecture
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#registry-structure" class="md-nav__link">
+    <span class="md-ellipsis">
+      Registry Structure
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#ntfs-features" class="md-nav__link">
+    <span class="md-ellipsis">
+      NTFS Features
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#windows-services-lifecycle" class="md-nav__link">
+    <span class="md-ellipsis">
+      Windows Services Lifecycle
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#3-concurrency-ipc" class="md-nav__link">
+    <span class="md-ellipsis">
+      3. Concurrency &amp; IPC
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="3. Concurrency & IPC">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#inter-process-communication-ipc" class="md-nav__link">
+    <span class="md-ellipsis">
+      Inter-Process Communication (IPC)
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#concurrency-pitfalls" class="md-nav__link">
+    <span class="md-ellipsis">
+      Concurrency Pitfalls
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#4-embedded-os-bare-metal-vs-rtos" class="md-nav__link">
+    <span class="md-ellipsis">
+      4. Embedded OS (Bare Metal vs. RTOS)
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="4. Embedded OS (Bare Metal vs. RTOS)">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#bare-metal-super-loops-vs-rtos" class="md-nav__link">
+    <span class="md-ellipsis">
+      Bare Metal Super-loops vs. RTOS
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#task-scheduling-context-switching" class="md-nav__link">
+    <span class="md-ellipsis">
+      Task Scheduling &amp; Context Switching
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#priority-inversion-solutions" class="md-nav__link">
+    <span class="md-ellipsis">
+      Priority Inversion Solutions
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#5-ros2" class="md-nav__link">
+    <span class="md-ellipsis">
+      5. ROS2
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="5. ROS2">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#architecture" class="md-nav__link">
+    <span class="md-ellipsis">
+      Architecture
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#nodes-topics-publishers-and-subscribers" class="md-nav__link">
+    <span class="md-ellipsis">
+      Nodes, Topics, Publishers, and Subscribers
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#data-distribution-service-dds" class="md-nav__link">
+    <span class="md-ellipsis">
+      Data Distribution Service (DDS)
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+  
+  
+
+
+<h1 id="chapter-21-operating-system-architecture">Chapter 21: Operating System Architecture<a class="headerlink" href="#chapter-21-operating-system-architecture" title="Permanent link">&para;</a></h1>
+<h2 id="1-linux-internals">1. Linux Internals<a class="headerlink" href="#1-linux-internals" title="Permanent link">&para;</a></h2>
+<h3 id="user-space-vs-kernel-space">User Space vs. Kernel Space<a class="headerlink" href="#user-space-vs-kernel-space" title="Permanent link">&para;</a></h3>
+<p>Modern operating systems fundamentally divide system memory and execution context into two primary domains: User Space and Kernel Space. This bifurcation is the cornerstone of system security, stability, and resource management.</p>
+<ul>
+<li><strong>User Space:</strong> This is the unprivileged area where all user applications (e.g., web browsers, text editors, user-level daemons) execute. Code running here cannot directly access hardware or critical system structures. If an application crashes in User Space, it generally does not bring down the entire system.</li>
+<li><strong>Kernel Space:</strong> This is a privileged area reserved strictly for the core operating system kernel, kernel extensions, and most device drivers. Code here has unrestricted access to the underlying hardware and all memory. A crash or fatal error in Kernel Space typically results in a system-wide panic (Kernel Panic).</li>
+</ul>
+<h3 id="ring-0-vs-ring-3">Ring 0 vs. Ring 3<a class="headerlink" href="#ring-0-vs-ring-3" title="Permanent link">&para;</a></h3>
+<p>The x86 architecture implements hardware-level privilege rings, ranging from Ring 0 (most privileged) to Ring 3 (least privileged).</p>
+<ul>
+<li><strong>Ring 0 (Kernel Mode):</strong> Operating systems execute their core in Ring 0. Instructions that modify system state, manage memory (like manipulating CR3 for page tables), or interact with I/O devices can only be executed here.</li>
+<li><strong>Ring 3 (User Mode):</strong> User applications run in Ring 3. They are restricted from executing privileged instructions.</li>
+</ul>
+<pre class="mermaid"><code>graph TD
+    A[Ring 3: User Applications] --&gt;|System Call| B(Ring 0: Operating System Kernel)
+    B --&gt; C{Hardware}
+    style A fill:#f9f,stroke:#333,stroke-width:2px
+    style B fill:#bbf,stroke:#333,stroke-width:2px
+    style C fill:#bfb,stroke:#333,stroke-width:2px</code></pre>
+<h3 id="system-calls">System Calls<a class="headerlink" href="#system-calls" title="Permanent link">&para;</a></h3>
+<p>A system call (syscall) is the programmatic mechanism through which a computer program requests a service from the kernel of the operating system it is executed on. It provides the essential interface between a process and the operating system.</p>
+<p>When a user application needs to perform an action like reading a file, it issues a system call. This involves:
+1. Setting up arguments in specific CPU registers (e.g., <code>RAX</code> for the syscall number on x86_64).
+2. Executing a specialized instruction (e.g., <code>syscall</code> or <code>sysenter</code>) which triggers a software interrupt.
+3. The CPU transitions from Ring 3 to Ring 0, saving the user state and jumping to a predefined kernel entry point (the system call handler).
+4. The kernel validates the request, performs the operation, and then returns execution to User Space.</p>
+<p><strong>Example with <code>strace</code>:</strong>
+The <code>strace</code> utility intercepts and records the system calls which are called by a process. For example, running <code>strace ls</code> will output numerous syscalls like <code>execve</code>, <code>mmap</code>, <code>openat</code>, and <code>write</code>.</p>
+<h3 id="virtual-memory-paging-and-the-mmu">Virtual Memory, Paging, and the MMU<a class="headerlink" href="#virtual-memory-paging-and-the-mmu" title="Permanent link">&para;</a></h3>
+<p>Virtual Memory abstracts physical memory into a contiguous address space for each process, ensuring process isolation and allowing the system to use more memory than physically available via swapping.</p>
+<ul>
+<li><strong>Paging:</strong> Memory is divided into fixed-size blocks called pages (typically 4KB). Physical memory is divided into page frames of the same size. The OS maintains a Page Table for each process, mapping virtual pages to physical frames.</li>
+<li><strong>Memory Management Unit (MMU):</strong> The MMU is hardware that translates virtual addresses to physical addresses on the fly using the Page Table. If a virtual page is not currently in physical memory, the MMU triggers a Page Fault interrupt, prompting the kernel to fetch it from disk (swap).</li>
+</ul>
+<pre class="mermaid"><code>graph LR
+    VA[Virtual Address] --&gt; MMU[Memory Management Unit]
+    MMU --&gt;|Translation| PT[Page Table]
+    PT --&gt;|Physical Frame Number| PA[Physical Address]
+    MMU --&gt;|Page Fault| OS[OS Kernel]</code></pre>
+<h3 id="completely-fair-scheduler-cfs">Completely Fair Scheduler (CFS)<a class="headerlink" href="#completely-fair-scheduler-cfs" title="Permanent link">&para;</a></h3>
+<p>The CFS is the default process scheduler in Linux for normal tasks. It models an "ideal, precise multi-tasking CPU" on real hardware.
+- Instead of using timeslices and priority queues, CFS uses a Red-Black Tree to track the "virtual runtime" (<code>vruntime</code>) of each runnable task.
+- Tasks that have run less (smaller <code>vruntime</code>) are placed on the left side of the tree and are chosen next.
+- Priority is handled via weights; higher priority tasks have their <code>vruntime</code> increase more slowly, allowing them to be scheduled more frequently.</p>
+<h2 id="2-windows-nt-internals">2. Windows NT Internals<a class="headerlink" href="#2-windows-nt-internals" title="Permanent link">&para;</a></h2>
+<h3 id="nt-kernel-architecture">NT Kernel Architecture<a class="headerlink" href="#nt-kernel-architecture" title="Permanent link">&para;</a></h3>
+<p>Windows NT is a highly modular, hybrid kernel architecture.
+- <strong>Executive:</strong> Contains base OS services like Memory Management, Process and Thread Management, I/O Manager, and Security Reference Monitor.
+- <strong>Microkernel:</strong> Handles basic thread scheduling, interrupt and exception dispatching, and multiprocessor synchronization.
+- <strong>Hardware Abstraction Layer (HAL):</strong> Isolates the kernel and executive from hardware differences.</p>
+<h3 id="registry-structure">Registry Structure<a class="headerlink" href="#registry-structure" title="Permanent link">&para;</a></h3>
+<p>The Windows Registry is a hierarchical database used to store low-level settings for the OS and applications.
+It is organized into Hives (e.g., <code>HKEY_LOCAL_MACHINE</code>, <code>HKEY_CURRENT_USER</code>), Keys (acting like folders), and Values (acting like files). Internally, the registry is heavily memory-mapped to ensure fast access and is critical to the boot process.</p>
+<h3 id="ntfs-features">NTFS Features<a class="headerlink" href="#ntfs-features" title="Permanent link">&para;</a></h3>
+<p>New Technology File System (NTFS) provides enterprise-class features over FAT32:
+- <strong>Journaling:</strong> Logs changes before they are committed, preventing corruption during power loss.
+- <strong>Security:</strong> Access Control Lists (ACLs) per file/folder.
+- <strong>Alternate Data Streams (ADS):</strong> Allows multiple data streams within a single file.
+- <strong>Volume Shadow Copy:</strong> Allows creating point-in-time snapshots of files, enabling backups even when files are in use.</p>
+<h3 id="windows-services-lifecycle">Windows Services Lifecycle<a class="headerlink" href="#windows-services-lifecycle" title="Permanent link">&para;</a></h3>
+<p>Services are long-running executables operating in the background. The Service Control Manager (SCM) manages them.
+State transitions: <code>START_PENDING</code> -&gt; <code>RUNNING</code> -&gt; <code>STOP_PENDING</code> -&gt; <code>STOPPED</code>. Services can be configured to start automatically at boot or manually, and run under specific user accounts (like <code>LocalSystem</code>, <code>NetworkService</code>).</p>
+<h2 id="3-concurrency-ipc">3. Concurrency &amp; IPC<a class="headerlink" href="#3-concurrency-ipc" title="Permanent link">&para;</a></h2>
+<h3 id="inter-process-communication-ipc">Inter-Process Communication (IPC)<a class="headerlink" href="#inter-process-communication-ipc" title="Permanent link">&para;</a></h3>
+<p>Processes have isolated memory spaces; IPC mechanisms are required for them to share data.
+- <strong>Pipes:</strong> Unidirectional byte streams. Anonymous pipes are for related processes (parent/child), while Named Pipes (FIFOs) can be used between unrelated processes.
+- <strong>Shared Memory:</strong> The fastest IPC method. Multiple processes map the same physical memory segment into their virtual address spaces. Requires explicit synchronization.
+- <strong>Unix Domain Sockets:</strong> Used for data exchange between processes executing on the same host operating system, providing a robust stream or datagram interface similar to network sockets but avoiding network stack overhead.
+- <strong>Signals:</strong> Asynchronous notifications sent to a process to notify it of an event (e.g., <code>SIGKILL</code>, <code>SIGTERM</code>, <code>SIGSEGV</code>).</p>
+<h3 id="concurrency-pitfalls">Concurrency Pitfalls<a class="headerlink" href="#concurrency-pitfalls" title="Permanent link">&para;</a></h3>
+<ul>
+<li><strong>Race Conditions:</strong> Occurs when multiple threads/processes access and manipulate shared data concurrently, and the outcome depends on the execution order.</li>
+<li><strong>Deadlocks:</strong> A situation where two or more processes are unable to proceed because each is waiting for a resource held by another.</li>
+<li><strong>Mutexes (Mutual Exclusion):</strong> Synchronization primitives used to prevent multiple threads from concurrently accessing a shared resource (critical section).</li>
+</ul>
+<pre class="mermaid"><code>stateDiagram-v2
+    [*] --&gt; Thread1_Acquires_LockA
+    Thread1_Acquires_LockA --&gt; Thread1_Waits_For_LockB
+    [*] --&gt; Thread2_Acquires_LockB
+    Thread2_Acquires_LockB --&gt; Thread2_Waits_For_LockA
+    Thread1_Waits_For_LockB --&gt; Deadlock
+    Thread2_Waits_For_LockA --&gt; Deadlock
+    Deadlock --&gt; [*]</code></pre>
+<h2 id="4-embedded-os-bare-metal-vs-rtos">4. Embedded OS (Bare Metal vs. RTOS)<a class="headerlink" href="#4-embedded-os-bare-metal-vs-rtos" title="Permanent link">&para;</a></h2>
+<h3 id="bare-metal-super-loops-vs-rtos">Bare Metal Super-loops vs. RTOS<a class="headerlink" href="#bare-metal-super-loops-vs-rtos" title="Permanent link">&para;</a></h3>
+<ul>
+<li><strong>Bare Metal:</strong> The application runs directly on hardware without an OS. Typically implemented as an infinite <code>while(1)</code> super-loop containing polling logic, intermixed with Interrupt Service Routines (ISRs). Suitable for extremely resource-constrained or simple systems.</li>
+<li><strong>Real-Time Operating System (RTOS):</strong> Provides deterministic task scheduling, guaranteeing response times within strict deadlines. Uses preemptive scheduling based on priorities.</li>
+</ul>
+<h3 id="task-scheduling-context-switching">Task Scheduling &amp; Context Switching<a class="headerlink" href="#task-scheduling-context-switching" title="Permanent link">&para;</a></h3>
+<p>An RTOS manages multiple Tasks (threads).
+- <strong>Context Switching:</strong> The process of saving the CPU state (registers, program counter) of a running task and restoring the state of the next task to run. This overhead must be minimized in an RTOS.
+- <strong>States:</strong> A task is typically in one of several states: Running, Ready (waiting for CPU), or Blocked (waiting for an event/resource).</p>
+<pre class="mermaid"><code>stateDiagram-v2
+    Ready --&gt; Running : Scheduler dispatches
+    Running --&gt; Ready : Preempted by higher priority task
+    Running --&gt; Blocked : Wait for resource/event
+    Blocked --&gt; Ready : Resource/event available</code></pre>
+<h3 id="priority-inversion-solutions">Priority Inversion Solutions<a class="headerlink" href="#priority-inversion-solutions" title="Permanent link">&para;</a></h3>
+<p>Priority Inversion occurs when a low-priority task holds a resource needed by a high-priority task, and a medium-priority task preempts the low-priority task, effectively delaying the high-priority task indefinitely.
+- <strong>Priority Inheritance:</strong> The low-priority task holding the resource temporarily inherits the priority of the highest-priority task waiting for it, preventing preemption by medium-priority tasks.
+- <strong>Priority Ceiling:</strong> A resource is assigned a priority equal to the highest priority of any task that might access it. When a task acquires the resource, its priority is immediately raised to the ceiling priority.</p>
+<h2 id="5-ros2">5. ROS2<a class="headerlink" href="#5-ros2" title="Permanent link">&para;</a></h2>
+<h3 id="architecture">Architecture<a class="headerlink" href="#architecture" title="Permanent link">&para;</a></h3>
+<p>Robot Operating System 2 (ROS2) is a flexible framework for writing robot software. It is not an OS itself, but a middleware layer that provides services expected from an OS, like hardware abstraction, low-level device control, implementation of commonly used functionality, message-passing between processes, and package management.</p>
+<h3 id="nodes-topics-publishers-and-subscribers">Nodes, Topics, Publishers, and Subscribers<a class="headerlink" href="#nodes-topics-publishers-and-subscribers" title="Permanent link">&para;</a></h3>
+<ul>
+<li><strong>Nodes:</strong> Individual processes that perform computation. A robot control system comprises many nodes.</li>
+<li><strong>Topics:</strong> Named buses over which nodes exchange messages. Topics have strong types.</li>
+<li><strong>Publishers:</strong> Nodes that generate data send it by publishing to a topic.</li>
+<li><strong>Subscribers:</strong> Nodes that need data subscribe to a topic.</li>
+</ul>
+<pre class="mermaid"><code>graph LR
+    N1[Node 1: Camera Sensor] --&gt;|Publishes| T1(Topic: /camera/image_raw)
+    T1 --&gt;|Subscribes| N2[Node 2: Object Detection]
+    N2 --&gt;|Publishes| T2(Topic: /detected_objects)
+    T2 --&gt;|Subscribes| N3[Node 3: Robot Controller]</code></pre>
+<h3 id="data-distribution-service-dds">Data Distribution Service (DDS)<a class="headerlink" href="#data-distribution-service-dds" title="Permanent link">&para;</a></h3>
+<p>ROS2 differs from ROS1 by using DDS as its underlying communication middleware. DDS is an industry standard for data-centric connectivity, providing:
+- <strong>Decentralized Architecture:</strong> No single master node (unlike <code>roscore</code> in ROS1), eliminating a single point of failure.
+- <strong>Quality of Service (QoS):</strong> Fine-grained control over message delivery, including reliability (Reliable vs. Best Effort), durability (Transient Local vs. Volatile), and history limits.
+- <strong>Discovery:</strong> Automatic discovery of nodes and topics on the network.</p>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8z"/></svg>
+  Back to top
+</button>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    <script id="__config" type="application/json">{"base": "../..", "features": ["navigation.tabs", "navigation.sections", "navigation.expand", "navigation.top", "search.highlight", "content.code.copy", "content.code.annotate"], "search": "../../assets/javascripts/workers/search.07f07601.min.js", "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}}</script>
+    
+    
+      <script src="../../assets/javascripts/bundle.56dfad97.min.js"></script>
+      
+        <script src="https://unpkg.com/mermaid@10/dist/mermaid.min.js"></script>
+      
+    
+  </body>
+</html>

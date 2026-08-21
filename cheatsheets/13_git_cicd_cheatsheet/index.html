@@ -1,0 +1,2850 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="Production-ready reference architecture, manifests, scripts and pipelines for a GCP enterprise DevOps/SRE platform">
+      
+      
+        <meta name="author" content="Platform SRE Team">
+      
+      
+        <link rel="canonical" href="https://AravindKumarjoshi.github.io/devops-platform/cheatsheets/13_git_cicd_cheatsheet/">
+      
+      
+        <link rel="prev" href="../08_kubernetes_cheatsheet/">
+      
+      
+        <link rel="next" href="../12_development_methodologies_cheatsheet/">
+      
+      
+      <link rel="icon" href="../../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.5.34">
+    
+    
+      
+        <title>Git & CI/CD - Enterprise GCP DevOps & SRE Platform</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../assets/stylesheets/main.35f28582.min.css">
+      
+        
+        <link rel="stylesheet" href="../../assets/stylesheets/palette.06af60db.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+      <link rel="stylesheet" href="../../assets/_mkdocstrings.css">
+    
+      <link rel="stylesheet" href="../../stylesheets/extra.css">
+    
+    <script>__md_scope=new URL("../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+    
+  </head>
+  
+  
+    
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="cyan">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#git-cicd-automation-comprehensive-cheat-sheet" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+<header class="md-header" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href="../.." title="Enterprise GCP DevOps &amp; SRE Platform" class="md-header__button md-logo" aria-label="Enterprise GCP DevOps & SRE Platform" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            Enterprise GCP DevOps & SRE Platform
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Git & CI/CD
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+    
+    
+    
+    
+      <label class="md-header__button md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+      </label>
+      <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+    
+    
+      <div class="md-header__source">
+        <a href="https://github.com/AravindKumarjoshi/devops-platform" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 6.6.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2024 Fonticons, Inc.--><path d="M439.55 236.05 244 40.45a28.87 28.87 0 0 0-40.81 0l-40.66 40.63 51.52 51.52c27.06-9.14 52.68 16.77 43.39 43.68l49.66 49.66c34.23-11.8 61.18 31 35.47 56.69-26.49 26.49-70.21-2.87-56-37.34L240.22 199v121.85c25.3 12.54 22.26 41.85 9.08 55a34.34 34.34 0 0 1-48.55 0c-17.57-17.6-11.07-46.91 11.25-56v-123c-20.8-8.51-24.6-30.74-18.64-45L142.57 101 8.45 235.14a28.86 28.86 0 0 0 0 40.81l195.61 195.6a28.86 28.86 0 0 0 40.8 0l194.69-194.69a28.86 28.86 0 0 0 0-40.81"/></svg>
+  </div>
+  <div class="md-source__repository">
+    GitHub
+  </div>
+</a>
+      </div>
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+            
+<nav class="md-tabs" aria-label="Tabs" data-md-component="tabs">
+  <div class="md-grid">
+    <ul class="md-tabs__list">
+      
+        
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../.." class="md-tabs__link">
+        
+  
+    
+  
+  Home
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../architecture-diagrams/" class="md-tabs__link">
+          
+  
+  Platform Architecture
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+    
+  
+  
+    
+    
+      <li class="md-tabs__item md-tabs__item--active">
+        <a href="../devops_cloud_engineering_handbook/" class="md-tabs__link">
+          
+  
+  Knowledge Base
+
+        </a>
+      </li>
+    
+  
+
+      
+    </ul>
+  </div>
+</nav>
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+  
+
+
+<nav class="md-nav md-nav--primary md-nav--lifted" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../.." title="Enterprise GCP DevOps &amp; SRE Platform" class="md-nav__button md-logo" aria-label="Enterprise GCP DevOps & SRE Platform" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    Enterprise GCP DevOps & SRE Platform
+  </label>
+  
+    <div class="md-nav__source">
+      <a href="https://github.com/AravindKumarjoshi/devops-platform" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 6.6.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2024 Fonticons, Inc.--><path d="M439.55 236.05 244 40.45a28.87 28.87 0 0 0-40.81 0l-40.66 40.63 51.52 51.52c27.06-9.14 52.68 16.77 43.39 43.68l49.66 49.66c34.23-11.8 61.18 31 35.47 56.69-26.49 26.49-70.21-2.87-56-37.34L240.22 199v121.85c25.3 12.54 22.26 41.85 9.08 55a34.34 34.34 0 0 1-48.55 0c-17.57-17.6-11.07-46.91 11.25-56v-123c-20.8-8.51-24.6-30.74-18.64-45L142.57 101 8.45 235.14a28.86 28.86 0 0 0 0 40.81l195.61 195.6a28.86 28.86 0 0 0 40.8 0l194.69-194.69a28.86 28.86 0 0 0 0-40.81"/></svg>
+  </div>
+  <div class="md-source__repository">
+    GitHub
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../.." class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Home
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_2" >
+        
+          
+          <label class="md-nav__link" for="__nav_2" id="__nav_2_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    Platform Architecture
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2">
+            <span class="md-nav__icon md-icon"></span>
+            Platform Architecture
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../architecture-diagrams/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Architecture Diagrams
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../jenkins-gke-manifests/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Jenkins on GKE Manifests
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../sre-automation-scripts/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    SRE Automation Scripts
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../golden-image-pipeline/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Golden Image Pipeline
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../observability-monitoring/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Observability & Monitoring
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    
+    
+    
+      
+        
+        
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_3" id="__nav_3_label" tabindex="">
+            
+  
+  <span class="md-ellipsis">
+    Knowledge Base
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_3">
+            <span class="md-nav__icon md-icon"></span>
+            Knowledge Base
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../devops_cloud_engineering_handbook/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    DevOps & Cloud Handbook
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+      
+      
+        
+          
+          
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_3_2" >
+        
+          
+          <label class="md-nav__link" for="__nav_3_2" id="__nav_3_2_label" tabindex="">
+            
+  
+  <span class="md-ellipsis">
+    Programming & Core
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_3_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_3_2">
+            <span class="md-nav__icon md-icon"></span>
+            Programming & Core
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../01_sql_cheatsheet/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    SQL
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../02_python_core_cheatsheet/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Python Core
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../03_python_modules_cheatsheet/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Python Modules
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../10_dsa_python_cheatsheet/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    DSA with Python
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../18_Regex_Mastery/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Regex Mastery
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../22_Embedded_C/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Embedded C
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+      
+      
+        
+          
+          
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_3_3" >
+        
+          
+          <label class="md-nav__link" for="__nav_3_3" id="__nav_3_3_label" tabindex="">
+            
+  
+  <span class="md-ellipsis">
+    OS & Automation
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_3_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_3_3">
+            <span class="md-nav__icon md-icon"></span>
+            OS & Automation
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../05_bash_cheatsheet/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Linux Bash
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../19_Linux_Automation/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Linux Automation
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../04_powershell_cheatsheet/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    PowerShell
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../20_PowerShell_Mastery/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    PowerShell Mastery
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../21_OS_Architecture/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    OS Architecture
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    
+    
+    
+      
+      
+        
+          
+          
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3_4" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_3_4" id="__nav_3_4_label" tabindex="">
+            
+  
+  <span class="md-ellipsis">
+    DevOps & Infrastructure
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_3_4_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_3_4">
+            <span class="md-nav__icon md-icon"></span>
+            DevOps & Infrastructure
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../06_networking_cheatsheet/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Networking
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../07_docker_cheatsheet/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Docker
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../08_kubernetes_cheatsheet/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Kubernetes
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  <span class="md-ellipsis">
+    Git & CI/CD
+  </span>
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  <span class="md-ellipsis">
+    Git & CI/CD
+  </span>
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#table-of-contents" class="md-nav__link">
+    <span class="md-ellipsis">
+      📑 Table of Contents
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="📑 Table of Contents">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#part-i-git-core-architecture-github-mastery" class="md-nav__link">
+    <span class="md-ellipsis">
+      Part I: Git Core Architecture &amp; GitHub Mastery
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#part-ii-cicd-pipeline-automation-github-actions-gitlab-cicd-jenkins" class="md-nav__link">
+    <span class="md-ellipsis">
+      Part II: CI/CD Pipeline Automation (GitHub Actions, GitLab CI/CD, &amp; Jenkins)
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#part-i-git-core-architecture-github-mastery_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      Part I: Git Core Architecture &amp; GitHub Mastery
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#1-git-distributed-version-control-core-architecture" class="md-nav__link">
+    <span class="md-ellipsis">
+      1. Git Distributed Version Control &amp; Core Architecture
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#2-advanced-git-branching-rebasing-vs-merging-cherry-picking" class="md-nav__link">
+    <span class="md-ellipsis">
+      2. Advanced Git Branching, Rebasing vs. Merging &amp; Cherry-Picking
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#3-emergency-recovery-undo-mechanics-git-hooks" class="md-nav__link">
+    <span class="md-ellipsis">
+      3. Emergency Recovery, Undo Mechanics &amp; Git Hooks
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#4-github-enterprise-engineering-github-cli-gh" class="md-nav__link">
+    <span class="md-ellipsis">
+      4. GitHub Enterprise Engineering &amp; GitHub CLI (gh)
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="4. GitHub Enterprise Engineering & GitHub CLI (gh)">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#part-ii-cicd-pipeline-automation-github-actions-gitlab-cicd-jenkins_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      Part II: CI/CD Pipeline Automation (GitHub Actions, GitLab CI/CD, &amp; Jenkins)
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#5-cicd-core-concepts-architectural-comparison-matrix" class="md-nav__link">
+    <span class="md-ellipsis">
+      5. CI/CD Core Concepts &amp; Architectural Comparison Matrix
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#6-github-actions-mastery-workflows-jobs-matrix-builds-reusable-pipelines" class="md-nav__link">
+    <span class="md-ellipsis">
+      6. GitHub Actions Mastery (Workflows, Jobs, Matrix Builds &amp; Reusable Pipelines)
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#7-gitlab-cicd-mastery-stages-artifacts-caching-rules-auto-devops" class="md-nav__link">
+    <span class="md-ellipsis">
+      7. GitLab CI/CD Mastery (Stages, Artifacts, Caching, Rules &amp; Auto-DevOps)
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#8-jenkins-mastery-declarative-pipeline-vs-scripted-dsl-master-agent-shared-libraries" class="md-nav__link">
+    <span class="md-ellipsis">
+      8. Jenkins Mastery (Declarative Pipeline vs Scripted DSL, Master-Agent &amp; Shared Libraries)
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#9-cicd-security-secret-management-gitops-best-practices" class="md-nav__link">
+    <span class="md-ellipsis">
+      9. CI/CD Security, Secret Management &amp; GitOps Best Practices
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#10-quick-reference-cheat-sheet-summary-tables" class="md-nav__link">
+    <span class="md-ellipsis">
+      10. Quick Reference &amp; Cheat Sheet Summary Tables
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../12_development_methodologies_cheatsheet/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Development Methodologies
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+      
+      
+        
+          
+          
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_3_5" >
+        
+          
+          <label class="md-nav__link" for="__nav_3_5" id="__nav_3_5_label" tabindex="">
+            
+  
+  <span class="md-ellipsis">
+    APIs & Formats
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_3_5_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_3_5">
+            <span class="md-nav__icon md-icon"></span>
+            APIs & Formats
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../09_backend_api_cheatsheet/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Backend API
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../14_data_serialization_formats_cheatsheet/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Data Serialization
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../15_markdown_mermaid_documentation_cheatsheet/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Markdown & Mermaid
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+      
+      
+        
+          
+          
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_3_6" >
+        
+          
+          <label class="md-nav__link" for="__nav_3_6" id="__nav_3_6_label" tabindex="">
+            
+  
+  <span class="md-ellipsis">
+    Specialized
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_3_6_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_3_6">
+            <span class="md-nav__icon md-icon"></span>
+            Specialized
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../16_cybersecurity_hacking_forensics_manual/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Cybersecurity & Forensics
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../17_data_science_foundations_cheatsheet/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Data Science Foundations
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../11_testing_playwright_cheatsheet/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Testing & Playwright
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+      
+      
+        
+          
+          
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_3_7" >
+        
+          
+          <label class="md-nav__link" for="__nav_3_7" id="__nav_3_7_label" tabindex="">
+            
+  
+  <span class="md-ellipsis">
+    Interview & Context
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_3_7_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_3_7">
+            <span class="md-nav__icon md-icon"></span>
+            Interview & Context
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../interview_questions/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Interview Questions
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../CONTEXT_TRACKER/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Context Tracker
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#table-of-contents" class="md-nav__link">
+    <span class="md-ellipsis">
+      📑 Table of Contents
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="📑 Table of Contents">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#part-i-git-core-architecture-github-mastery" class="md-nav__link">
+    <span class="md-ellipsis">
+      Part I: Git Core Architecture &amp; GitHub Mastery
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#part-ii-cicd-pipeline-automation-github-actions-gitlab-cicd-jenkins" class="md-nav__link">
+    <span class="md-ellipsis">
+      Part II: CI/CD Pipeline Automation (GitHub Actions, GitLab CI/CD, &amp; Jenkins)
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#part-i-git-core-architecture-github-mastery_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      Part I: Git Core Architecture &amp; GitHub Mastery
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#1-git-distributed-version-control-core-architecture" class="md-nav__link">
+    <span class="md-ellipsis">
+      1. Git Distributed Version Control &amp; Core Architecture
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#2-advanced-git-branching-rebasing-vs-merging-cherry-picking" class="md-nav__link">
+    <span class="md-ellipsis">
+      2. Advanced Git Branching, Rebasing vs. Merging &amp; Cherry-Picking
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#3-emergency-recovery-undo-mechanics-git-hooks" class="md-nav__link">
+    <span class="md-ellipsis">
+      3. Emergency Recovery, Undo Mechanics &amp; Git Hooks
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#4-github-enterprise-engineering-github-cli-gh" class="md-nav__link">
+    <span class="md-ellipsis">
+      4. GitHub Enterprise Engineering &amp; GitHub CLI (gh)
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="4. GitHub Enterprise Engineering & GitHub CLI (gh)">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#part-ii-cicd-pipeline-automation-github-actions-gitlab-cicd-jenkins_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      Part II: CI/CD Pipeline Automation (GitHub Actions, GitLab CI/CD, &amp; Jenkins)
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#5-cicd-core-concepts-architectural-comparison-matrix" class="md-nav__link">
+    <span class="md-ellipsis">
+      5. CI/CD Core Concepts &amp; Architectural Comparison Matrix
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#6-github-actions-mastery-workflows-jobs-matrix-builds-reusable-pipelines" class="md-nav__link">
+    <span class="md-ellipsis">
+      6. GitHub Actions Mastery (Workflows, Jobs, Matrix Builds &amp; Reusable Pipelines)
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#7-gitlab-cicd-mastery-stages-artifacts-caching-rules-auto-devops" class="md-nav__link">
+    <span class="md-ellipsis">
+      7. GitLab CI/CD Mastery (Stages, Artifacts, Caching, Rules &amp; Auto-DevOps)
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#8-jenkins-mastery-declarative-pipeline-vs-scripted-dsl-master-agent-shared-libraries" class="md-nav__link">
+    <span class="md-ellipsis">
+      8. Jenkins Mastery (Declarative Pipeline vs Scripted DSL, Master-Agent &amp; Shared Libraries)
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#9-cicd-security-secret-management-gitops-best-practices" class="md-nav__link">
+    <span class="md-ellipsis">
+      9. CI/CD Security, Secret Management &amp; GitOps Best Practices
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#10-quick-reference-cheat-sheet-summary-tables" class="md-nav__link">
+    <span class="md-ellipsis">
+      10. Quick Reference &amp; Cheat Sheet Summary Tables
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+  
+  
+
+
+<h1 id="git-cicd-automation-comprehensive-cheat-sheet">📘 Git &amp; CI/CD Automation — Comprehensive Cheat Sheet<a class="headerlink" href="#git-cicd-automation-comprehensive-cheat-sheet" title="Permanent link">&para;</a></h1>
+<blockquote>
+<p><strong>Author</strong>: AI-Generated for DevOps &amp; Cloud Engineers
+<strong>Last Updated</strong>: 2026-08-05
+<strong>Pages</strong>: ~50+ pages (Equivalent Depth &amp; Coverage) | <strong>Sections</strong>: 10 | <strong>Examples</strong>: Comprehensive Production Snippets</p>
+</blockquote>
+<h2 id="table-of-contents">📑 Table of Contents<a class="headerlink" href="#table-of-contents" title="Permanent link">&para;</a></h2>
+<h3 id="part-i-git-core-architecture-github-mastery">Part I: Git Core Architecture &amp; GitHub Mastery<a class="headerlink" href="#part-i-git-core-architecture-github-mastery" title="Permanent link">&para;</a></h3>
+<ol>
+<li><a href="#1-git-distributed-version-control--core-architecture">Git Distributed Version Control &amp; Core Architecture</a></li>
+<li><a href="#2-advanced-git-branching-rebasing-vs-merging--cherry-picking">Advanced Git Branching, Rebasing vs. Merging &amp; Cherry-Picking</a></li>
+<li><a href="#3-emergency-recovery-undo-mechanics--git-hooks">Emergency Recovery, Undo Mechanics &amp; Git Hooks</a></li>
+<li><a href="#4-github-enterprise-engineering--github-cli-gh">GitHub Enterprise Engineering &amp; GitHub CLI (gh)</a></li>
+</ol>
+<h3 id="part-ii-cicd-pipeline-automation-github-actions-gitlab-cicd-jenkins">Part II: CI/CD Pipeline Automation (GitHub Actions, GitLab CI/CD, &amp; Jenkins)<a class="headerlink" href="#part-ii-cicd-pipeline-automation-github-actions-gitlab-cicd-jenkins" title="Permanent link">&para;</a></h3>
+<ol>
+<li><a href="#5-cicd-core-concepts--architectural-comparison-matrix">CI/CD Core Concepts &amp; Architectural Comparison Matrix</a></li>
+<li><a href="#6-github-actions-mastery-workflows-jobs-matrix-builds--reusable-pipelines">GitHub Actions Mastery (Workflows, Jobs, Matrix Builds &amp; Reusable Pipelines)</a></li>
+<li><a href="#7-gitlab-cicd-mastery-stages-artifacts-caching-rules--auto-devops">GitLab CI/CD Mastery (Stages, Artifacts, Caching, Rules &amp; Auto-DevOps)</a></li>
+<li><a href="#8-jenkins-mastery-declarative-pipeline-vs-scripted-dsl-master-agent--shared-libraries">Jenkins Mastery (Declarative Pipeline vs Scripted DSL, Master-Agent &amp; Shared Libraries)</a></li>
+<li><a href="#9-cicd-security-secret-management--gitops-best-practices">CI/CD Security, Secret Management &amp; GitOps Best Practices</a></li>
+<li><a href="#10-quick-reference--cheat-sheet-summary-tables">Quick Reference &amp; Cheat Sheet Summary Tables</a></li>
+</ol>
+<hr />
+<h3 id="part-i-git-core-architecture-github-mastery_1">Part I: Git Core Architecture &amp; GitHub Mastery<a class="headerlink" href="#part-i-git-core-architecture-github-mastery_1" title="Permanent link">&para;</a></h3>
+<h2 id="1-git-distributed-version-control-core-architecture">1. Git Distributed Version Control &amp; Core Architecture<a class="headerlink" href="#1-git-distributed-version-control-core-architecture" title="Permanent link">&para;</a></h2>
+<p><strong>🌐 Intuitive Real-World Analogy:</strong>
+The Photography Studio.
+- <strong>Working Directory</strong>: Posing models on set (your live, editable files).
+- <strong>Staging Index (<code>git add</code>)</strong>: Arranging selected photos in the review album stage. You don't have to keep every shot.
+- <strong>Local Repository (<code>git commit</code>)</strong>: Binding the hardcover catalog into the secure museum vault (a permanent immutable snapshot).
+- <strong>Remote Upstream (<code>git push</code>)</strong>: Shipping copies to global branch galleries for the rest of the world to see!</p>
+<p><strong>What is it?</strong>
+Git is a distributed version control system (DVCS). Unlike centralized systems (SVN), every Git clone is a full-fledged repository with complete history and full version-tracking capabilities. Git fundamentally models data as a stream of immutable snapshots (Directed Acyclic Graph of commits) rather than file differences.</p>
+<p><strong>How it Works &amp; Diagram:</strong></p>
+<pre class="mermaid"><code>graph LR
+    A["Working Directory (Live Files)"] -- "git add" --&gt; B["Staging Area (Index)"]
+    B -- "git commit" --&gt; C["Local Repository (HEAD)"]
+    C -- "git push" --&gt; D["Remote Repository (GitHub)"]
+    D -- "git fetch / git pull" --&gt; C
+    C -- "git checkout" --&gt; A</code></pre>
+<p><strong>📦 Essential CLI Commands Table:</strong></p>
+<table>
+<thead>
+<tr>
+<th>Command</th>
+<th>Signature &amp; Flags</th>
+<th>Description / Purpose</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Init</strong></td>
+<td><code>git init</code></td>
+<td>Initializes a new local Git repository in the current directory.</td>
+</tr>
+<tr>
+<td><strong>Clone</strong></td>
+<td><code>git clone -b &lt;branch&gt; &lt;url&gt;</code></td>
+<td>Clones a repository and immediately checks out a specific branch.</td>
+</tr>
+<tr>
+<td><strong>Add</strong></td>
+<td><code>git add -p</code></td>
+<td>Interactively stages hunks (partial file changes). Crucial for atomic commits.</td>
+</tr>
+<tr>
+<td><strong>Commit</strong></td>
+<td><code>git commit -v -m "..."</code></td>
+<td>Commits staged changes. <code>-v</code> shows the diff in the editor to review what's being committed.</td>
+</tr>
+<tr>
+<td><strong>Log</strong></td>
+<td><code>git log --graph --oneline --all</code></td>
+<td>Displays a visual ASCII graph of the entire repository's branch history.</td>
+</tr>
+<tr>
+<td><strong>Status</strong></td>
+<td><code>git status -s</code></td>
+<td>Short-format status of working tree and index.</td>
+</tr>
+<tr>
+<td><strong>Diff</strong></td>
+<td><code>git diff --staged</code></td>
+<td>Shows exactly what changes are staged for the next commit.</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Production Workflow Example:</strong>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="ch">#!/bin/bash</span>
+<a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a><span class="c1"># Comprehensive Initialization &amp; Upstream Setup</span>
+<a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a>
+<a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a><span class="c1"># 1. Initialize repository and define structure</span>
+<a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a>mkdir<span class="w"> </span>production-microservice<span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span><span class="nb">cd</span><span class="w"> </span>production-microservice
+<a id="__codelineno-0-6" name="__codelineno-0-6" href="#__codelineno-0-6"></a>git<span class="w"> </span>init
+<a id="__codelineno-0-7" name="__codelineno-0-7" href="#__codelineno-0-7"></a>git<span class="w"> </span>branch<span class="w"> </span>-M<span class="w"> </span>main
+<a id="__codelineno-0-8" name="__codelineno-0-8" href="#__codelineno-0-8"></a>
+<a id="__codelineno-0-9" name="__codelineno-0-9" href="#__codelineno-0-9"></a><span class="c1"># 2. Configure project-specific identity and signing</span>
+<a id="__codelineno-0-10" name="__codelineno-0-10" href="#__codelineno-0-10"></a>git<span class="w"> </span>config<span class="w"> </span>user.name<span class="w"> </span><span class="s2">&quot;DevOps Architect&quot;</span>
+<a id="__codelineno-0-11" name="__codelineno-0-11" href="#__codelineno-0-11"></a>git<span class="w"> </span>config<span class="w"> </span>user.email<span class="w"> </span><span class="s2">&quot;architect@company.com&quot;</span>
+<a id="__codelineno-0-12" name="__codelineno-0-12" href="#__codelineno-0-12"></a>git<span class="w"> </span>config<span class="w"> </span>commit.gpgsign<span class="w"> </span><span class="nb">true</span>
+<a id="__codelineno-0-13" name="__codelineno-0-13" href="#__codelineno-0-13"></a>git<span class="w"> </span>config<span class="w"> </span>user.signingkey<span class="w"> </span><span class="s2">&quot;ABC12345DEF67890&quot;</span>
+<a id="__codelineno-0-14" name="__codelineno-0-14" href="#__codelineno-0-14"></a>
+<a id="__codelineno-0-15" name="__codelineno-0-15" href="#__codelineno-0-15"></a><span class="c1"># 3. Create a production-grade .gitignore</span>
+<a id="__codelineno-0-16" name="__codelineno-0-16" href="#__codelineno-0-16"></a>cat<span class="w"> </span><span class="s">&lt;&lt;EOF &gt; .gitignore</span>
+<a id="__codelineno-0-17" name="__codelineno-0-17" href="#__codelineno-0-17"></a><span class="s"># Environments and Secrets</span>
+<a id="__codelineno-0-18" name="__codelineno-0-18" href="#__codelineno-0-18"></a><span class="s">.env</span>
+<a id="__codelineno-0-19" name="__codelineno-0-19" href="#__codelineno-0-19"></a><span class="s">*.pem</span>
+<a id="__codelineno-0-20" name="__codelineno-0-20" href="#__codelineno-0-20"></a><span class="s">.DS_Store</span>
+<a id="__codelineno-0-21" name="__codelineno-0-21" href="#__codelineno-0-21"></a><span class="s">__pycache__/</span>
+<a id="__codelineno-0-22" name="__codelineno-0-22" href="#__codelineno-0-22"></a><span class="s">node_modules/</span>
+<a id="__codelineno-0-23" name="__codelineno-0-23" href="#__codelineno-0-23"></a><span class="s">EOF</span>
+<a id="__codelineno-0-24" name="__codelineno-0-24" href="#__codelineno-0-24"></a>
+<a id="__codelineno-0-25" name="__codelineno-0-25" href="#__codelineno-0-25"></a><span class="c1"># 4. Interactive staging (assuming we edited files)</span>
+<a id="__codelineno-0-26" name="__codelineno-0-26" href="#__codelineno-0-26"></a><span class="c1"># Using &#39;git add -p&#39; allows you to say [y]es or [n]o to specific code blocks.</span>
+<a id="__codelineno-0-27" name="__codelineno-0-27" href="#__codelineno-0-27"></a>git<span class="w"> </span>add<span class="w"> </span>.gitignore
+<a id="__codelineno-0-28" name="__codelineno-0-28" href="#__codelineno-0-28"></a>git<span class="w"> </span>commit<span class="w"> </span>-m<span class="w"> </span><span class="s2">&quot;chore: Initialize repository with strict gitignore&quot;</span>
+<a id="__codelineno-0-29" name="__codelineno-0-29" href="#__codelineno-0-29"></a>
+<a id="__codelineno-0-30" name="__codelineno-0-30" href="#__codelineno-0-30"></a><span class="c1"># 5. Link to upstream and push</span>
+<a id="__codelineno-0-31" name="__codelineno-0-31" href="#__codelineno-0-31"></a>git<span class="w"> </span>remote<span class="w"> </span>add<span class="w"> </span>origin<span class="w"> </span>git@github.com:company/production-microservice.git
+<a id="__codelineno-0-32" name="__codelineno-0-32" href="#__codelineno-0-32"></a>git<span class="w"> </span>push<span class="w"> </span>-u<span class="w"> </span>origin<span class="w"> </span>main
+</code></pre></div></p>
+<p><strong>💡 Best Practice:</strong> Write atomic commits! A single commit should represent a single logical change. If you fix a typo and implement a feature, those are two commits. Prefix commits with Conventional Commits (e.g., <code>feat:</code>, <code>fix:</code>, <code>chore:</code>).
+<strong>⚠️ Common Pitfalls:</strong> Never commit <code>.env</code> files or AWS credentials. Once committed, they are in the history forever unless you rewrite history.
+<strong>🔧 DevOps Pro Tip:</strong> Alias <code>git log --graph --oneline --all</code> to <code>git lg</code> in your <code>~/.gitconfig</code> to save keystrokes!</p>
+<hr />
+<h2 id="2-advanced-git-branching-rebasing-vs-merging-cherry-picking">2. Advanced Git Branching, Rebasing vs. Merging &amp; Cherry-Picking<a class="headerlink" href="#2-advanced-git-branching-rebasing-vs-merging-cherry-picking" title="Permanent link">&para;</a></h2>
+<p><strong>🌐 Intuitive Real-World Analogy:</strong>
+Railway Track Switches and Timeline Fusion.
+- <strong>Merge (<code>git merge</code>)</strong>: Builds an overpass connecting two train tracks. It preserves exact chronological history and branching forks. Great for major features, but can clutter the timeline with merge commits.
+- <strong>Rebase (<code>git rebase</code>)</strong>: Magically lifts your private train cars up and glues them straight behind the main express engine. Creates a single, clean, linear timeline without merge clutter!</p>
+<p><strong>What is it?</strong>
+Git branches are just lightweight movable pointers to commits. Merging incorporates changes from one branch to another using a 3-way merge algorithm. Rebasing rewrites history by reapplying commits from your branch onto a new base commit. Cherry-picking applies the changes from an arbitrary commit onto your current branch.</p>
+<p><strong>How it Works &amp; Diagram:</strong></p>
+<pre class="mermaid"><code>gitGraph
+    commit
+    branch feature
+    checkout feature
+    commit id: "feat A"
+    commit id: "feat B"
+    checkout main
+    commit id: "hotfix"
+    merge feature id: "Merge branch 'feature'"</code></pre>
+<p><strong>📦 Essential CLI Commands Table:</strong></p>
+<table>
+<thead>
+<tr>
+<th>Command</th>
+<th>Signature &amp; Flags</th>
+<th>Description / Purpose</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Branch</strong></td>
+<td><code>git branch -m &lt;old&gt; &lt;new&gt;</code></td>
+<td>Renames a branch locally.</td>
+</tr>
+<tr>
+<td><strong>Checkout</strong></td>
+<td><code>git checkout -b &lt;branch&gt;</code></td>
+<td>Creates a new branch and switches to it (legacy).</td>
+</tr>
+<tr>
+<td><strong>Switch</strong></td>
+<td><code>git switch -c &lt;branch&gt;</code></td>
+<td>Creates a new branch and switches to it (modern).</td>
+</tr>
+<tr>
+<td><strong>Merge</strong></td>
+<td><code>git merge --no-ff &lt;branch&gt;</code></td>
+<td>Forces a merge commit even if a fast-forward is possible. Preserves feature context.</td>
+</tr>
+<tr>
+<td><strong>Rebase</strong></td>
+<td><code>git rebase -i HEAD~4</code></td>
+<td>Interactively rebases the last 4 commits. Allows squashing, rewording, or dropping commits.</td>
+</tr>
+<tr>
+<td><strong>Cherry-Pick</strong></td>
+<td><code>git cherry-pick &lt;sha&gt;</code></td>
+<td>Copies a specific commit's changes and applies them to the current branch.</td>
+</tr>
+<tr>
+<td><strong>Stash</strong></td>
+<td><code>git stash push -u -m "wip"</code></td>
+<td>Temporarily shelves changes (including untracked files). Retrieve with <code>git stash pop</code>.</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Production Workflow Example:</strong>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="ch">#!/bin/bash</span>
+<a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a><span class="c1"># Resolving Merge Conflicts and Interactive Squashing</span>
+<a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a>
+<a id="__codelineno-1-4" name="__codelineno-1-4" href="#__codelineno-1-4"></a><span class="c1"># 1. Update main and create feature branch</span>
+<a id="__codelineno-1-5" name="__codelineno-1-5" href="#__codelineno-1-5"></a>git<span class="w"> </span>switch<span class="w"> </span>main
+<a id="__codelineno-1-6" name="__codelineno-1-6" href="#__codelineno-1-6"></a>git<span class="w"> </span>pull<span class="w"> </span>origin<span class="w"> </span>main
+<a id="__codelineno-1-7" name="__codelineno-1-7" href="#__codelineno-1-7"></a>git<span class="w"> </span>switch<span class="w"> </span>-c<span class="w"> </span>feat/user-auth
+<a id="__codelineno-1-8" name="__codelineno-1-8" href="#__codelineno-1-8"></a>
+<a id="__codelineno-1-9" name="__codelineno-1-9" href="#__codelineno-1-9"></a><span class="c1"># 2. Make some noisy commits while working</span>
+<a id="__codelineno-1-10" name="__codelineno-1-10" href="#__codelineno-1-10"></a><span class="nb">echo</span><span class="w"> </span><span class="s2">&quot;code&quot;</span><span class="w"> </span>&gt;<span class="w"> </span>auth.py<span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span>git<span class="w"> </span>add<span class="w"> </span>auth.py<span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span>git<span class="w"> </span>commit<span class="w"> </span>-m<span class="w"> </span><span class="s2">&quot;wip: auth&quot;</span>
+<a id="__codelineno-1-11" name="__codelineno-1-11" href="#__codelineno-1-11"></a><span class="nb">echo</span><span class="w"> </span><span class="s2">&quot;more code&quot;</span><span class="w"> </span>&gt;&gt;<span class="w"> </span>auth.py<span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span>git<span class="w"> </span>commit<span class="w"> </span>-am<span class="w"> </span><span class="s2">&quot;fix typo&quot;</span>
+<a id="__codelineno-1-12" name="__codelineno-1-12" href="#__codelineno-1-12"></a><span class="nb">echo</span><span class="w"> </span><span class="s2">&quot;final code&quot;</span><span class="w"> </span>&gt;&gt;<span class="w"> </span>auth.py<span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span>git<span class="w"> </span>commit<span class="w"> </span>-am<span class="w"> </span><span class="s2">&quot;finish auth&quot;</span>
+<a id="__codelineno-1-13" name="__codelineno-1-13" href="#__codelineno-1-13"></a>
+<a id="__codelineno-1-14" name="__codelineno-1-14" href="#__codelineno-1-14"></a><span class="c1"># 3. Interactive Rebase to squash 3 commits into 1 clean commit before merging</span>
+<a id="__codelineno-1-15" name="__codelineno-1-15" href="#__codelineno-1-15"></a><span class="c1"># Opens editor: change &#39;pick&#39; to &#39;squash&#39; or &#39;s&#39; for the last two commits.</span>
+<a id="__codelineno-1-16" name="__codelineno-1-16" href="#__codelineno-1-16"></a><span class="nv">GIT_SEQUENCE_EDITOR</span><span class="o">=</span><span class="s2">&quot;sed -i -e &#39;2,3s/^pick/squash/&#39;&quot;</span><span class="w"> </span>git<span class="w"> </span>rebase<span class="w"> </span>-i<span class="w"> </span>HEAD~3
+<a id="__codelineno-1-17" name="__codelineno-1-17" href="#__codelineno-1-17"></a>
+<a id="__codelineno-1-18" name="__codelineno-1-18" href="#__codelineno-1-18"></a><span class="c1"># Now rewrite the commit message to &quot;feat: implement user authentication&quot;</span>
+<a id="__codelineno-1-19" name="__codelineno-1-19" href="#__codelineno-1-19"></a><span class="c1"># (Simulated by resetting and committing for the script example)</span>
+<a id="__codelineno-1-20" name="__codelineno-1-20" href="#__codelineno-1-20"></a>git<span class="w"> </span>reset<span class="w"> </span>--soft<span class="w"> </span>HEAD~1
+<a id="__codelineno-1-21" name="__codelineno-1-21" href="#__codelineno-1-21"></a>git<span class="w"> </span>commit<span class="w"> </span>-m<span class="w"> </span><span class="s2">&quot;feat: implement user authentication&quot;</span>
+<a id="__codelineno-1-22" name="__codelineno-1-22" href="#__codelineno-1-22"></a>
+<a id="__codelineno-1-23" name="__codelineno-1-23" href="#__codelineno-1-23"></a><span class="c1"># 4. Cherry-pick an emergency hotfix from another branch</span>
+<a id="__codelineno-1-24" name="__codelineno-1-24" href="#__codelineno-1-24"></a>git<span class="w"> </span>fetch<span class="w"> </span>origin
+<a id="__codelineno-1-25" name="__codelineno-1-25" href="#__codelineno-1-25"></a>git<span class="w"> </span>cherry-pick<span class="w"> </span>8f2c3b1a
+<a id="__codelineno-1-26" name="__codelineno-1-26" href="#__codelineno-1-26"></a>
+<a id="__codelineno-1-27" name="__codelineno-1-27" href="#__codelineno-1-27"></a><span class="c1"># 5. Merge into main preserving feature topology</span>
+<a id="__codelineno-1-28" name="__codelineno-1-28" href="#__codelineno-1-28"></a>git<span class="w"> </span>switch<span class="w"> </span>main
+<a id="__codelineno-1-29" name="__codelineno-1-29" href="#__codelineno-1-29"></a>git<span class="w"> </span>merge<span class="w"> </span>--no-ff<span class="w"> </span>feat/user-auth<span class="w"> </span>-m<span class="w"> </span><span class="s2">&quot;Merge: User Auth Feature&quot;</span>
+</code></pre></div></p>
+<p><strong>💡 Best Practice:</strong> Rebase your private feature branches against <code>main</code> frequently to resolve conflicts early. Never rebase a public branch that others rely on!
+<strong>⚠️ Common Pitfalls:</strong> Force-pushing (<code>git push -f</code>) a rebased branch when teammates have already pulled the old history will cause massive reconciliation headaches. Use <code>git push --force-with-lease</code> instead!
+<strong>🔧 DevOps Pro Tip:</strong> Configure <code>git config --global pull.rebase true</code> to make <code>git pull</code> rebase by default instead of creating noisy merge commits.</p>
+<hr />
+<h2 id="3-emergency-recovery-undo-mechanics-git-hooks">3. Emergency Recovery, Undo Mechanics &amp; Git Hooks<a class="headerlink" href="#3-emergency-recovery-undo-mechanics-git-hooks" title="Permanent link">&para;</a></h2>
+<p><strong>🌐 Intuitive Real-World Analogy:</strong>
+Time Travel Emergency Levers.
+- <code>git revert</code>: Publishes an official public correction notice that balances out an errant transaction without ripping pages out of the bank ledger (safe for shared remote branches!).
+- <code>git reset --hard</code>: Feeds the bank ledger through an industrial shredder back to an earlier timestamp (catastrophic on remote branches!).</p>
+<p><strong>What is it?</strong>
+Git tracks almost everything you do. Even when you "delete" a commit via reset, the object remains in the database until garbage collection. Git Hooks are shell scripts invoked by Git before or after events like commit, push, and receive.</p>
+<p><strong>How it Works &amp; Diagram:</strong></p>
+<table>
+<thead>
+<tr>
+<th>Command</th>
+<th>Modifies History?</th>
+<th>Modifies Staging?</th>
+<th>Modifies Working Dir?</th>
+<th>Safety for Remotes</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>git reset --soft</code></td>
+<td>Yes (moves HEAD)</td>
+<td>No</td>
+<td>No</td>
+<td>❌ DANGEROUS</td>
+</tr>
+<tr>
+<td><code>git reset --mixed</code></td>
+<td>Yes (moves HEAD)</td>
+<td>Yes</td>
+<td>No</td>
+<td>❌ DANGEROUS</td>
+</tr>
+<tr>
+<td><code>git reset --hard</code></td>
+<td>Yes (moves HEAD)</td>
+<td>Yes</td>
+<td>Yes</td>
+<td>❌ DANGEROUS</td>
+</tr>
+<tr>
+<td><code>git revert</code></td>
+<td>No (adds new commit)</td>
+<td>Yes</td>
+<td>Yes</td>
+<td>✅ SAFE</td>
+</tr>
+</tbody>
+</table>
+<p><strong>📦 Essential CLI Commands Table:</strong></p>
+<table>
+<thead>
+<tr>
+<th>Command</th>
+<th>Signature &amp; Flags</th>
+<th>Description / Purpose</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Revert</strong></td>
+<td><code>git revert &lt;sha&gt;</code></td>
+<td>Safely un-does a commit by creating an inverse commit.</td>
+</tr>
+<tr>
+<td><strong>Reset</strong></td>
+<td><code>git reset --hard HEAD~1</code></td>
+<td>Destructively throws away the last commit and all uncommitted changes.</td>
+</tr>
+<tr>
+<td><strong>Reflog</strong></td>
+<td><code>git reflog</code></td>
+<td>Chronological log of where your HEAD pointer has been. Ultimate safety net!</td>
+</tr>
+<tr>
+<td><strong>Clean</strong></td>
+<td><code>git clean -fd</code></td>
+<td>Removes untracked files and directories from the working tree.</td>
+</tr>
+<tr>
+<td><strong>Bisect</strong></td>
+<td><code>git bisect start</code></td>
+<td>Initiates binary search to find the exact commit that introduced a bug.</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Production Workflow Example:</strong>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a><span class="ch">#!/bin/bash</span>
+<a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a><span class="c1"># 1. Recovering a deleted branch using reflog</span>
+<a id="__codelineno-2-3" name="__codelineno-2-3" href="#__codelineno-2-3"></a><span class="c1"># Accidentally deleted feature branch!</span>
+<a id="__codelineno-2-4" name="__codelineno-2-4" href="#__codelineno-2-4"></a>git<span class="w"> </span>branch<span class="w"> </span>-D<span class="w"> </span>important-feature
+<a id="__codelineno-2-5" name="__codelineno-2-5" href="#__codelineno-2-5"></a>
+<a id="__codelineno-2-6" name="__codelineno-2-6" href="#__codelineno-2-6"></a><span class="c1"># Find the SHA where the branch was last checked out or committed to</span>
+<a id="__codelineno-2-7" name="__codelineno-2-7" href="#__codelineno-2-7"></a>git<span class="w"> </span>reflog<span class="w"> </span><span class="p">|</span><span class="w"> </span>head<span class="w"> </span>-n<span class="w"> </span><span class="m">10</span>
+<a id="__codelineno-2-8" name="__codelineno-2-8" href="#__codelineno-2-8"></a><span class="c1"># Example output: &quot;abc123f HEAD@{2}: commit: feat: crucial logic&quot;</span>
+<a id="__codelineno-2-9" name="__codelineno-2-9" href="#__codelineno-2-9"></a>
+<a id="__codelineno-2-10" name="__codelineno-2-10" href="#__codelineno-2-10"></a><span class="c1"># Resurrect it!</span>
+<a id="__codelineno-2-11" name="__codelineno-2-11" href="#__codelineno-2-11"></a>git<span class="w"> </span>branch<span class="w"> </span>recovered-feature<span class="w"> </span>abc123f
+<a id="__codelineno-2-12" name="__codelineno-2-12" href="#__codelineno-2-12"></a>
+<a id="__codelineno-2-13" name="__codelineno-2-13" href="#__codelineno-2-13"></a><span class="c1"># 2. Writing a pre-commit hook to prevent AWS secret leaks</span>
+<a id="__codelineno-2-14" name="__codelineno-2-14" href="#__codelineno-2-14"></a>cat<span class="w"> </span><span class="s">&lt;&lt; &#39;EOF&#39; &gt; .git/hooks/pre-commit</span>
+<a id="__codelineno-2-15" name="__codelineno-2-15" href="#__codelineno-2-15"></a><span class="s">#!/bin/bash</span>
+<a id="__codelineno-2-16" name="__codelineno-2-16" href="#__codelineno-2-16"></a><span class="s"># Pre-commit hook to block AWS keys</span>
+<a id="__codelineno-2-17" name="__codelineno-2-17" href="#__codelineno-2-17"></a><span class="s">FORBIDDEN=&quot;AKIA[0-9A-Z]{16}&quot;</span>
+<a id="__codelineno-2-18" name="__codelineno-2-18" href="#__codelineno-2-18"></a><span class="s">if git diff --cached | grep -qE &quot;$FORBIDDEN&quot;; then</span>
+<a id="__codelineno-2-19" name="__codelineno-2-19" href="#__codelineno-2-19"></a><span class="s">    echo &quot;❌ ERROR: AWS Access Key detected in staged files!&quot;</span>
+<a id="__codelineno-2-20" name="__codelineno-2-20" href="#__codelineno-2-20"></a><span class="s">    echo &quot;Please remove secrets before committing.&quot;</span>
+<a id="__codelineno-2-21" name="__codelineno-2-21" href="#__codelineno-2-21"></a><span class="s">    exit 1</span>
+<a id="__codelineno-2-22" name="__codelineno-2-22" href="#__codelineno-2-22"></a><span class="s">fi</span>
+<a id="__codelineno-2-23" name="__codelineno-2-23" href="#__codelineno-2-23"></a><span class="s">exit 0</span>
+<a id="__codelineno-2-24" name="__codelineno-2-24" href="#__codelineno-2-24"></a><span class="s">EOF</span>
+<a id="__codelineno-2-25" name="__codelineno-2-25" href="#__codelineno-2-25"></a>chmod<span class="w"> </span>+x<span class="w"> </span>.git/hooks/pre-commit
+</code></pre></div></p>
+<p><strong>💡 Best Practice:</strong> Always use <code>git revert</code> to fix mistakes on the <code>main</code> branch. Use <code>git reset</code> only for your local, unpublished feature branches.
+<strong>⚠️ Common Pitfalls:</strong> Assuming a hard reset permanently deletes data. As long as you haven't run <code>git gc</code>, the <code>reflog</code> can save you.
+<strong>🔧 DevOps Pro Tip:</strong> Use <code>git bisect run &lt;script&gt;</code> to fully automate hunting down regressions. If the script exits 0, the commit is good; if 1, it's bad. Git will automatically find the culprit commit in log(N) steps!</p>
+<hr />
+<h2 id="4-github-enterprise-engineering-github-cli-gh">4. GitHub Enterprise Engineering &amp; GitHub CLI (<code>gh</code>)<a class="headerlink" href="#4-github-enterprise-engineering-github-cli-gh" title="Permanent link">&para;</a></h2>
+<p><strong>🌐 Intuitive Real-World Analogy:</strong>
+Architectural Peer Review &amp; Voting Chamber.
+Nobody modifies master blueprints directly (Protected Branches). Engineers submit blueprint modification proposals via Pull Requests (PRs), requiring automated robotic linter verification and two architect sign-offs before merging!</p>
+<p><strong>What is it?</strong>
+GitHub provides a collaborative layer over Git. It introduces Protected Branches (preventing force pushes/deletions), Pull Requests for code review, and Issue tracking. The GitHub CLI (<code>gh</code>) brings this entire ecosystem into the terminal.</p>
+<p><strong>How it Works &amp; Diagram:</strong></p>
+<pre class="mermaid"><code>graph TD
+    A["Fork / Clone Repo"] --&gt; B["Create Feature Branch"]
+    B --&gt; C["git push origin feature"]
+    C --&gt; D["gh pr create"]
+    D --&gt; E{"Automated Status Checks (CI)"}
+    E -- "Pass" --&gt; F{"Code Review (Approvals)"}
+    E -- "Fail" --&gt; G["Fix Code &amp; Push Again"]
+    G --&gt; E
+    F -- "Approved" --&gt; H["gh pr merge --squash"]
+    H --&gt; I["Automated Branch Deletion"]</code></pre>
+<p><strong>📦 Essential CLI &amp; API Signatures Table:</strong></p>
+<table>
+<thead>
+<tr>
+<th>Command</th>
+<th>Signature &amp; Flags</th>
+<th>Description / Purpose</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Auth</strong></td>
+<td><code>gh auth login</code></td>
+<td>Authenticate the CLI with GitHub using web or token.</td>
+</tr>
+<tr>
+<td><strong>PR Create</strong></td>
+<td><code>gh pr create --title "..." --body "..."</code></td>
+<td>Creates a pull request from current branch.</td>
+</tr>
+<tr>
+<td><strong>PR Review</strong></td>
+<td><code>gh pr review --approve</code></td>
+<td>Approves the current pull request.</td>
+</tr>
+<tr>
+<td><strong>PR Merge</strong></td>
+<td><code>gh pr merge --squash --delete-branch</code></td>
+<td>Squashes commits and merges the PR, cleaning up.</td>
+</tr>
+<tr>
+<td><strong>Run View</strong></td>
+<td><code>gh run view --web</code></td>
+<td>Opens the current CI/CD action run in the browser.</td>
+</tr>
+<tr>
+<td><strong>Secret</strong></td>
+<td><code>gh secret set MY_SECRET -b "value"</code></td>
+<td>Creates/updates a GitHub Actions repository secret.</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Production Workflow Example:</strong>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a><span class="ch">#!/bin/bash</span>
+<a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a><span class="c1"># End-to-End Bug Fix via GitHub CLI</span>
+<a id="__codelineno-3-3" name="__codelineno-3-3" href="#__codelineno-3-3"></a>
+<a id="__codelineno-3-4" name="__codelineno-3-4" href="#__codelineno-3-4"></a><span class="c1"># 1. View issues and checkout a branch for the issue</span>
+<a id="__codelineno-3-5" name="__codelineno-3-5" href="#__codelineno-3-5"></a>gh<span class="w"> </span>issue<span class="w"> </span>list<span class="w"> </span>--label<span class="w"> </span><span class="s2">&quot;bug&quot;</span>
+<a id="__codelineno-3-6" name="__codelineno-3-6" href="#__codelineno-3-6"></a><span class="c1"># Check out a branch specifically for Issue #42</span>
+<a id="__codelineno-3-7" name="__codelineno-3-7" href="#__codelineno-3-7"></a>gh<span class="w"> </span>issue<span class="w"> </span>develop<span class="w"> </span><span class="m">42</span><span class="w"> </span>--name<span class="w"> </span><span class="s2">&quot;fix/memory-leak&quot;</span><span class="w"> </span>--checkout
+<a id="__codelineno-3-8" name="__codelineno-3-8" href="#__codelineno-3-8"></a>
+<a id="__codelineno-3-9" name="__codelineno-3-9" href="#__codelineno-3-9"></a><span class="c1"># 2. Fix bug and commit</span>
+<a id="__codelineno-3-10" name="__codelineno-3-10" href="#__codelineno-3-10"></a>sed<span class="w"> </span>-i<span class="w"> </span><span class="s1">&#39;s/leak/fixed/g&#39;</span><span class="w"> </span>app.py
+<a id="__codelineno-3-11" name="__codelineno-3-11" href="#__codelineno-3-11"></a>git<span class="w"> </span>commit<span class="w"> </span>-am<span class="w"> </span><span class="s2">&quot;fix: resolve memory leak in connection pool&quot;</span>
+<a id="__codelineno-3-12" name="__codelineno-3-12" href="#__codelineno-3-12"></a>git<span class="w"> </span>push<span class="w"> </span>-u<span class="w"> </span>origin<span class="w"> </span>fix/memory-leak
+<a id="__codelineno-3-13" name="__codelineno-3-13" href="#__codelineno-3-13"></a>
+<a id="__codelineno-3-14" name="__codelineno-3-14" href="#__codelineno-3-14"></a><span class="c1"># 3. Create the Pull Request entirely from CLI</span>
+<a id="__codelineno-3-15" name="__codelineno-3-15" href="#__codelineno-3-15"></a>gh<span class="w"> </span>pr<span class="w"> </span>create<span class="w"> </span>--title<span class="w"> </span><span class="s2">&quot;Fix memory leak in conn pool&quot;</span><span class="w"> </span><span class="se">\</span>
+<a id="__codelineno-3-16" name="__codelineno-3-16" href="#__codelineno-3-16"></a><span class="w">             </span>--body<span class="w"> </span><span class="s2">&quot;Closes #42. Ensures connections are closed.&quot;</span><span class="w"> </span><span class="se">\</span>
+<a id="__codelineno-3-17" name="__codelineno-3-17" href="#__codelineno-3-17"></a><span class="w">             </span>--assignee<span class="w"> </span><span class="s2">&quot;@me&quot;</span><span class="w"> </span><span class="se">\</span>
+<a id="__codelineno-3-18" name="__codelineno-3-18" href="#__codelineno-3-18"></a><span class="w">             </span>--label<span class="w"> </span><span class="s2">&quot;bug,production&quot;</span>
+<a id="__codelineno-3-19" name="__codelineno-3-19" href="#__codelineno-3-19"></a>
+<a id="__codelineno-3-20" name="__codelineno-3-20" href="#__codelineno-3-20"></a><span class="c1"># 4. Monitor CI checks</span>
+<a id="__codelineno-3-21" name="__codelineno-3-21" href="#__codelineno-3-21"></a><span class="nb">echo</span><span class="w"> </span><span class="s2">&quot;Waiting for CI...&quot;</span>
+<a id="__codelineno-3-22" name="__codelineno-3-22" href="#__codelineno-3-22"></a>gh<span class="w"> </span>pr<span class="w"> </span>checks<span class="w"> </span>--watch
+<a id="__codelineno-3-23" name="__codelineno-3-23" href="#__codelineno-3-23"></a>
+<a id="__codelineno-3-24" name="__codelineno-3-24" href="#__codelineno-3-24"></a><span class="c1"># 5. Merge once approved and checks pass</span>
+<a id="__codelineno-3-25" name="__codelineno-3-25" href="#__codelineno-3-25"></a>gh<span class="w"> </span>pr<span class="w"> </span>merge<span class="w"> </span>--squash<span class="w"> </span>--delete-branch
+</code></pre></div></p>
+<p><strong>💡 Best Practice:</strong> Enable branch protection rules on <code>main</code>: require linear history, require passing status checks, and require at least 1 approval.
+<strong>⚠️ Common Pitfalls:</strong> Merging PRs with 100+ file changes. Keep PRs small and scoped to a single concern to ensure quality code reviews.
+<strong>🔧 DevOps Pro Tip:</strong> Use <code>gh repo edit --enable-auto-merge</code> and <code>gh pr merge --auto</code> to automatically merge a PR the exact second that CI passes and approvals are met!</p>
+<hr />
+<h3 id="part-ii-cicd-pipeline-automation-github-actions-gitlab-cicd-jenkins_1">Part II: CI/CD Pipeline Automation (GitHub Actions, GitLab CI/CD, &amp; Jenkins)<a class="headerlink" href="#part-ii-cicd-pipeline-automation-github-actions-gitlab-cicd-jenkins_1" title="Permanent link">&para;</a></h3>
+<h2 id="5-cicd-core-concepts-architectural-comparison-matrix">5. CI/CD Core Concepts &amp; Architectural Comparison Matrix<a class="headerlink" href="#5-cicd-core-concepts-architectural-comparison-matrix" title="Permanent link">&para;</a></h2>
+<p><strong>🌐 Intuitive Real-World Analogy:</strong>
+Automated Auto Assembly Factory vs Handcrafted Craftsmanship.
+- <strong>Continuous Integration (CI)</strong>: The robotic quality inspection line that instantly x-rays and stress-tests every single screw added to an engine (automated linting/tests on PR).
+- <strong>Continuous Delivery (CD)</strong>: Packs the tested car onto an automated loading dock waiting for human deployment authorization.
+- <strong>Continuous Deployment</strong>: Automatically presses the button to ship the vehicle directly to the consumer's driveway!</p>
+<p><strong>What is it?</strong>
+CI/CD automates the software lifecycle. It removes manual human error from building, testing, securing, and deploying applications.</p>
+<p><strong>How it Works &amp; Diagram:</strong></p>
+<pre class="mermaid"><code>graph TD
+    A["Developer Git Push"] --&gt; B["CI Trigger (Webhook)"]
+    B --&gt; C["Code Linter &amp; SAST"]
+    C --&gt; D["Unit Tests &amp; Coverage"]
+    D --&gt; E["Docker Image Build"]
+    E --&gt; F["Container Vulnerability Scan"]
+    F --&gt; G["Push to Container Registry"]
+    G --&gt; H["Deploy to Staging (CD)"]
+    H --&gt; I["E2E Playwright Tests"]
+    I --&gt; J{"Manual Human Approval Gate"}
+    J -- "Approved" --&gt; K["Deploy to Production!"]</code></pre>
+<p><strong>An Exhaustive Comparison Table:</strong></p>
+<table>
+<thead>
+<tr>
+<th>Feature</th>
+<th>GitHub Actions</th>
+<th>GitLab CI/CD</th>
+<th>Jenkins</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Architecture</strong></td>
+<td>SaaS Serverless Runners / Self-Hosted</td>
+<td>Git-native Runners / Kubernetes</td>
+<td>JVM Master-Agent (Controller/Node)</td>
+</tr>
+<tr>
+<td><strong>Pipeline Definition</strong></td>
+<td>YAML in <code>.github/workflows/</code></td>
+<td>YAML in <code>.gitlab-ci.yml</code></td>
+<td>Groovy DSL in <code>Jenkinsfile</code></td>
+</tr>
+<tr>
+<td><strong>Ecosystem</strong></td>
+<td>Marketplace Actions (Plug &amp; Play)</td>
+<td>Built-in Auto-DevOps, tight GitLab integration</td>
+<td>Massive Plugin Ecosystem (Legacy &amp; Modern)</td>
+</tr>
+<tr>
+<td><strong>Execution Flow</strong></td>
+<td>Event-driven Workflows -&gt; Jobs -&gt; Steps</td>
+<td>Directed Acyclic Graph (DAG) / Stages</td>
+<td>Scripted or Declarative Stages</td>
+</tr>
+<tr>
+<td><strong>State &amp; Caching</strong></td>
+<td><code>actions/cache</code></td>
+<td>Native <code>cache:</code> keyword</td>
+<td>External plugins or node-local cache</td>
+</tr>
+<tr>
+<td><strong>Best For</strong></td>
+<td>Open Source, GitHub-centric organizations</td>
+<td>End-to-end integrated Enterprise DevOps</td>
+<td>Complex, legacy, or highly customized pipelines</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2 id="6-github-actions-mastery-workflows-jobs-matrix-builds-reusable-pipelines">6. GitHub Actions Mastery (Workflows, Jobs, Matrix Builds &amp; Reusable Pipelines)<a class="headerlink" href="#6-github-actions-mastery-workflows-jobs-matrix-builds-reusable-pipelines" title="Permanent link">&para;</a></h2>
+<p><strong>🌐 Intuitive Real-World Analogy:</strong>
+Robotic Cloud Workers attached directly to your GitHub repository rooms. When alarms ring (<code>push</code>, <code>schedule</code>), ephemeral robotic agents wake up, execute tasks, and immediately terminate, leaving a clean room behind!</p>
+<p><strong>How it Works &amp; Diagram:</strong></p>
+<pre class="mermaid"><code>sequenceDiagram
+    participant GH as GitHub Webhook
+    participant Runner as Actions Runner
+    participant AWS as AWS IAM (OIDC)
+    participant ECR as Elastic Container Registry
+    GH-&gt;&gt;Runner: Trigger Workflow (Push)
+    Runner-&gt;&gt;Runner: Checkout Code &amp; Test
+    Runner-&gt;&gt;AWS: Request Temp Credentials (JWT)
+    AWS--&gt;&gt;Runner: Return Short-lived STS Token
+    Runner-&gt;&gt;Runner: Docker Build
+    Runner-&gt;&gt;ECR: Docker Push Image</code></pre>
+<p><strong>📦 Essential Actions Syntax &amp; Variables Table:</strong></p>
+<table>
+<thead>
+<tr>
+<th>Keyword / Variable</th>
+<th>Description / Purpose</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>on: [push, pull_request]</code></td>
+<td>Defines the event triggers for the workflow.</td>
+</tr>
+<tr>
+<td><code>concurrency:</code></td>
+<td>Cancels in-progress runs for the same branch to save runner minutes.</td>
+</tr>
+<tr>
+<td><code>matrix:</code></td>
+<td>Runs a job multiple times with different variable combinations (e.g., Node versions).</td>
+</tr>
+<tr>
+<td><code>needs:</code></td>
+<td>Defines job dependencies (Job B waits for Job A to complete).</td>
+</tr>
+<tr>
+<td><code>github.workspace</code></td>
+<td>The default working directory for the runner.</td>
+</tr>
+<tr>
+<td><code>secrets.GITHUB_TOKEN</code></td>
+<td>Automatically generated token for API interactions during the run.</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Production Working Example:</strong>
+<code>.github/workflows/production_ci_cd.yml</code>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Production CI/CD Pipeline</span>
+<a id="__codelineno-4-2" name="__codelineno-4-2" href="#__codelineno-4-2"></a>
+<a id="__codelineno-4-3" name="__codelineno-4-3" href="#__codelineno-4-3"></a><span class="nt">on</span><span class="p">:</span>
+<a id="__codelineno-4-4" name="__codelineno-4-4" href="#__codelineno-4-4"></a><span class="w">  </span><span class="nt">push</span><span class="p">:</span>
+<a id="__codelineno-4-5" name="__codelineno-4-5" href="#__codelineno-4-5"></a><span class="w">    </span><span class="nt">branches</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[</span><span class="w"> </span><span class="s">&quot;main&quot;</span><span class="w"> </span><span class="p p-Indicator">]</span>
+<a id="__codelineno-4-6" name="__codelineno-4-6" href="#__codelineno-4-6"></a><span class="w">  </span><span class="nt">pull_request</span><span class="p">:</span>
+<a id="__codelineno-4-7" name="__codelineno-4-7" href="#__codelineno-4-7"></a><span class="w">    </span><span class="nt">branches</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[</span><span class="w"> </span><span class="s">&quot;main&quot;</span><span class="w"> </span><span class="p p-Indicator">]</span>
+<a id="__codelineno-4-8" name="__codelineno-4-8" href="#__codelineno-4-8"></a><span class="w">  </span><span class="nt">schedule</span><span class="p">:</span>
+<a id="__codelineno-4-9" name="__codelineno-4-9" href="#__codelineno-4-9"></a><span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">cron</span><span class="p">:</span><span class="w"> </span><span class="s">&#39;0</span><span class="nv"> </span><span class="s">2</span><span class="nv"> </span><span class="s">*</span><span class="nv"> </span><span class="s">*</span><span class="nv"> </span><span class="s">*&#39;</span><span class="w"> </span><span class="c1"># Nightly build</span>
+<a id="__codelineno-4-10" name="__codelineno-4-10" href="#__codelineno-4-10"></a>
+<a id="__codelineno-4-11" name="__codelineno-4-11" href="#__codelineno-4-11"></a><span class="c1"># Cancel redundant in-progress runs to save money</span>
+<a id="__codelineno-4-12" name="__codelineno-4-12" href="#__codelineno-4-12"></a><span class="nt">concurrency</span><span class="p">:</span>
+<a id="__codelineno-4-13" name="__codelineno-4-13" href="#__codelineno-4-13"></a><span class="w">  </span><span class="nt">group</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">${{ github.workflow }}-${{ github.ref }}</span>
+<a id="__codelineno-4-14" name="__codelineno-4-14" href="#__codelineno-4-14"></a><span class="w">  </span><span class="nt">cancel-in-progress</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span>
+<a id="__codelineno-4-15" name="__codelineno-4-15" href="#__codelineno-4-15"></a>
+<a id="__codelineno-4-16" name="__codelineno-4-16" href="#__codelineno-4-16"></a><span class="nt">permissions</span><span class="p">:</span>
+<a id="__codelineno-4-17" name="__codelineno-4-17" href="#__codelineno-4-17"></a><span class="w">  </span><span class="nt">id-token</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">write</span><span class="w"> </span><span class="c1"># Required for OIDC AWS federation</span>
+<a id="__codelineno-4-18" name="__codelineno-4-18" href="#__codelineno-4-18"></a><span class="w">  </span><span class="nt">contents</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">read</span>
+<a id="__codelineno-4-19" name="__codelineno-4-19" href="#__codelineno-4-19"></a><span class="w">  </span><span class="nt">packages</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">write</span><span class="w"> </span><span class="c1"># Required for GHCR</span>
+<a id="__codelineno-4-20" name="__codelineno-4-20" href="#__codelineno-4-20"></a>
+<a id="__codelineno-4-21" name="__codelineno-4-21" href="#__codelineno-4-21"></a><span class="nt">jobs</span><span class="p">:</span>
+<a id="__codelineno-4-22" name="__codelineno-4-22" href="#__codelineno-4-22"></a><span class="w">  </span><span class="nt">test</span><span class="p">:</span>
+<a id="__codelineno-4-23" name="__codelineno-4-23" href="#__codelineno-4-23"></a><span class="w">    </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Unit Tests &amp; Linting</span>
+<a id="__codelineno-4-24" name="__codelineno-4-24" href="#__codelineno-4-24"></a><span class="w">    </span><span class="nt">runs-on</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">ubuntu-latest</span>
+<a id="__codelineno-4-25" name="__codelineno-4-25" href="#__codelineno-4-25"></a><span class="w">    </span><span class="nt">strategy</span><span class="p">:</span>
+<a id="__codelineno-4-26" name="__codelineno-4-26" href="#__codelineno-4-26"></a><span class="w">      </span><span class="nt">matrix</span><span class="p">:</span>
+<a id="__codelineno-4-27" name="__codelineno-4-27" href="#__codelineno-4-27"></a><span class="w">        </span><span class="nt">python-version</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[</span><span class="s">&quot;3.11&quot;</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="s">&quot;3.12&quot;</span><span class="p p-Indicator">]</span>
+<a id="__codelineno-4-28" name="__codelineno-4-28" href="#__codelineno-4-28"></a>
+<a id="__codelineno-4-29" name="__codelineno-4-29" href="#__codelineno-4-29"></a><span class="w">    </span><span class="nt">steps</span><span class="p">:</span>
+<a id="__codelineno-4-30" name="__codelineno-4-30" href="#__codelineno-4-30"></a><span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Checkout Code</span>
+<a id="__codelineno-4-31" name="__codelineno-4-31" href="#__codelineno-4-31"></a><span class="w">        </span><span class="nt">uses</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">actions/checkout@v4</span>
+<a id="__codelineno-4-32" name="__codelineno-4-32" href="#__codelineno-4-32"></a>
+<a id="__codelineno-4-33" name="__codelineno-4-33" href="#__codelineno-4-33"></a><span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Set up Python ${{ matrix.python-version }}</span>
+<a id="__codelineno-4-34" name="__codelineno-4-34" href="#__codelineno-4-34"></a><span class="w">        </span><span class="nt">uses</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">actions/setup-python@v5</span>
+<a id="__codelineno-4-35" name="__codelineno-4-35" href="#__codelineno-4-35"></a><span class="w">        </span><span class="nt">with</span><span class="p">:</span>
+<a id="__codelineno-4-36" name="__codelineno-4-36" href="#__codelineno-4-36"></a><span class="w">          </span><span class="nt">python-version</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">${{ matrix.python-version }}</span>
+<a id="__codelineno-4-37" name="__codelineno-4-37" href="#__codelineno-4-37"></a><span class="w">          </span><span class="nt">cache</span><span class="p">:</span><span class="w"> </span><span class="s">&#39;pip&#39;</span>
+<a id="__codelineno-4-38" name="__codelineno-4-38" href="#__codelineno-4-38"></a>
+<a id="__codelineno-4-39" name="__codelineno-4-39" href="#__codelineno-4-39"></a><span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Install dependencies</span>
+<a id="__codelineno-4-40" name="__codelineno-4-40" href="#__codelineno-4-40"></a><span class="w">        </span><span class="nt">run</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">|</span>
+<a id="__codelineno-4-41" name="__codelineno-4-41" href="#__codelineno-4-41"></a><span class="w">          </span><span class="no">python -m pip install --upgrade pip</span>
+<a id="__codelineno-4-42" name="__codelineno-4-42" href="#__codelineno-4-42"></a><span class="w">          </span><span class="no">pip install -r requirements.txt pytest flake8</span>
+<a id="__codelineno-4-43" name="__codelineno-4-43" href="#__codelineno-4-43"></a>
+<a id="__codelineno-4-44" name="__codelineno-4-44" href="#__codelineno-4-44"></a><span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Lint code</span>
+<a id="__codelineno-4-45" name="__codelineno-4-45" href="#__codelineno-4-45"></a><span class="w">        </span><span class="nt">run</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">flake8 .</span>
+<a id="__codelineno-4-46" name="__codelineno-4-46" href="#__codelineno-4-46"></a>
+<a id="__codelineno-4-47" name="__codelineno-4-47" href="#__codelineno-4-47"></a><span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Run tests</span>
+<a id="__codelineno-4-48" name="__codelineno-4-48" href="#__codelineno-4-48"></a><span class="w">        </span><span class="nt">run</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">pytest tests/</span>
+<a id="__codelineno-4-49" name="__codelineno-4-49" href="#__codelineno-4-49"></a>
+<a id="__codelineno-4-50" name="__codelineno-4-50" href="#__codelineno-4-50"></a><span class="w">  </span><span class="nt">build-push</span><span class="p">:</span>
+<a id="__codelineno-4-51" name="__codelineno-4-51" href="#__codelineno-4-51"></a><span class="w">    </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Build &amp; Push Container</span>
+<a id="__codelineno-4-52" name="__codelineno-4-52" href="#__codelineno-4-52"></a><span class="w">    </span><span class="nt">needs</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">test</span>
+<a id="__codelineno-4-53" name="__codelineno-4-53" href="#__codelineno-4-53"></a><span class="w">    </span><span class="nt">runs-on</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">ubuntu-latest</span>
+<a id="__codelineno-4-54" name="__codelineno-4-54" href="#__codelineno-4-54"></a><span class="w">    </span><span class="nt">if</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">github.ref == &#39;refs/heads/main&#39;</span>
+<a id="__codelineno-4-55" name="__codelineno-4-55" href="#__codelineno-4-55"></a>
+<a id="__codelineno-4-56" name="__codelineno-4-56" href="#__codelineno-4-56"></a><span class="w">    </span><span class="nt">steps</span><span class="p">:</span>
+<a id="__codelineno-4-57" name="__codelineno-4-57" href="#__codelineno-4-57"></a><span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">uses</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">actions/checkout@v4</span>
+<a id="__codelineno-4-58" name="__codelineno-4-58" href="#__codelineno-4-58"></a>
+<a id="__codelineno-4-59" name="__codelineno-4-59" href="#__codelineno-4-59"></a><span class="w">      </span><span class="c1"># OIDC AWS Federation - NO STATIC CREDENTIALS!</span>
+<a id="__codelineno-4-60" name="__codelineno-4-60" href="#__codelineno-4-60"></a><span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Configure AWS Credentials</span>
+<a id="__codelineno-4-61" name="__codelineno-4-61" href="#__codelineno-4-61"></a><span class="w">        </span><span class="nt">uses</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">aws-actions/configure-aws-credentials@v4</span>
+<a id="__codelineno-4-62" name="__codelineno-4-62" href="#__codelineno-4-62"></a><span class="w">        </span><span class="nt">with</span><span class="p">:</span>
+<a id="__codelineno-4-63" name="__codelineno-4-63" href="#__codelineno-4-63"></a><span class="w">          </span><span class="nt">role-to-assume</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">arn:aws:iam::123456789012:role/GitHubActionsRole</span>
+<a id="__codelineno-4-64" name="__codelineno-4-64" href="#__codelineno-4-64"></a><span class="w">          </span><span class="nt">aws-region</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">us-east-1</span>
+<a id="__codelineno-4-65" name="__codelineno-4-65" href="#__codelineno-4-65"></a>
+<a id="__codelineno-4-66" name="__codelineno-4-66" href="#__codelineno-4-66"></a><span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Log in to GitHub Container Registry</span>
+<a id="__codelineno-4-67" name="__codelineno-4-67" href="#__codelineno-4-67"></a><span class="w">        </span><span class="nt">uses</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">docker/login-action@v3</span>
+<a id="__codelineno-4-68" name="__codelineno-4-68" href="#__codelineno-4-68"></a><span class="w">        </span><span class="nt">with</span><span class="p">:</span>
+<a id="__codelineno-4-69" name="__codelineno-4-69" href="#__codelineno-4-69"></a><span class="w">          </span><span class="nt">registry</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">ghcr.io</span>
+<a id="__codelineno-4-70" name="__codelineno-4-70" href="#__codelineno-4-70"></a><span class="w">          </span><span class="nt">username</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">${{ github.actor }}</span>
+<a id="__codelineno-4-71" name="__codelineno-4-71" href="#__codelineno-4-71"></a><span class="w">          </span><span class="nt">password</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">${{ secrets.GITHUB_TOKEN }}</span>
+<a id="__codelineno-4-72" name="__codelineno-4-72" href="#__codelineno-4-72"></a>
+<a id="__codelineno-4-73" name="__codelineno-4-73" href="#__codelineno-4-73"></a><span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Build and push Docker image</span>
+<a id="__codelineno-4-74" name="__codelineno-4-74" href="#__codelineno-4-74"></a><span class="w">        </span><span class="nt">uses</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">docker/build-push-action@v5</span>
+<a id="__codelineno-4-75" name="__codelineno-4-75" href="#__codelineno-4-75"></a><span class="w">        </span><span class="nt">with</span><span class="p">:</span>
+<a id="__codelineno-4-76" name="__codelineno-4-76" href="#__codelineno-4-76"></a><span class="w">          </span><span class="nt">context</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">.</span>
+<a id="__codelineno-4-77" name="__codelineno-4-77" href="#__codelineno-4-77"></a><span class="w">          </span><span class="nt">push</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span>
+<a id="__codelineno-4-78" name="__codelineno-4-78" href="#__codelineno-4-78"></a><span class="w">          </span><span class="nt">tags</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">ghcr.io/${{ github.repository }}/app:${{ github.sha }}</span>
+<a id="__codelineno-4-79" name="__codelineno-4-79" href="#__codelineno-4-79"></a><span class="w">          </span><span class="nt">cache-from</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">type=gha</span>
+<a id="__codelineno-4-80" name="__codelineno-4-80" href="#__codelineno-4-80"></a><span class="w">          </span><span class="nt">cache-to</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">type=gha,mode=max</span>
+</code></pre></div></p>
+<p><strong>💡 Best Practice:</strong> Pin third-party actions to their specific Git commit SHA instead of <code>@v2</code> tags to prevent supply chain attacks if the maintainer's repository is compromised.
+<strong>⚠️ Common Pitfalls:</strong> Storing long-lived cloud credentials in GitHub Secrets. Always use OpenID Connect (OIDC) to federate identity securely!
+<strong>🔧 DevOps Pro Tip:</strong> Use <code>cache-from</code> and <code>cache-to</code> with <code>type=gha</code> in Docker build actions. It leverages the GitHub Actions native cache to dramatically speed up Docker image builds!</p>
+<hr />
+<h2 id="7-gitlab-cicd-mastery-stages-artifacts-caching-rules-auto-devops">7. GitLab CI/CD Mastery (Stages, Artifacts, Caching, Rules &amp; Auto-DevOps)<a class="headerlink" href="#7-gitlab-cicd-mastery-stages-artifacts-caching-rules-auto-devops" title="Permanent link">&para;</a></h2>
+<p><strong>🌐 Intuitive Real-World Analogy:</strong>
+An Interconnected Railway Cargo Transit Network.
+Gated security checkpoints evaluate branch rules before letting the train advance. Baggage forwarding ensures job artifacts (compiled binaries) and caches (npm modules) are reliably transferred between independent pipeline stages!</p>
+<p><strong>How it Works &amp; Diagram:</strong></p>
+<pre class="mermaid"><code>stateDiagram-v2
+    [*] --&gt; Test
+    Test --&gt; Docker_Build: On Success
+    Docker_Build --&gt; Deploy_Staging: Branch == Main
+    Deploy_Staging --&gt; Deploy_Production: Manual Approval
+    Deploy_Production --&gt; [*]</code></pre>
+<p><strong>📦 Essential GitLab CI Keywords Table:</strong></p>
+<table>
+<thead>
+<tr>
+<th>Keyword</th>
+<th>Description / Purpose</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>stages:</code></td>
+<td>Defines the strict sequential order of job execution.</td>
+</tr>
+<tr>
+<td><code>image:</code></td>
+<td>The Docker image used to spin up the runner environment.</td>
+</tr>
+<tr>
+<td><code>services:</code></td>
+<td>Additional containers to run alongside the job (e.g., database, docker-in-docker).</td>
+</tr>
+<tr>
+<td><code>cache:</code></td>
+<td>Persists dependencies between pipeline runs to speed up execution.</td>
+</tr>
+<tr>
+<td><code>artifacts:</code></td>
+<td>Files/directories created by a job, passed to subsequent stages.</td>
+</tr>
+<tr>
+<td><code>rules:</code></td>
+<td>Complex conditional logic (if/when) to determine if a job should run.</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Production Working Example:</strong>
+<code>.gitlab-ci.yml</code>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a><span class="nt">stages</span><span class="p">:</span>
+<a id="__codelineno-5-2" name="__codelineno-5-2" href="#__codelineno-5-2"></a><span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">test</span>
+<a id="__codelineno-5-3" name="__codelineno-5-3" href="#__codelineno-5-3"></a><span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">docker_build</span>
+<a id="__codelineno-5-4" name="__codelineno-5-4" href="#__codelineno-5-4"></a><span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">deploy_staging</span>
+<a id="__codelineno-5-5" name="__codelineno-5-5" href="#__codelineno-5-5"></a><span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">deploy_prod</span>
+<a id="__codelineno-5-6" name="__codelineno-5-6" href="#__codelineno-5-6"></a>
+<a id="__codelineno-5-7" name="__codelineno-5-7" href="#__codelineno-5-7"></a><span class="c1"># Global default image and cache</span>
+<a id="__codelineno-5-8" name="__codelineno-5-8" href="#__codelineno-5-8"></a><span class="nt">default</span><span class="p">:</span>
+<a id="__codelineno-5-9" name="__codelineno-5-9" href="#__codelineno-5-9"></a><span class="w">  </span><span class="nt">image</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">python:3.11-slim</span>
+<a id="__codelineno-5-10" name="__codelineno-5-10" href="#__codelineno-5-10"></a><span class="w">  </span><span class="nt">cache</span><span class="p">:</span>
+<a id="__codelineno-5-11" name="__codelineno-5-11" href="#__codelineno-5-11"></a><span class="w">    </span><span class="nt">key</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">$CI_COMMIT_REF_SLUG</span>
+<a id="__codelineno-5-12" name="__codelineno-5-12" href="#__codelineno-5-12"></a><span class="w">    </span><span class="nt">paths</span><span class="p">:</span>
+<a id="__codelineno-5-13" name="__codelineno-5-13" href="#__codelineno-5-13"></a><span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">.cache/pip</span>
+<a id="__codelineno-5-14" name="__codelineno-5-14" href="#__codelineno-5-14"></a>
+<a id="__codelineno-5-15" name="__codelineno-5-15" href="#__codelineno-5-15"></a><span class="nt">variables</span><span class="p">:</span>
+<a id="__codelineno-5-16" name="__codelineno-5-16" href="#__codelineno-5-16"></a><span class="w">  </span><span class="nt">PIP_CACHE_DIR</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;$CI_PROJECT_DIR/.cache/pip&quot;</span>
+<a id="__codelineno-5-17" name="__codelineno-5-17" href="#__codelineno-5-17"></a><span class="w">  </span><span class="nt">DOCKER_IMAGE</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">$CI_REGISTRY_IMAGE:$CI_COMMIT_SHA</span>
+<a id="__codelineno-5-18" name="__codelineno-5-18" href="#__codelineno-5-18"></a>
+<a id="__codelineno-5-19" name="__codelineno-5-19" href="#__codelineno-5-19"></a><span class="nt">unit_tests</span><span class="p">:</span>
+<a id="__codelineno-5-20" name="__codelineno-5-20" href="#__codelineno-5-20"></a><span class="w">  </span><span class="nt">stage</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">test</span>
+<a id="__codelineno-5-21" name="__codelineno-5-21" href="#__codelineno-5-21"></a><span class="w">  </span><span class="nt">script</span><span class="p">:</span>
+<a id="__codelineno-5-22" name="__codelineno-5-22" href="#__codelineno-5-22"></a><span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">pip install -r requirements.txt pytest</span>
+<a id="__codelineno-5-23" name="__codelineno-5-23" href="#__codelineno-5-23"></a><span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">pytest --junitxml=report.xml</span>
+<a id="__codelineno-5-24" name="__codelineno-5-24" href="#__codelineno-5-24"></a><span class="w">  </span><span class="nt">artifacts</span><span class="p">:</span>
+<a id="__codelineno-5-25" name="__codelineno-5-25" href="#__codelineno-5-25"></a><span class="w">    </span><span class="nt">when</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">always</span>
+<a id="__codelineno-5-26" name="__codelineno-5-26" href="#__codelineno-5-26"></a><span class="w">    </span><span class="nt">reports</span><span class="p">:</span>
+<a id="__codelineno-5-27" name="__codelineno-5-27" href="#__codelineno-5-27"></a><span class="w">      </span><span class="nt">junit</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">report.xml</span>
+<a id="__codelineno-5-28" name="__codelineno-5-28" href="#__codelineno-5-28"></a>
+<a id="__codelineno-5-29" name="__codelineno-5-29" href="#__codelineno-5-29"></a><span class="nt">build_image</span><span class="p">:</span>
+<a id="__codelineno-5-30" name="__codelineno-5-30" href="#__codelineno-5-30"></a><span class="w">  </span><span class="nt">stage</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">docker_build</span>
+<a id="__codelineno-5-31" name="__codelineno-5-31" href="#__codelineno-5-31"></a><span class="w">  </span><span class="nt">image</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">docker:24.0.5</span>
+<a id="__codelineno-5-32" name="__codelineno-5-32" href="#__codelineno-5-32"></a><span class="w">  </span><span class="nt">services</span><span class="p">:</span>
+<a id="__codelineno-5-33" name="__codelineno-5-33" href="#__codelineno-5-33"></a><span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">docker:24.0.5-dind</span>
+<a id="__codelineno-5-34" name="__codelineno-5-34" href="#__codelineno-5-34"></a><span class="w">  </span><span class="nt">variables</span><span class="p">:</span>
+<a id="__codelineno-5-35" name="__codelineno-5-35" href="#__codelineno-5-35"></a><span class="w">    </span><span class="nt">DOCKER_TLS_CERTDIR</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;/certs&quot;</span>
+<a id="__codelineno-5-36" name="__codelineno-5-36" href="#__codelineno-5-36"></a><span class="w">  </span><span class="nt">before_script</span><span class="p">:</span>
+<a id="__codelineno-5-37" name="__codelineno-5-37" href="#__codelineno-5-37"></a><span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">docker login -u $CI_REGISTRY_USER -p $CI_REGISTRY_PASSWORD $CI_REGISTRY</span>
+<a id="__codelineno-5-38" name="__codelineno-5-38" href="#__codelineno-5-38"></a><span class="w">  </span><span class="nt">script</span><span class="p">:</span>
+<a id="__codelineno-5-39" name="__codelineno-5-39" href="#__codelineno-5-39"></a><span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">docker build -t $DOCKER_IMAGE .</span>
+<a id="__codelineno-5-40" name="__codelineno-5-40" href="#__codelineno-5-40"></a><span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">docker push $DOCKER_IMAGE</span>
+<a id="__codelineno-5-41" name="__codelineno-5-41" href="#__codelineno-5-41"></a><span class="w">  </span><span class="nt">rules</span><span class="p">:</span>
+<a id="__codelineno-5-42" name="__codelineno-5-42" href="#__codelineno-5-42"></a><span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">if</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">$CI_COMMIT_BRANCH == &quot;main&quot;</span>
+<a id="__codelineno-5-43" name="__codelineno-5-43" href="#__codelineno-5-43"></a>
+<a id="__codelineno-5-44" name="__codelineno-5-44" href="#__codelineno-5-44"></a><span class="nt">deploy_to_staging</span><span class="p">:</span>
+<a id="__codelineno-5-45" name="__codelineno-5-45" href="#__codelineno-5-45"></a><span class="w">  </span><span class="nt">stage</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">deploy_staging</span>
+<a id="__codelineno-5-46" name="__codelineno-5-46" href="#__codelineno-5-46"></a><span class="w">  </span><span class="nt">image</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">alpine/k8s:1.28</span>
+<a id="__codelineno-5-47" name="__codelineno-5-47" href="#__codelineno-5-47"></a><span class="w">  </span><span class="nt">script</span><span class="p">:</span>
+<a id="__codelineno-5-48" name="__codelineno-5-48" href="#__codelineno-5-48"></a><span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">kubectl config use-context my-group/my-agent:staging-agent</span>
+<a id="__codelineno-5-49" name="__codelineno-5-49" href="#__codelineno-5-49"></a><span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">kubectl set image deployment/api app=$DOCKER_IMAGE -n staging</span>
+<a id="__codelineno-5-50" name="__codelineno-5-50" href="#__codelineno-5-50"></a><span class="w">  </span><span class="nt">environment</span><span class="p">:</span>
+<a id="__codelineno-5-51" name="__codelineno-5-51" href="#__codelineno-5-51"></a><span class="w">    </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">staging</span>
+<a id="__codelineno-5-52" name="__codelineno-5-52" href="#__codelineno-5-52"></a><span class="w">    </span><span class="nt">url</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">https://staging.example.com</span>
+<a id="__codelineno-5-53" name="__codelineno-5-53" href="#__codelineno-5-53"></a><span class="w">  </span><span class="nt">rules</span><span class="p">:</span>
+<a id="__codelineno-5-54" name="__codelineno-5-54" href="#__codelineno-5-54"></a><span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">if</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">$CI_COMMIT_BRANCH == &quot;main&quot;</span>
+<a id="__codelineno-5-55" name="__codelineno-5-55" href="#__codelineno-5-55"></a>
+<a id="__codelineno-5-56" name="__codelineno-5-56" href="#__codelineno-5-56"></a><span class="nt">deploy_to_prod</span><span class="p">:</span>
+<a id="__codelineno-5-57" name="__codelineno-5-57" href="#__codelineno-5-57"></a><span class="w">  </span><span class="nt">stage</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">deploy_prod</span>
+<a id="__codelineno-5-58" name="__codelineno-5-58" href="#__codelineno-5-58"></a><span class="w">  </span><span class="nt">image</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">alpine/k8s:1.28</span>
+<a id="__codelineno-5-59" name="__codelineno-5-59" href="#__codelineno-5-59"></a><span class="w">  </span><span class="nt">script</span><span class="p">:</span>
+<a id="__codelineno-5-60" name="__codelineno-5-60" href="#__codelineno-5-60"></a><span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">kubectl config use-context my-group/my-agent:prod-agent</span>
+<a id="__codelineno-5-61" name="__codelineno-5-61" href="#__codelineno-5-61"></a><span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">kubectl set image deployment/api app=$DOCKER_IMAGE -n production</span>
+<a id="__codelineno-5-62" name="__codelineno-5-62" href="#__codelineno-5-62"></a><span class="w">  </span><span class="nt">environment</span><span class="p">:</span>
+<a id="__codelineno-5-63" name="__codelineno-5-63" href="#__codelineno-5-63"></a><span class="w">    </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">production</span>
+<a id="__codelineno-5-64" name="__codelineno-5-64" href="#__codelineno-5-64"></a><span class="w">    </span><span class="nt">url</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">https://api.example.com</span>
+<a id="__codelineno-5-65" name="__codelineno-5-65" href="#__codelineno-5-65"></a><span class="w">  </span><span class="nt">rules</span><span class="p">:</span>
+<a id="__codelineno-5-66" name="__codelineno-5-66" href="#__codelineno-5-66"></a><span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">if</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">$CI_COMMIT_BRANCH == &quot;main&quot;</span>
+<a id="__codelineno-5-67" name="__codelineno-5-67" href="#__codelineno-5-67"></a><span class="w">      </span><span class="nt">when</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">manual</span><span class="w"> </span><span class="c1"># Requires explicit human click!</span>
+</code></pre></div></p>
+<p><strong>💡 Best Practice:</strong> Utilize <code>$CI_COMMIT_SHA</code> to uniquely tag every Docker image. Use <code>$CI_REGISTRY</code> to securely utilize GitLab's built-in container registry without managing credentials.
+<strong>⚠️ Common Pitfalls:</strong> Confusing <code>cache</code> with <code>artifacts</code>. Use <code>cache</code> for internet-downloaded dependencies (node_modules, pip cache) and <code>artifacts</code> for internally compiled code passed to later stages (binaries, test reports).
+<strong>🔧 DevOps Pro Tip:</strong> Integrate GitLab's <code>artifacts:reports:junit</code> to get native UI test result visualizers and failure tracking directly in the Merge Request view.</p>
+<hr />
+<h2 id="8-jenkins-mastery-declarative-pipeline-vs-scripted-dsl-master-agent-shared-libraries">8. Jenkins Mastery (Declarative Pipeline vs Scripted DSL, Master-Agent &amp; Shared Libraries)<a class="headerlink" href="#8-jenkins-mastery-declarative-pipeline-vs-scripted-dsl-master-agent-shared-libraries" title="Permanent link">&para;</a></h2>
+<p><strong>🌐 Intuitive Real-World Analogy:</strong>
+An Experienced General Contractor.
+The Jenkins Controller (Master) sits at headquarters managing blueprints and scheduling. It hires ephemeral subcontractor worker crews (Kubernetes Ephemeral Pod Agents) to execute the heavy physical digging and lifting on demand!</p>
+<p><strong>How it Works &amp; Diagram:</strong></p>
+<pre class="mermaid"><code>graph TD
+    A["Jenkins Controller (Master)"] -- "Provisions Pod" --&gt; B["Kubernetes Cluster"]
+    B --&gt; C["Ephemeral Jenkins Agent (Pod)"]
+    C -- "Clones Code &amp; Runs Build" --&gt; D["Workspace"]
+    C -- "Reports Status" --&gt; A
+    A -- "Terminates Pod" --&gt; B</code></pre>
+<p><strong>📦 Essential Jenkinsfile Directives Table:</strong></p>
+<table>
+<thead>
+<tr>
+<th>Directive</th>
+<th>Description / Purpose</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>pipeline { }</code></td>
+<td>The root element of a Declarative Pipeline.</td>
+</tr>
+<tr>
+<td><code>agent { kubernetes { ... } }</code></td>
+<td>Defines where the pipeline runs (allocates ephemeral containers).</td>
+</tr>
+<tr>
+<td><code>options { ... }</code></td>
+<td>Configures pipeline-level settings (timeouts, log rotation).</td>
+</tr>
+<tr>
+<td><code>parallel { }</code></td>
+<td>Executes nested stages simultaneously (e.g., concurrent testing).</td>
+</tr>
+<tr>
+<td><code>input</code></td>
+<td>Pauses pipeline execution and waits for human approval.</td>
+</tr>
+<tr>
+<td><code>post { always { cleanWs() } }</code></td>
+<td>Executes steps based on the pipeline's final status.</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Production Working Example:</strong>
+<code>Jenkinsfile</code> (Declarative, Kubernetes Agent)
+<div class="highlight"><pre><span></span><code><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a><span class="n">pipeline</span><span class="w"> </span><span class="o">{</span>
+<a id="__codelineno-6-2" name="__codelineno-6-2" href="#__codelineno-6-2"></a><span class="w">    </span><span class="n">agent</span><span class="w"> </span><span class="o">{</span>
+<a id="__codelineno-6-3" name="__codelineno-6-3" href="#__codelineno-6-3"></a><span class="w">        </span><span class="n">kubernetes</span><span class="w"> </span><span class="o">{</span>
+<a id="__codelineno-6-4" name="__codelineno-6-4" href="#__codelineno-6-4"></a><span class="w">            </span><span class="n">yaml</span><span class="w"> </span><span class="s1">&#39;&#39;&#39;</span>
+<a id="__codelineno-6-5" name="__codelineno-6-5" href="#__codelineno-6-5"></a><span class="s1">            apiVersion: v1</span>
+<a id="__codelineno-6-6" name="__codelineno-6-6" href="#__codelineno-6-6"></a><span class="s1">            kind: Pod</span>
+<a id="__codelineno-6-7" name="__codelineno-6-7" href="#__codelineno-6-7"></a><span class="s1">            spec:</span>
+<a id="__codelineno-6-8" name="__codelineno-6-8" href="#__codelineno-6-8"></a><span class="s1">              containers:</span>
+<a id="__codelineno-6-9" name="__codelineno-6-9" href="#__codelineno-6-9"></a><span class="s1">              - name: maven</span>
+<a id="__codelineno-6-10" name="__codelineno-6-10" href="#__codelineno-6-10"></a><span class="s1">                image: maven:3.8.6-eclipse-temurin-17</span>
+<a id="__codelineno-6-11" name="__codelineno-6-11" href="#__codelineno-6-11"></a><span class="s1">                command: [&#39;cat&#39;]</span>
+<a id="__codelineno-6-12" name="__codelineno-6-12" href="#__codelineno-6-12"></a><span class="s1">                tty: true</span>
+<a id="__codelineno-6-13" name="__codelineno-6-13" href="#__codelineno-6-13"></a><span class="s1">              - name: docker</span>
+<a id="__codelineno-6-14" name="__codelineno-6-14" href="#__codelineno-6-14"></a><span class="s1">                image: docker:20.10.16-dind</span>
+<a id="__codelineno-6-15" name="__codelineno-6-15" href="#__codelineno-6-15"></a><span class="s1">                securityContext:</span>
+<a id="__codelineno-6-16" name="__codelineno-6-16" href="#__codelineno-6-16"></a><span class="s1">                  privileged: true</span>
+<a id="__codelineno-6-17" name="__codelineno-6-17" href="#__codelineno-6-17"></a><span class="s1">            &#39;&#39;&#39;</span>
+<a id="__codelineno-6-18" name="__codelineno-6-18" href="#__codelineno-6-18"></a><span class="w">        </span><span class="o">}</span>
+<a id="__codelineno-6-19" name="__codelineno-6-19" href="#__codelineno-6-19"></a><span class="w">    </span><span class="o">}</span>
+<a id="__codelineno-6-20" name="__codelineno-6-20" href="#__codelineno-6-20"></a>
+<a id="__codelineno-6-21" name="__codelineno-6-21" href="#__codelineno-6-21"></a><span class="w">    </span><span class="n">options</span><span class="w"> </span><span class="o">{</span>
+<a id="__codelineno-6-22" name="__codelineno-6-22" href="#__codelineno-6-22"></a><span class="w">        </span><span class="n">buildDiscarder</span><span class="o">(</span><span class="n">logRotator</span><span class="o">(</span><span class="nl">numToKeepStr:</span><span class="w"> </span><span class="s1">&#39;20&#39;</span><span class="o">))</span>
+<a id="__codelineno-6-23" name="__codelineno-6-23" href="#__codelineno-6-23"></a><span class="w">        </span><span class="n">timeout</span><span class="o">(</span><span class="nl">time:</span><span class="w"> </span><span class="mi">30</span><span class="o">,</span><span class="w"> </span><span class="nl">unit:</span><span class="w"> </span><span class="s1">&#39;MINUTES&#39;</span><span class="o">)</span>
+<a id="__codelineno-6-24" name="__codelineno-6-24" href="#__codelineno-6-24"></a><span class="w">        </span><span class="n">timestamps</span><span class="o">()</span>
+<a id="__codelineno-6-25" name="__codelineno-6-25" href="#__codelineno-6-25"></a><span class="w">        </span><span class="n">disableConcurrentBuilds</span><span class="o">()</span>
+<a id="__codelineno-6-26" name="__codelineno-6-26" href="#__codelineno-6-26"></a><span class="w">    </span><span class="o">}</span>
+<a id="__codelineno-6-27" name="__codelineno-6-27" href="#__codelineno-6-27"></a>
+<a id="__codelineno-6-28" name="__codelineno-6-28" href="#__codelineno-6-28"></a><span class="w">    </span><span class="n">environment</span><span class="w"> </span><span class="o">{</span>
+<a id="__codelineno-6-29" name="__codelineno-6-29" href="#__codelineno-6-29"></a><span class="w">        </span><span class="n">DOCKER_CREDS</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">credentials</span><span class="o">(</span><span class="s1">&#39;docker-hub-credentials&#39;</span><span class="o">)</span>
+<a id="__codelineno-6-30" name="__codelineno-6-30" href="#__codelineno-6-30"></a><span class="w">        </span><span class="n">APP_VERSION</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;1.0.${BUILD_NUMBER}&quot;</span>
+<a id="__codelineno-6-31" name="__codelineno-6-31" href="#__codelineno-6-31"></a><span class="w">    </span><span class="o">}</span>
+<a id="__codelineno-6-32" name="__codelineno-6-32" href="#__codelineno-6-32"></a>
+<a id="__codelineno-6-33" name="__codelineno-6-33" href="#__codelineno-6-33"></a><span class="w">    </span><span class="n">stages</span><span class="w"> </span><span class="o">{</span>
+<a id="__codelineno-6-34" name="__codelineno-6-34" href="#__codelineno-6-34"></a><span class="w">        </span><span class="n">stage</span><span class="o">(</span><span class="s1">&#39;Parallel Code Checks&#39;</span><span class="o">)</span><span class="w"> </span><span class="o">{</span>
+<a id="__codelineno-6-35" name="__codelineno-6-35" href="#__codelineno-6-35"></a><span class="w">            </span><span class="n">parallel</span><span class="w"> </span><span class="o">{</span>
+<a id="__codelineno-6-36" name="__codelineno-6-36" href="#__codelineno-6-36"></a><span class="w">                </span><span class="n">stage</span><span class="o">(</span><span class="s1">&#39;Unit Tests&#39;</span><span class="o">)</span><span class="w"> </span><span class="o">{</span>
+<a id="__codelineno-6-37" name="__codelineno-6-37" href="#__codelineno-6-37"></a><span class="w">                    </span><span class="n">steps</span><span class="w"> </span><span class="o">{</span>
+<a id="__codelineno-6-38" name="__codelineno-6-38" href="#__codelineno-6-38"></a><span class="w">                        </span><span class="n">container</span><span class="o">(</span><span class="s1">&#39;maven&#39;</span><span class="o">)</span><span class="w"> </span><span class="o">{</span>
+<a id="__codelineno-6-39" name="__codelineno-6-39" href="#__codelineno-6-39"></a><span class="w">                            </span><span class="n">sh</span><span class="w"> </span><span class="s1">&#39;mvn clean test&#39;</span>
+<a id="__codelineno-6-40" name="__codelineno-6-40" href="#__codelineno-6-40"></a><span class="w">                        </span><span class="o">}</span>
+<a id="__codelineno-6-41" name="__codelineno-6-41" href="#__codelineno-6-41"></a><span class="w">                    </span><span class="o">}</span>
+<a id="__codelineno-6-42" name="__codelineno-6-42" href="#__codelineno-6-42"></a><span class="w">                </span><span class="o">}</span>
+<a id="__codelineno-6-43" name="__codelineno-6-43" href="#__codelineno-6-43"></a><span class="w">                </span><span class="n">stage</span><span class="o">(</span><span class="s1">&#39;SonarQube Static Analysis&#39;</span><span class="o">)</span><span class="w"> </span><span class="o">{</span>
+<a id="__codelineno-6-44" name="__codelineno-6-44" href="#__codelineno-6-44"></a><span class="w">                    </span><span class="n">steps</span><span class="w"> </span><span class="o">{</span>
+<a id="__codelineno-6-45" name="__codelineno-6-45" href="#__codelineno-6-45"></a><span class="w">                        </span><span class="n">container</span><span class="o">(</span><span class="s1">&#39;maven&#39;</span><span class="o">)</span><span class="w"> </span><span class="o">{</span>
+<a id="__codelineno-6-46" name="__codelineno-6-46" href="#__codelineno-6-46"></a><span class="w">                            </span><span class="n">withSonarQubeEnv</span><span class="o">(</span><span class="s1">&#39;SonarQube Server&#39;</span><span class="o">)</span><span class="w"> </span><span class="o">{</span>
+<a id="__codelineno-6-47" name="__codelineno-6-47" href="#__codelineno-6-47"></a><span class="w">                                </span><span class="n">sh</span><span class="w"> </span><span class="s1">&#39;mvn sonar:sonar&#39;</span>
+<a id="__codelineno-6-48" name="__codelineno-6-48" href="#__codelineno-6-48"></a><span class="w">                            </span><span class="o">}</span>
+<a id="__codelineno-6-49" name="__codelineno-6-49" href="#__codelineno-6-49"></a><span class="w">                        </span><span class="o">}</span>
+<a id="__codelineno-6-50" name="__codelineno-6-50" href="#__codelineno-6-50"></a><span class="w">                    </span><span class="o">}</span>
+<a id="__codelineno-6-51" name="__codelineno-6-51" href="#__codelineno-6-51"></a><span class="w">                </span><span class="o">}</span>
+<a id="__codelineno-6-52" name="__codelineno-6-52" href="#__codelineno-6-52"></a><span class="w">            </span><span class="o">}</span>
+<a id="__codelineno-6-53" name="__codelineno-6-53" href="#__codelineno-6-53"></a><span class="w">        </span><span class="o">}</span>
+<a id="__codelineno-6-54" name="__codelineno-6-54" href="#__codelineno-6-54"></a>
+<a id="__codelineno-6-55" name="__codelineno-6-55" href="#__codelineno-6-55"></a><span class="w">        </span><span class="n">stage</span><span class="o">(</span><span class="s1">&#39;Quality Gate&#39;</span><span class="o">)</span><span class="w"> </span><span class="o">{</span>
+<a id="__codelineno-6-56" name="__codelineno-6-56" href="#__codelineno-6-56"></a><span class="w">            </span><span class="n">steps</span><span class="w"> </span><span class="o">{</span>
+<a id="__codelineno-6-57" name="__codelineno-6-57" href="#__codelineno-6-57"></a><span class="w">                </span><span class="n">timeout</span><span class="o">(</span><span class="nl">time:</span><span class="w"> </span><span class="mi">1</span><span class="o">,</span><span class="w"> </span><span class="nl">unit:</span><span class="w"> </span><span class="s1">&#39;HOURS&#39;</span><span class="o">)</span><span class="w"> </span><span class="o">{</span>
+<a id="__codelineno-6-58" name="__codelineno-6-58" href="#__codelineno-6-58"></a><span class="w">                    </span><span class="c1">// Pauses pipeline until SonarQube webhook responds</span>
+<a id="__codelineno-6-59" name="__codelineno-6-59" href="#__codelineno-6-59"></a><span class="w">                    </span><span class="n">waitForQualityGate</span><span class="w"> </span><span class="nl">abortPipeline:</span><span class="w"> </span><span class="kc">true</span>
+<a id="__codelineno-6-60" name="__codelineno-6-60" href="#__codelineno-6-60"></a><span class="w">                </span><span class="o">}</span>
+<a id="__codelineno-6-61" name="__codelineno-6-61" href="#__codelineno-6-61"></a><span class="w">            </span><span class="o">}</span>
+<a id="__codelineno-6-62" name="__codelineno-6-62" href="#__codelineno-6-62"></a><span class="w">        </span><span class="o">}</span>
+<a id="__codelineno-6-63" name="__codelineno-6-63" href="#__codelineno-6-63"></a>
+<a id="__codelineno-6-64" name="__codelineno-6-64" href="#__codelineno-6-64"></a><span class="w">        </span><span class="n">stage</span><span class="o">(</span><span class="s1">&#39;Build &amp; Push Container&#39;</span><span class="o">)</span><span class="w"> </span><span class="o">{</span>
+<a id="__codelineno-6-65" name="__codelineno-6-65" href="#__codelineno-6-65"></a><span class="w">            </span><span class="n">steps</span><span class="w"> </span><span class="o">{</span>
+<a id="__codelineno-6-66" name="__codelineno-6-66" href="#__codelineno-6-66"></a><span class="w">                </span><span class="n">container</span><span class="o">(</span><span class="s1">&#39;docker&#39;</span><span class="o">)</span><span class="w"> </span><span class="o">{</span>
+<a id="__codelineno-6-67" name="__codelineno-6-67" href="#__codelineno-6-67"></a><span class="w">                    </span><span class="n">sh</span><span class="w"> </span><span class="s1">&#39;docker build -t myorg/app:${APP_VERSION} .&#39;</span>
+<a id="__codelineno-6-68" name="__codelineno-6-68" href="#__codelineno-6-68"></a><span class="w">                    </span><span class="n">sh</span><span class="w"> </span><span class="s1">&#39;echo $DOCKER_CREDS_PSW | docker login -u $DOCKER_CREDS_USR --password-stdin&#39;</span>
+<a id="__codelineno-6-69" name="__codelineno-6-69" href="#__codelineno-6-69"></a><span class="w">                    </span><span class="n">sh</span><span class="w"> </span><span class="s1">&#39;docker push myorg/app:${APP_VERSION}&#39;</span>
+<a id="__codelineno-6-70" name="__codelineno-6-70" href="#__codelineno-6-70"></a><span class="w">                </span><span class="o">}</span>
+<a id="__codelineno-6-71" name="__codelineno-6-71" href="#__codelineno-6-71"></a><span class="w">            </span><span class="o">}</span>
+<a id="__codelineno-6-72" name="__codelineno-6-72" href="#__codelineno-6-72"></a><span class="w">        </span><span class="o">}</span>
+<a id="__codelineno-6-73" name="__codelineno-6-73" href="#__codelineno-6-73"></a>
+<a id="__codelineno-6-74" name="__codelineno-6-74" href="#__codelineno-6-74"></a><span class="w">        </span><span class="n">stage</span><span class="o">(</span><span class="s1">&#39;Approval Gate&#39;</span><span class="o">)</span><span class="w"> </span><span class="o">{</span>
+<a id="__codelineno-6-75" name="__codelineno-6-75" href="#__codelineno-6-75"></a><span class="w">            </span><span class="n">steps</span><span class="w"> </span><span class="o">{</span>
+<a id="__codelineno-6-76" name="__codelineno-6-76" href="#__codelineno-6-76"></a><span class="w">                </span><span class="n">input</span><span class="w"> </span><span class="nl">message:</span><span class="w"> </span><span class="s1">&#39;Approve production deployment?&#39;</span><span class="o">,</span><span class="w"> </span><span class="nl">submitter:</span><span class="w"> </span><span class="s1">&#39;admin-group&#39;</span>
+<a id="__codelineno-6-77" name="__codelineno-6-77" href="#__codelineno-6-77"></a><span class="w">            </span><span class="o">}</span>
+<a id="__codelineno-6-78" name="__codelineno-6-78" href="#__codelineno-6-78"></a><span class="w">        </span><span class="o">}</span>
+<a id="__codelineno-6-79" name="__codelineno-6-79" href="#__codelineno-6-79"></a>
+<a id="__codelineno-6-80" name="__codelineno-6-80" href="#__codelineno-6-80"></a><span class="w">        </span><span class="n">stage</span><span class="o">(</span><span class="s1">&#39;Deploy&#39;</span><span class="o">)</span><span class="w"> </span><span class="o">{</span>
+<a id="__codelineno-6-81" name="__codelineno-6-81" href="#__codelineno-6-81"></a><span class="w">            </span><span class="n">steps</span><span class="w"> </span><span class="o">{</span>
+<a id="__codelineno-6-82" name="__codelineno-6-82" href="#__codelineno-6-82"></a><span class="w">                </span><span class="n">echo</span><span class="w"> </span><span class="s2">&quot;Deploying to production...&quot;</span>
+<a id="__codelineno-6-83" name="__codelineno-6-83" href="#__codelineno-6-83"></a><span class="w">                </span><span class="c1">// Deployment logic here</span>
+<a id="__codelineno-6-84" name="__codelineno-6-84" href="#__codelineno-6-84"></a><span class="w">            </span><span class="o">}</span>
+<a id="__codelineno-6-85" name="__codelineno-6-85" href="#__codelineno-6-85"></a><span class="w">        </span><span class="o">}</span>
+<a id="__codelineno-6-86" name="__codelineno-6-86" href="#__codelineno-6-86"></a><span class="w">    </span><span class="o">}</span>
+<a id="__codelineno-6-87" name="__codelineno-6-87" href="#__codelineno-6-87"></a>
+<a id="__codelineno-6-88" name="__codelineno-6-88" href="#__codelineno-6-88"></a><span class="w">    </span><span class="n">post</span><span class="w"> </span><span class="o">{</span>
+<a id="__codelineno-6-89" name="__codelineno-6-89" href="#__codelineno-6-89"></a><span class="w">        </span><span class="n">always</span><span class="w"> </span><span class="o">{</span>
+<a id="__codelineno-6-90" name="__codelineno-6-90" href="#__codelineno-6-90"></a><span class="w">            </span><span class="n">cleanWs</span><span class="o">()</span><span class="w"> </span><span class="c1">// Important: clear workspace to prevent disk bloat</span>
+<a id="__codelineno-6-91" name="__codelineno-6-91" href="#__codelineno-6-91"></a><span class="w">        </span><span class="o">}</span>
+<a id="__codelineno-6-92" name="__codelineno-6-92" href="#__codelineno-6-92"></a><span class="w">        </span><span class="n">failure</span><span class="w"> </span><span class="o">{</span>
+<a id="__codelineno-6-93" name="__codelineno-6-93" href="#__codelineno-6-93"></a><span class="w">            </span><span class="n">slackSend</span><span class="w"> </span><span class="nl">channel:</span><span class="w"> </span><span class="s1">&#39;#alerts&#39;</span><span class="o">,</span><span class="w"> </span><span class="nl">message:</span><span class="w"> </span><span class="s2">&quot;🚨 Build failed: ${env.JOB_NAME} [${env.BUILD_NUMBER}]&quot;</span>
+<a id="__codelineno-6-94" name="__codelineno-6-94" href="#__codelineno-6-94"></a><span class="w">        </span><span class="o">}</span>
+<a id="__codelineno-6-95" name="__codelineno-6-95" href="#__codelineno-6-95"></a><span class="w">    </span><span class="o">}</span>
+<a id="__codelineno-6-96" name="__codelineno-6-96" href="#__codelineno-6-96"></a><span class="o">}</span>
+</code></pre></div></p>
+<p><strong>💡 Best Practice:</strong> Always use Declarative Pipelines (<code>pipeline { }</code>) over Scripted Pipelines (<code>node { }</code>) for strict structure and validation. Abstract complex logic into Jenkins Shared Libraries!
+<strong>⚠️ Common Pitfalls:</strong> Running builds directly on the Master node (built-in node). This causes severe performance degradation and security risks. Always use Agents.
+<strong>🔧 DevOps Pro Tip:</strong> Utilize the <code>buildDiscarder(logRotator(...))</code> option in every pipeline to prevent Jenkins disks from filling up with ancient build logs and artifacts.</p>
+<hr />
+<h2 id="9-cicd-security-secret-management-gitops-best-practices">9. CI/CD Security, Secret Management &amp; GitOps Best Practices<a class="headerlink" href="#9-cicd-security-secret-management-gitops-best-practices" title="Permanent link">&para;</a></h2>
+<p><strong>🌐 Intuitive Real-World Analogy:</strong>
+Armored Transport Security.
+Never print combination lock numbers directly on outer shipping cartons (hardcoded cloud credentials). Instead, issue short-lived biometric escort IDs (OIDC / Vault federation) and apply holographic tamper-proof digital seals to every shipment (Cosign container signing).</p>
+<p><strong>What is it?</strong>
+Modern CI/CD pipelines are prime targets for supply chain attacks. Hardening pipelines involves OIDC identity federation, producing a Software Bill of Materials (SBOM) for compliance, and cryptographically signing software artifacts. GitOps (e.g., ArgoCD) pulls configuration from Git rather than CI pushing configurations to clusters.</p>
+<p><strong>Production Code Suite:</strong>
+<em>Practical terminal implementation of supply chain security inside a CI pipeline:</em></p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a><span class="ch">#!/bin/bash</span>
+<a id="__codelineno-7-2" name="__codelineno-7-2" href="#__codelineno-7-2"></a><span class="c1"># Securing the CI/CD Pipeline Artifacts</span>
+<a id="__codelineno-7-3" name="__codelineno-7-3" href="#__codelineno-7-3"></a>
+<a id="__codelineno-7-4" name="__codelineno-7-4" href="#__codelineno-7-4"></a><span class="nv">IMAGE</span><span class="o">=</span><span class="s2">&quot;ghcr.io/myorg/myapp:abc1234&quot;</span>
+<a id="__codelineno-7-5" name="__codelineno-7-5" href="#__codelineno-7-5"></a>
+<a id="__codelineno-7-6" name="__codelineno-7-6" href="#__codelineno-7-6"></a><span class="c1"># 1. Generate a Software Bill of Materials (SBOM) using Syft</span>
+<a id="__codelineno-7-7" name="__codelineno-7-7" href="#__codelineno-7-7"></a><span class="c1"># This documents every open-source library used inside the container</span>
+<a id="__codelineno-7-8" name="__codelineno-7-8" href="#__codelineno-7-8"></a>curl<span class="w"> </span>-sSfL<span class="w"> </span>https://raw.githubusercontent.com/anchore/syft/main/install.sh<span class="w"> </span><span class="p">|</span><span class="w"> </span>sh<span class="w"> </span>-s<span class="w"> </span>--<span class="w"> </span>-b<span class="w"> </span>/usr/local/bin
+<a id="__codelineno-7-9" name="__codelineno-7-9" href="#__codelineno-7-9"></a>syft<span class="w"> </span><span class="nv">$IMAGE</span><span class="w"> </span>-o<span class="w"> </span>cyclonedx-json<span class="w"> </span>&gt;<span class="w"> </span>sbom.json
+<a id="__codelineno-7-10" name="__codelineno-7-10" href="#__codelineno-7-10"></a>
+<a id="__codelineno-7-11" name="__codelineno-7-11" href="#__codelineno-7-11"></a><span class="c1"># 2. Cryptographically Sign the Container using Sigstore Cosign (Keyless via OIDC)</span>
+<a id="__codelineno-7-12" name="__codelineno-7-12" href="#__codelineno-7-12"></a><span class="c1"># Proves the container was built by the authorized CI system</span>
+<a id="__codelineno-7-13" name="__codelineno-7-13" href="#__codelineno-7-13"></a>cosign<span class="w"> </span>sign<span class="w"> </span>--yes<span class="w"> </span><span class="nv">$IMAGE</span>
+<a id="__codelineno-7-14" name="__codelineno-7-14" href="#__codelineno-7-14"></a>
+<a id="__codelineno-7-15" name="__codelineno-7-15" href="#__codelineno-7-15"></a><span class="c1"># 3. Attest the SBOM to the image registry</span>
+<a id="__codelineno-7-16" name="__codelineno-7-16" href="#__codelineno-7-16"></a>cosign<span class="w"> </span>attest<span class="w"> </span>--yes<span class="w"> </span>--predicate<span class="w"> </span>sbom.json<span class="w"> </span>--type<span class="w"> </span>cyclonedx<span class="w"> </span><span class="nv">$IMAGE</span>
+</code></pre></div>
+<p><strong>💡 Best Practice:</strong> Adopt GitOps. Your CI pipeline should build the image and update a manifest in a Git repository. A tool inside the cluster (ArgoCD/Flux) constantly pulls and syncs that manifest. This prevents your CI server from needing production cluster credentials!
+<strong>⚠️ Common Pitfalls:</strong> Leaking secrets in build logs. Always use secret management tools (HashiCorp Vault, AWS Secrets Manager) or native CI secret masking features.</p>
+<hr />
+<h2 id="10-quick-reference-cheat-sheet-summary-tables">10. Quick Reference &amp; Cheat Sheet Summary Tables<a class="headerlink" href="#10-quick-reference-cheat-sheet-summary-tables" title="Permanent link">&para;</a></h2>
+<p><strong>Table 1: Git Core vs Advanced CLI Reference</strong></p>
+<table>
+<thead>
+<tr>
+<th>Category</th>
+<th>Command</th>
+<th>Use Case</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Syncing</td>
+<td><code>git pull --rebase</code></td>
+<td>Fetch and rebase local commits on top of remote.</td>
+</tr>
+<tr>
+<td>Auditing</td>
+<td><code>git log -S "password"</code></td>
+<td>Search the entire commit history for specific text.</td>
+</tr>
+<tr>
+<td>Modifying</td>
+<td><code>git commit --amend -m "..."</code></td>
+<td>Add forgotten files or rewrite the very last commit message.</td>
+</tr>
+<tr>
+<td>Archiving</td>
+<td><code>git archive -o latest.zip HEAD</code></td>
+<td>Export the repository into a zip file without <code>.git</code> history.</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Table 2: CI/CD Syntax &amp; Environment Variable Equivalent Dictionary</strong></p>
+<table>
+<thead>
+<tr>
+<th>Concept</th>
+<th>GitHub Actions</th>
+<th>GitLab CI/CD</th>
+<th>Jenkins</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Workspace Path</td>
+<td><code>github.workspace</code></td>
+<td><code>$CI_PROJECT_DIR</code></td>
+<td><code>env.WORKSPACE</code></td>
+</tr>
+<tr>
+<td>Branch Name</td>
+<td><code>github.ref_name</code></td>
+<td><code>$CI_COMMIT_BRANCH</code></td>
+<td><code>env.BRANCH_NAME</code></td>
+</tr>
+<tr>
+<td>Commit Hash</td>
+<td><code>github.sha</code></td>
+<td><code>$CI_COMMIT_SHA</code></td>
+<td><code>env.GIT_COMMIT</code></td>
+</tr>
+<tr>
+<td>Build ID</td>
+<td><code>github.run_id</code></td>
+<td><code>$CI_PIPELINE_ID</code></td>
+<td><code>env.BUILD_NUMBER</code></td>
+</tr>
+<tr>
+<td>Job Config File</td>
+<td><code>.github/workflows/*.yml</code></td>
+<td><code>.gitlab-ci.yml</code></td>
+<td><code>Jenkinsfile</code></td>
+</tr>
+</tbody>
+</table>
+<p><strong>Table 3: Common CI/CD Troubleshooting &amp; Diagnostic Resolutions</strong></p>
+<table>
+<thead>
+<tr>
+<th>Symptom / Issue</th>
+<th>Probable Cause</th>
+<th>Resolution</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Detached HEAD state in CI</td>
+<td>CI tools check out specific commit SHAs, not branch names.</td>
+<td>Create a local branch if you must commit back: <code>git checkout -b temp</code>.</td>
+</tr>
+<tr>
+<td>Jenkins workspace locked</td>
+<td>Previous build crashed or didn't release file locks.</td>
+<td>Manually wipe workspace, or ensure <code>cleanWs()</code> runs in <code>post { always }</code>.</td>
+</tr>
+<tr>
+<td>OIDC Trust Failure (403)</td>
+<td>Misconfigured Audience (aud) or Issuer URL in IAM Role.</td>
+<td>Verify the GitHub Actions ID provider thumbprint and conditions in AWS IAM.</td>
+</tr>
+<tr>
+<td>SSH Runner Permission Denied</td>
+<td>Private key format incorrect or incorrect file permissions.</td>
+<td>Ensure key ends with a newline, use <code>chmod 600 key.pem</code>, and verify SSH agent.</td>
+</tr>
+</tbody>
+</table>
+<blockquote>
+<p><strong>Final Note</strong>: The true mastery of DevOps lies not in memorizing every flag, but in understanding the architectural flow of code from a local laptop to global production infrastructure. Standardize your pipelines, automate your security, and keep your Git history clean!
+&lt;/📘 Git &amp; CI/CD Automation — Comprehensive Cheat Sheet&gt;</p>
+</blockquote>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8z"/></svg>
+  Back to top
+</button>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    <script id="__config" type="application/json">{"base": "../..", "features": ["navigation.tabs", "navigation.sections", "navigation.expand", "navigation.top", "search.highlight", "content.code.copy", "content.code.annotate"], "search": "../../assets/javascripts/workers/search.07f07601.min.js", "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}}</script>
+    
+    
+      <script src="../../assets/javascripts/bundle.56dfad97.min.js"></script>
+      
+        <script src="https://unpkg.com/mermaid@10/dist/mermaid.min.js"></script>
+      
+    
+  </body>
+</html>

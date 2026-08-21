@@ -1,0 +1,2242 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="Production-ready reference architecture, manifests, scripts and pipelines for a GCP enterprise DevOps/SRE platform">
+      
+      
+        <meta name="author" content="Platform SRE Team">
+      
+      
+        <link rel="canonical" href="https://AravindKumarjoshi.github.io/devops-platform/cheatsheets/18_Regex_Mastery/">
+      
+      
+        <link rel="prev" href="../10_dsa_python_cheatsheet/">
+      
+      
+        <link rel="next" href="../22_Embedded_C/">
+      
+      
+      <link rel="icon" href="../../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.5.34">
+    
+    
+      
+        <title>Regex Mastery - Enterprise GCP DevOps & SRE Platform</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../assets/stylesheets/main.35f28582.min.css">
+      
+        
+        <link rel="stylesheet" href="../../assets/stylesheets/palette.06af60db.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+      <link rel="stylesheet" href="../../assets/_mkdocstrings.css">
+    
+      <link rel="stylesheet" href="../../stylesheets/extra.css">
+    
+    <script>__md_scope=new URL("../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+    
+  </head>
+  
+  
+    
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="cyan">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#18-regex-mastery-regular-expressions" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+<header class="md-header" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href="../.." title="Enterprise GCP DevOps &amp; SRE Platform" class="md-header__button md-logo" aria-label="Enterprise GCP DevOps & SRE Platform" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            Enterprise GCP DevOps & SRE Platform
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Regex Mastery
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+    
+    
+    
+    
+      <label class="md-header__button md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+      </label>
+      <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+    
+    
+      <div class="md-header__source">
+        <a href="https://github.com/AravindKumarjoshi/devops-platform" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 6.6.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2024 Fonticons, Inc.--><path d="M439.55 236.05 244 40.45a28.87 28.87 0 0 0-40.81 0l-40.66 40.63 51.52 51.52c27.06-9.14 52.68 16.77 43.39 43.68l49.66 49.66c34.23-11.8 61.18 31 35.47 56.69-26.49 26.49-70.21-2.87-56-37.34L240.22 199v121.85c25.3 12.54 22.26 41.85 9.08 55a34.34 34.34 0 0 1-48.55 0c-17.57-17.6-11.07-46.91 11.25-56v-123c-20.8-8.51-24.6-30.74-18.64-45L142.57 101 8.45 235.14a28.86 28.86 0 0 0 0 40.81l195.61 195.6a28.86 28.86 0 0 0 40.8 0l194.69-194.69a28.86 28.86 0 0 0 0-40.81"/></svg>
+  </div>
+  <div class="md-source__repository">
+    GitHub
+  </div>
+</a>
+      </div>
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+            
+<nav class="md-tabs" aria-label="Tabs" data-md-component="tabs">
+  <div class="md-grid">
+    <ul class="md-tabs__list">
+      
+        
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../.." class="md-tabs__link">
+        
+  
+    
+  
+  Home
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../architecture-diagrams/" class="md-tabs__link">
+          
+  
+  Platform Architecture
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+    
+  
+  
+    
+    
+      <li class="md-tabs__item md-tabs__item--active">
+        <a href="../devops_cloud_engineering_handbook/" class="md-tabs__link">
+          
+  
+  Knowledge Base
+
+        </a>
+      </li>
+    
+  
+
+      
+    </ul>
+  </div>
+</nav>
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+  
+
+
+<nav class="md-nav md-nav--primary md-nav--lifted" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../.." title="Enterprise GCP DevOps &amp; SRE Platform" class="md-nav__button md-logo" aria-label="Enterprise GCP DevOps & SRE Platform" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    Enterprise GCP DevOps & SRE Platform
+  </label>
+  
+    <div class="md-nav__source">
+      <a href="https://github.com/AravindKumarjoshi/devops-platform" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 6.6.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2024 Fonticons, Inc.--><path d="M439.55 236.05 244 40.45a28.87 28.87 0 0 0-40.81 0l-40.66 40.63 51.52 51.52c27.06-9.14 52.68 16.77 43.39 43.68l49.66 49.66c34.23-11.8 61.18 31 35.47 56.69-26.49 26.49-70.21-2.87-56-37.34L240.22 199v121.85c25.3 12.54 22.26 41.85 9.08 55a34.34 34.34 0 0 1-48.55 0c-17.57-17.6-11.07-46.91 11.25-56v-123c-20.8-8.51-24.6-30.74-18.64-45L142.57 101 8.45 235.14a28.86 28.86 0 0 0 0 40.81l195.61 195.6a28.86 28.86 0 0 0 40.8 0l194.69-194.69a28.86 28.86 0 0 0 0-40.81"/></svg>
+  </div>
+  <div class="md-source__repository">
+    GitHub
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../.." class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Home
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_2" >
+        
+          
+          <label class="md-nav__link" for="__nav_2" id="__nav_2_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    Platform Architecture
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2">
+            <span class="md-nav__icon md-icon"></span>
+            Platform Architecture
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../architecture-diagrams/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Architecture Diagrams
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../jenkins-gke-manifests/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Jenkins on GKE Manifests
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../sre-automation-scripts/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    SRE Automation Scripts
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../golden-image-pipeline/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Golden Image Pipeline
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../observability-monitoring/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Observability & Monitoring
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    
+    
+    
+      
+        
+        
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_3" id="__nav_3_label" tabindex="">
+            
+  
+  <span class="md-ellipsis">
+    Knowledge Base
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_3">
+            <span class="md-nav__icon md-icon"></span>
+            Knowledge Base
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../devops_cloud_engineering_handbook/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    DevOps & Cloud Handbook
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    
+    
+    
+      
+      
+        
+          
+          
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3_2" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_3_2" id="__nav_3_2_label" tabindex="">
+            
+  
+  <span class="md-ellipsis">
+    Programming & Core
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_3_2_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_3_2">
+            <span class="md-nav__icon md-icon"></span>
+            Programming & Core
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../01_sql_cheatsheet/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    SQL
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../02_python_core_cheatsheet/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Python Core
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../03_python_modules_cheatsheet/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Python Modules
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../10_dsa_python_cheatsheet/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    DSA with Python
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  <span class="md-ellipsis">
+    Regex Mastery
+  </span>
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  <span class="md-ellipsis">
+    Regex Mastery
+  </span>
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#1-engine-internals-nfa-vs-dfa" class="md-nav__link">
+    <span class="md-ellipsis">
+      1. Engine Internals: NFA vs. DFA
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="1. Engine Internals: NFA vs. DFA">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#nfa-regex-directed-engine" class="md-nav__link">
+    <span class="md-ellipsis">
+      NFA (Regex-Directed Engine)
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#dfa-text-directed-engine" class="md-nav__link">
+    <span class="md-ellipsis">
+      DFA (Text-Directed Engine)
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#2-historical-context-posix-bre-vs-ere-vs-pcre" class="md-nav__link">
+    <span class="md-ellipsis">
+      2. Historical Context: POSIX BRE vs. ERE vs. PCRE
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="2. Historical Context: POSIX BRE vs. ERE vs. PCRE">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#1-posix-bre-basic-regular-expressions" class="md-nav__link">
+    <span class="md-ellipsis">
+      1. POSIX BRE (Basic Regular Expressions)
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#2-posix-ere-extended-regular-expressions" class="md-nav__link">
+    <span class="md-ellipsis">
+      2. POSIX ERE (Extended Regular Expressions)
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#3-pcre-perl-compatible-regular-expressions" class="md-nav__link">
+    <span class="md-ellipsis">
+      3. PCRE (Perl Compatible Regular Expressions)
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#3-core-syntax-the-building-blocks" class="md-nav__link">
+    <span class="md-ellipsis">
+      3. Core Syntax &amp; The Building Blocks
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="3. Core Syntax & The Building Blocks">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#metacharacters-wildcards" class="md-nav__link">
+    <span class="md-ellipsis">
+      Metacharacters &amp; Wildcards
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#character-classes" class="md-nav__link">
+    <span class="md-ellipsis">
+      Character Classes
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#anchors-positioning" class="md-nav__link">
+    <span class="md-ellipsis">
+      Anchors (Positioning)
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#4-quantifiers-greedy-vs-lazy-matching" class="md-nav__link">
+    <span class="md-ellipsis">
+      4. Quantifiers: Greedy vs. Lazy Matching
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="4. Quantifiers: Greedy vs. Lazy Matching">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#the-greed-trap" class="md-nav__link">
+    <span class="md-ellipsis">
+      The Greed Trap
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#the-lazy-fix" class="md-nav__link">
+    <span class="md-ellipsis">
+      The Lazy Fix
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#5-groups-alternation" class="md-nav__link">
+    <span class="md-ellipsis">
+      5. Groups &amp; Alternation
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="5. Groups & Alternation">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#alternation-or" class="md-nav__link">
+    <span class="md-ellipsis">
+      Alternation (OR)
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#capture-groups" class="md-nav__link">
+    <span class="md-ellipsis">
+      Capture Groups (...)
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#backreferences-1" class="md-nav__link">
+    <span class="md-ellipsis">
+      Backreferences \1
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#non-capturing-groups" class="md-nav__link">
+    <span class="md-ellipsis">
+      Non-Capturing Groups (?:...)
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#6-advanced-lookarounds-zero-width-assertions" class="md-nav__link">
+    <span class="md-ellipsis">
+      6. Advanced Lookarounds (Zero-Width Assertions)
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#7-performance-pitfall-catastrophic-backtracking" class="md-nav__link">
+    <span class="md-ellipsis">
+      7. Performance Pitfall: Catastrophic Backtracking
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#8-practical-real-world-parsing-examples" class="md-nav__link">
+    <span class="md-ellipsis">
+      8. Practical Real-World Parsing Examples
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="8. Practical Real-World Parsing Examples">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#scenario-1-ipv4-address-validation" class="md-nav__link">
+    <span class="md-ellipsis">
+      Scenario 1: IPv4 Address Validation
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#scenario-2-nginx-apache-access-log-parsing" class="md-nav__link">
+    <span class="md-ellipsis">
+      Scenario 2: NGINX / Apache Access Log Parsing
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../22_Embedded_C/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Embedded C
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+      
+      
+        
+          
+          
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_3_3" >
+        
+          
+          <label class="md-nav__link" for="__nav_3_3" id="__nav_3_3_label" tabindex="">
+            
+  
+  <span class="md-ellipsis">
+    OS & Automation
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_3_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_3_3">
+            <span class="md-nav__icon md-icon"></span>
+            OS & Automation
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../05_bash_cheatsheet/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Linux Bash
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../19_Linux_Automation/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Linux Automation
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../04_powershell_cheatsheet/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    PowerShell
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../20_PowerShell_Mastery/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    PowerShell Mastery
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../21_OS_Architecture/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    OS Architecture
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+      
+      
+        
+          
+          
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_3_4" >
+        
+          
+          <label class="md-nav__link" for="__nav_3_4" id="__nav_3_4_label" tabindex="">
+            
+  
+  <span class="md-ellipsis">
+    DevOps & Infrastructure
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_3_4_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_3_4">
+            <span class="md-nav__icon md-icon"></span>
+            DevOps & Infrastructure
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../06_networking_cheatsheet/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Networking
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../07_docker_cheatsheet/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Docker
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../08_kubernetes_cheatsheet/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Kubernetes
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../13_git_cicd_cheatsheet/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Git & CI/CD
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../12_development_methodologies_cheatsheet/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Development Methodologies
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+      
+      
+        
+          
+          
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_3_5" >
+        
+          
+          <label class="md-nav__link" for="__nav_3_5" id="__nav_3_5_label" tabindex="">
+            
+  
+  <span class="md-ellipsis">
+    APIs & Formats
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_3_5_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_3_5">
+            <span class="md-nav__icon md-icon"></span>
+            APIs & Formats
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../09_backend_api_cheatsheet/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Backend API
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../14_data_serialization_formats_cheatsheet/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Data Serialization
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../15_markdown_mermaid_documentation_cheatsheet/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Markdown & Mermaid
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+      
+      
+        
+          
+          
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_3_6" >
+        
+          
+          <label class="md-nav__link" for="__nav_3_6" id="__nav_3_6_label" tabindex="">
+            
+  
+  <span class="md-ellipsis">
+    Specialized
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_3_6_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_3_6">
+            <span class="md-nav__icon md-icon"></span>
+            Specialized
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../16_cybersecurity_hacking_forensics_manual/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Cybersecurity & Forensics
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../17_data_science_foundations_cheatsheet/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Data Science Foundations
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../11_testing_playwright_cheatsheet/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Testing & Playwright
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+      
+      
+        
+          
+          
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_3_7" >
+        
+          
+          <label class="md-nav__link" for="__nav_3_7" id="__nav_3_7_label" tabindex="">
+            
+  
+  <span class="md-ellipsis">
+    Interview & Context
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_3_7_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_3_7">
+            <span class="md-nav__icon md-icon"></span>
+            Interview & Context
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../interview_questions/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Interview Questions
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../CONTEXT_TRACKER/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Context Tracker
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#1-engine-internals-nfa-vs-dfa" class="md-nav__link">
+    <span class="md-ellipsis">
+      1. Engine Internals: NFA vs. DFA
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="1. Engine Internals: NFA vs. DFA">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#nfa-regex-directed-engine" class="md-nav__link">
+    <span class="md-ellipsis">
+      NFA (Regex-Directed Engine)
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#dfa-text-directed-engine" class="md-nav__link">
+    <span class="md-ellipsis">
+      DFA (Text-Directed Engine)
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#2-historical-context-posix-bre-vs-ere-vs-pcre" class="md-nav__link">
+    <span class="md-ellipsis">
+      2. Historical Context: POSIX BRE vs. ERE vs. PCRE
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="2. Historical Context: POSIX BRE vs. ERE vs. PCRE">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#1-posix-bre-basic-regular-expressions" class="md-nav__link">
+    <span class="md-ellipsis">
+      1. POSIX BRE (Basic Regular Expressions)
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#2-posix-ere-extended-regular-expressions" class="md-nav__link">
+    <span class="md-ellipsis">
+      2. POSIX ERE (Extended Regular Expressions)
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#3-pcre-perl-compatible-regular-expressions" class="md-nav__link">
+    <span class="md-ellipsis">
+      3. PCRE (Perl Compatible Regular Expressions)
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#3-core-syntax-the-building-blocks" class="md-nav__link">
+    <span class="md-ellipsis">
+      3. Core Syntax &amp; The Building Blocks
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="3. Core Syntax & The Building Blocks">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#metacharacters-wildcards" class="md-nav__link">
+    <span class="md-ellipsis">
+      Metacharacters &amp; Wildcards
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#character-classes" class="md-nav__link">
+    <span class="md-ellipsis">
+      Character Classes
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#anchors-positioning" class="md-nav__link">
+    <span class="md-ellipsis">
+      Anchors (Positioning)
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#4-quantifiers-greedy-vs-lazy-matching" class="md-nav__link">
+    <span class="md-ellipsis">
+      4. Quantifiers: Greedy vs. Lazy Matching
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="4. Quantifiers: Greedy vs. Lazy Matching">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#the-greed-trap" class="md-nav__link">
+    <span class="md-ellipsis">
+      The Greed Trap
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#the-lazy-fix" class="md-nav__link">
+    <span class="md-ellipsis">
+      The Lazy Fix
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#5-groups-alternation" class="md-nav__link">
+    <span class="md-ellipsis">
+      5. Groups &amp; Alternation
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="5. Groups & Alternation">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#alternation-or" class="md-nav__link">
+    <span class="md-ellipsis">
+      Alternation (OR)
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#capture-groups" class="md-nav__link">
+    <span class="md-ellipsis">
+      Capture Groups (...)
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#backreferences-1" class="md-nav__link">
+    <span class="md-ellipsis">
+      Backreferences \1
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#non-capturing-groups" class="md-nav__link">
+    <span class="md-ellipsis">
+      Non-Capturing Groups (?:...)
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#6-advanced-lookarounds-zero-width-assertions" class="md-nav__link">
+    <span class="md-ellipsis">
+      6. Advanced Lookarounds (Zero-Width Assertions)
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#7-performance-pitfall-catastrophic-backtracking" class="md-nav__link">
+    <span class="md-ellipsis">
+      7. Performance Pitfall: Catastrophic Backtracking
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#8-practical-real-world-parsing-examples" class="md-nav__link">
+    <span class="md-ellipsis">
+      8. Practical Real-World Parsing Examples
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="8. Practical Real-World Parsing Examples">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#scenario-1-ipv4-address-validation" class="md-nav__link">
+    <span class="md-ellipsis">
+      Scenario 1: IPv4 Address Validation
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#scenario-2-nginx-apache-access-log-parsing" class="md-nav__link">
+    <span class="md-ellipsis">
+      Scenario 2: NGINX / Apache Access Log Parsing
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+  
+  
+
+
+<h1 id="18-regex-mastery-regular-expressions">18. REGEX MASTERY (Regular Expressions)<a class="headerlink" href="#18-regex-mastery-regular-expressions" title="Permanent link">&para;</a></h1>
+<p>Regular Expressions (Regex) are an arcane but universally essential language for pattern matching, text parsing, and string validation. They are utilized heavily in log analysis, data scrubbing, and network routing.</p>
+<hr />
+<h2 id="1-engine-internals-nfa-vs-dfa">1. Engine Internals: NFA vs. DFA<a class="headerlink" href="#1-engine-internals-nfa-vs-dfa" title="Permanent link">&para;</a></h2>
+<p>Before memorizing syntax, you must understand <em>how</em> the software executes the syntax. There are two primary architectural engines for regex: <strong>NFA (Nondeterministic Finite Automaton)</strong> and <strong>DFA (Deterministic Finite Automaton)</strong>.</p>
+<h3 id="nfa-regex-directed-engine">NFA (Regex-Directed Engine)<a class="headerlink" href="#nfa-regex-directed-engine" title="Permanent link">&para;</a></h3>
+<p>Used by: Python, PCRE, Java, Perl, .NET, Ruby, PHP.
+*   <strong>Mechanics</strong>: The engine reads the <em>regex pattern</em> character by character. If it has choices (alternation or quantifiers), it picks the first option, remembers the other options, and moves forward. If the match fails later, it "backtracks" to the saved state and tries the next option.
+*   <strong>Pros</strong>: Supports advanced features like Capture Groups, Backreferences, and Lookarounds.
+*   <strong>Cons</strong>: Susceptible to <strong>Catastrophic Backtracking</strong> (exponential time complexity) because it tries every possible permutation before failing.</p>
+<h3 id="dfa-text-directed-engine">DFA (Text-Directed Engine)<a class="headerlink" href="#dfa-text-directed-engine" title="Permanent link">&para;</a></h3>
+<p>Used by: <code>awk</code>, <code>egrep</code>, MySQL.
+*   <strong>Mechanics</strong>: The engine reads the <em>input text</em> character by character exactly once. It keeps track of all possible matching states simultaneously. 
+*   <strong>Pros</strong>: Guaranteed linear time complexity $O(n)$. It never backtracks. It is immune to catastrophic backtracking.
+*   <strong>Cons</strong>: Lacks advanced features. It cannot support Capture Groups or Backreferences because it does not "remember" the path it took—it only knows the current state.</p>
+<pre class="mermaid"><code>stateDiagram-v2
+    %% DFA State Machine for Regex: a(b|c)d
+    direction LR
+    classDef start fill:#e1bee7,stroke:#8e24aa,stroke-width:2px;
+    classDef accept fill:#c8e6c9,stroke:#388e3c,stroke-width:2px;
+
+    state "DFA Engine Example: a(b|c)d" as DFA {
+        State0: S0 (Start)
+        State1: S1 (Read 'a')
+        State2: S2 (Read 'b' or 'c')
+        State3: S3 (Read 'd')
+
+        State0 --&gt; State1 : a
+        State1 --&gt; State2 : b
+        State1 --&gt; State2 : c
+        State2 --&gt; State3 : d
+
+        class State0 start
+        class State3 accept
+    }</code></pre>
+<hr />
+<h2 id="2-historical-context-posix-bre-vs-ere-vs-pcre">2. Historical Context: POSIX BRE vs. ERE vs. PCRE<a class="headerlink" href="#2-historical-context-posix-bre-vs-ere-vs-pcre" title="Permanent link">&para;</a></h2>
+<p>When writing Bash scripts, you will inevitably fight with <code>grep</code>, <code>sed</code>, or <code>awk</code> failing to recognize your regex. This is due to historical POSIX standards.</p>
+<h3 id="1-posix-bre-basic-regular-expressions">1. POSIX BRE (Basic Regular Expressions)<a class="headerlink" href="#1-posix-bre-basic-regular-expressions" title="Permanent link">&para;</a></h3>
+<p>Used by default in <code>grep</code> and <code>sed</code>. 
+*   In BRE, characters like <code>+</code>, <code>?</code>, <code>|</code>, <code>(</code>, and <code>)</code> are treated as <strong>literal characters</strong> by default.
+*   To give them regex meaning, you must <strong>escape</strong> them with a backslash <code>\</code>.
+*   <em>Example</em>: To capture a group, you must write <code>\(abc\)</code>.</p>
+<h3 id="2-posix-ere-extended-regular-expressions">2. POSIX ERE (Extended Regular Expressions)<a class="headerlink" href="#2-posix-ere-extended-regular-expressions" title="Permanent link">&para;</a></h3>
+<p>Used in <code>egrep</code>, <code>grep -E</code>, and <code>sed -E</code> or <code>awk</code>.
+*   In ERE, <code>+</code>, <code>?</code>, <code>|</code>, <code>(</code>, and <code>)</code> hold their <strong>special regex meaning</strong> by default.
+*   To treat them as literal strings, you escape them.
+*   <em>Example</em>: To capture a group, you just write <code>(abc)</code>.</p>
+<h3 id="3-pcre-perl-compatible-regular-expressions">3. PCRE (Perl Compatible Regular Expressions)<a class="headerlink" href="#3-pcre-perl-compatible-regular-expressions" title="Permanent link">&para;</a></h3>
+<p>Used in Python, JavaScript, and <code>grep -P</code>.
+*   The modern standard. It includes everything in ERE, plus Lookarounds, Non-capturing groups, Lazy quantifiers, and advanced character classes (<code>\d</code>, <code>\s</code>, <code>\w</code>). POSIX standard engines <em>do not</em> support <code>\d</code> natively (they require <code>[0-9]</code> or <code>[:digit:]</code>).</p>
+<hr />
+<h2 id="3-core-syntax-the-building-blocks">3. Core Syntax &amp; The Building Blocks<a class="headerlink" href="#3-core-syntax-the-building-blocks" title="Permanent link">&para;</a></h2>
+<h3 id="metacharacters-wildcards">Metacharacters &amp; Wildcards<a class="headerlink" href="#metacharacters-wildcards" title="Permanent link">&para;</a></h3>
+<ul>
+<li><code>.</code> (Dot): Matches exactly one character of <em>any</em> kind, EXCEPT a newline (<code>\n</code>). <ul>
+<li><em>(Note: In most languages, you can pass a <code>DOTALL</code> flag to make it match newlines as well).</em></li>
+</ul>
+</li>
+<li><code>\</code> (Escape): Strips special meaning. <code>\.</code> matches a literal period.</li>
+</ul>
+<h3 id="character-classes">Character Classes<a class="headerlink" href="#character-classes" title="Permanent link">&para;</a></h3>
+<p>Used to define a pool of acceptable characters for a single position.
+*   <code>[abc]</code>: Matches a single <code>a</code>, <code>b</code>, or <code>c</code>.
+*   <code>[a-z]</code>: Range. Matches any lowercase letter.
+*   <code>[^abc]</code>: <strong>Negation</strong>. Matches any character that is NOT <code>a</code>, <code>b</code>, or <code>c</code>.</p>
+<p><strong>PCRE Shorthand Classes:</strong>
+*   <code>\d</code> : Digit <code>[0-9]</code>
+*   <code>\D</code> : Non-digit <code>[^0-9]</code>
+*   <code>\w</code> : Word character (Alphanumeric + Underscore) <code>[a-zA-Z0-9_]</code>
+*   <code>\W</code> : Non-word character
+*   <code>\s</code> : Whitespace (space, tab, newline)
+*   <code>\S</code> : Non-whitespace</p>
+<h3 id="anchors-positioning">Anchors (Positioning)<a class="headerlink" href="#anchors-positioning" title="Permanent link">&para;</a></h3>
+<p>Anchors do not consume characters; they match <em>positions</em> between characters.
+*   <code>^</code> : Start of the string (or start of a line in <code>MULTILINE</code> mode).
+*   <code>$</code> : End of the string (or end of a line).
+*   <code>\b</code>: Word Boundary. Matches the invisible position between a <code>\w</code> and a <code>\W</code>. 
+    *   <em>Usage</em>: Searching for <code>\bcat\b</code> will match "the cat sat", but will intentionally <em>fail</em> to match "the catalog", preventing false positives.</p>
+<hr />
+<h2 id="4-quantifiers-greedy-vs-lazy-matching">4. Quantifiers: Greedy vs. Lazy Matching<a class="headerlink" href="#4-quantifiers-greedy-vs-lazy-matching" title="Permanent link">&para;</a></h2>
+<p>Quantifiers define how many times the preceding element should repeat.</p>
+<ul>
+<li><code>*</code> : 0 or more times.</li>
+<li><code>+</code> : 1 or more times.</li>
+<li><code>?</code> : 0 or 1 time (Optional).</li>
+<li><code>{n}</code> : Exactly <code>n</code> times.</li>
+<li><code>{n,}</code> : <code>n</code> or more times.</li>
+<li><code>{n,m}</code> : Between <code>n</code> and <code>m</code> times.</li>
+</ul>
+<h3 id="the-greed-trap">The Greed Trap<a class="headerlink" href="#the-greed-trap" title="Permanent link">&para;</a></h3>
+<p>By default, all quantifiers in Regex are <strong>Greedy</strong>. They will consume as much of the string as physically possible while still allowing the overall regex to match.</p>
+<p><strong>Input String</strong>: <code>&lt;div&gt;First&lt;/div&gt; &lt;div&gt;Second&lt;/div&gt;</code>
+<strong>Regex</strong>: <code>&lt;div&gt;.*&lt;/div&gt;</code></p>
+<p><strong>Step-by-step NFA Engine Execution (Greedy):</strong>
+1. Engine matches <code>&lt;div&gt;</code>.
+2. Engine hits <code>.*</code> and eats the entire rest of the string up to the very last <code>&gt;</code>. 
+3. Engine looks for <code>&lt;/div&gt;</code> but is at the end of the string. It fails.
+4. Engine <strong>backtracks</strong>, spitting out characters one by one from the right, until it finds the <em>last</em> <code>&lt;/div&gt;</code> in the string.
+5. <strong>Result</strong>: It matches the entire string <code>&lt;div&gt;First&lt;/div&gt; &lt;div&gt;Second&lt;/div&gt;</code> as a single block.</p>
+<h3 id="the-lazy-fix">The Lazy Fix<a class="headerlink" href="#the-lazy-fix" title="Permanent link">&para;</a></h3>
+<p>By appending <code>?</code> to a quantifier (<code>*?</code>, <code>+?</code>), you make it <strong>Lazy</strong>. It will consume the <em>absolute minimum</em> amount of characters required to make a match.</p>
+<p><strong>Regex</strong>: <code>&lt;div&gt;.*?&lt;/div&gt;</code></p>
+<p><strong>Step-by-step NFA Engine Execution (Lazy):</strong>
+1. Engine matches <code>&lt;div&gt;</code>.
+2. Engine hits <code>.*?</code> and skips consuming anything. It immediately checks if <code>&lt;/div&gt;</code> comes next. It sees <code>F</code>, so it fails.
+3. Engine consumes <code>F</code>, checks again. Consumes <code>i</code>, checks again.
+4. It stops the exact moment it hits the <em>first</em> <code>&lt;/div&gt;</code>.
+5. <strong>Result</strong>: It perfectly extracts <code>&lt;div&gt;First&lt;/div&gt;</code> as Match 1, and <code>&lt;div&gt;Second&lt;/div&gt;</code> as Match 2.</p>
+<pre class="mermaid"><code>flowchart LR
+    String["String: 'A_B_C'"]
+
+    subgraph Greedy ["Greedy: A.*_"]
+        G1["Matches 'A'"] --&gt; G2["'*' eats entire string: '_B_C'"]
+        G2 --&gt; G3["Fails to find '_' at end"]
+        G3 --&gt; G4["Backtracks: spits out 'C', finds '_'"]
+        G4 --&gt; GResult[("Result: 'A_B_'")]
+    end
+
+    subgraph Lazy ["Lazy: A.*?_"]
+        L1["Matches 'A'"] --&gt; L2["'*?' eats nothing. Looks for '_'"]
+        L2 --&gt; L3["Eats 'B', looks for '_'"]
+        L3 --&gt; LResult[("Result: 'A_'")]
+    end
+
+    String --&gt; Greedy
+    String --&gt; Lazy</code></pre>
+<hr />
+<h2 id="5-groups-alternation">5. Groups &amp; Alternation<a class="headerlink" href="#5-groups-alternation" title="Permanent link">&para;</a></h2>
+<h3 id="alternation-or">Alternation (OR)<a class="headerlink" href="#alternation-or" title="Permanent link">&para;</a></h3>
+<p>The <code>|</code> acts as a boolean OR.
+*   <code>cat|dog</code> matches either "cat" or "dog".</p>
+<h3 id="capture-groups">Capture Groups <code>(...)</code><a class="headerlink" href="#capture-groups" title="Permanent link">&para;</a></h3>
+<p>Parentheses bundle tokens together and, crucially, save the matched substring into a variable in memory (Capture 1, Capture 2, etc.).</p>
+<p><strong>Regex</strong>: <code>(\d{4})-(\d{2})-(\d{2})</code>
+<strong>Input</strong>: <code>2023-10-25</code>
+*   Group 1: <code>2023</code>
+*   Group 2: <code>10</code>
+*   Group 3: <code>25</code></p>
+<h3 id="backreferences-1">Backreferences <code>\1</code><a class="headerlink" href="#backreferences-1" title="Permanent link">&para;</a></h3>
+<p>You can reference a capture group later <em>inside the same regex</em>.
+*   <strong>Regex</strong>: <code>&lt;([hH][1-6])&gt;.*?&lt;/\1&gt;</code>
+*   <strong>Execution</strong>: If group 1 captures <code>h1</code>, the regex expects <code>&lt;/h1&gt;</code> to close it. If group 1 captures <code>H3</code>, it strictly expects <code>&lt;/H3&gt;</code>. It ensures opening and closing HTML tags match perfectly.</p>
+<h3 id="non-capturing-groups">Non-Capturing Groups <code>(?:...)</code><a class="headerlink" href="#non-capturing-groups" title="Permanent link">&para;</a></h3>
+<p>Memory is expensive. If you only need parentheses to apply a quantifier or alternation, but you don't need to extract the data, use <code>(?:...)</code> to tell the engine not to save it to a variable.
+*   <code>(?:\d{3}-)?\d{4}</code> (Matches an optional prefix without saving it).</p>
+<hr />
+<h2 id="6-advanced-lookarounds-zero-width-assertions">6. Advanced Lookarounds (Zero-Width Assertions)<a class="headerlink" href="#6-advanced-lookarounds-zero-width-assertions" title="Permanent link">&para;</a></h2>
+<p>Lookarounds do not consume characters. Like <code>^</code> or <code>$</code>, they assert that a specific condition is met at the current position.</p>
+<ul>
+<li><code>(?=...)</code> <strong>Positive Lookahead</strong>: "Must be followed by..."</li>
+<li><code>(?!...)</code> <strong>Negative Lookahead</strong>: "Must NOT be followed by..."</li>
+<li><code>(?&lt;=...)</code> <strong>Positive Lookbehind</strong>: "Must be preceded by..."</li>
+<li><code>(?&lt;!...)</code> <strong>Negative Lookbehind</strong>: "Must NOT be preceded by..."</li>
+</ul>
+<p><strong>Practical Example</strong>: Password Validation
+Assert the password is at least 8 chars, contains a number, and contains an uppercase letter.
+<strong>Regex</strong>: <code>^(?=.*\d)(?=.*[A-Z]).{8,}$</code>
+<strong>Execution</strong>: 
+1. <code>^</code>: Start at index 0.
+2. <code>(?=.*\d)</code>: Scan ahead. Is there a digit? Yes. Return to index 0.
+3. <code>(?=.*[A-Z])</code>: Scan ahead. Is there a capital? Yes. Return to index 0.
+4. <code>.{8,}$</code>: Since all assertions passed, now actually consume the string to ensure it's 8+ characters long.</p>
+<hr />
+<h2 id="7-performance-pitfall-catastrophic-backtracking">7. Performance Pitfall: Catastrophic Backtracking<a class="headerlink" href="#7-performance-pitfall-catastrophic-backtracking" title="Permanent link">&para;</a></h2>
+<p>A poorly written regex against a specific string can cause an NFA engine to enter an exponentially exploding calculation, freezing the server (often resulting in a Denial of Service attack via regex, or ReDoS).</p>
+<p><strong>The Nightmare Regex</strong>: <code>^(a+)+$</code>
+<strong>The Malicious Input</strong>: <code>aaaaaaaaaaaaaaaaaaaaaaaaaaaaaX</code></p>
+<p><strong>Why it freezes:</strong>
+1. The engine eagerly assigns all <code>a</code>s to the inner <code>a+</code>.
+2. It hits the <code>X</code> at the end and fails to match the <code>$</code> anchor.
+3. It backtracks. It asks: "What if the outer <code>+</code> ran twice? I'll assign 28 <code>a</code>s to the first group, and 1 <code>a</code> to the second group." It fails on <code>X</code>.
+4. It backtracks. "What if I assign 27 <code>a</code>s, then 1, then 1?"
+5. Because of the nested quantifiers <code>(a+)+</code>, the number of possible backtracking permutations is $2^n$. For 30 characters, it calculates over 1 billion paths before failing. CPU hits 100%.</p>
+<p><strong>The Fix (Possessive Quantifiers or Atomic Groups):</strong>
+*   <strong>Atomic Group <code>(?&gt;...)</code></strong>: Tells the engine: "Once you match this group, throw away all backtrack saves. Never look back."
+    *   <code>^(?&gt;(a+))+$</code> instantly fails on the <code>X</code> without retrying permutations.</p>
+<hr />
+<h2 id="8-practical-real-world-parsing-examples">8. Practical Real-World Parsing Examples<a class="headerlink" href="#8-practical-real-world-parsing-examples" title="Permanent link">&para;</a></h2>
+<h3 id="scenario-1-ipv4-address-validation">Scenario 1: IPv4 Address Validation<a class="headerlink" href="#scenario-1-ipv4-address-validation" title="Permanent link">&para;</a></h3>
+<p><strong>Regex</strong>: <code>^(?:(?:25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)\.){3}(?:25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)$</code></p>
+<p><strong>Engine Step-by-Step:</strong>
+1. <code>^</code>: Asserts start of line.
+2. <code>(?: ... ){3}</code>: A non-capturing group that must repeat exactly 3 times (the first 3 octets).
+3. <code>25[0-5] | 2[0-4]\d | 1\d\d | [1-9]?\d</code>: The branching logic validates the octet is strictly between <code>0</code> and <code>255</code>. 
+    * If <code>25</code>, next char must be <code>0-5</code>.
+    * If <code>2</code>, next char <code>0-4</code>, next char any digit.
+    * If <code>1</code>, next two chars any digit.
+    * Else, an optional <code>1-9</code> followed by a single digit (handles <code>0-9</code> and <code>10-99</code>).
+4. <code>\.</code>: Expects a literal dot. (End of the repeating group).
+5. The final block validates the 4th octet (no trailing dot).
+6. <code>$</code>: Asserts end of line, preventing <code>192.168.1.1.99</code> from passing.</p>
+<h3 id="scenario-2-nginx-apache-access-log-parsing">Scenario 2: NGINX / Apache Access Log Parsing<a class="headerlink" href="#scenario-2-nginx-apache-access-log-parsing" title="Permanent link">&para;</a></h3>
+<p><strong>Log Line</strong>: 
+<code>127.0.0.1 - - [10/Oct/2023:13:55:36 -0700] "GET /api/data HTTP/1.1" 200 2326</code></p>
+<p><strong>Python Script using Regex to extract structured data:</strong>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="kn">import</span> <span class="nn">re</span>
+<a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a><span class="kn">import</span> <span class="nn">json</span>
+<a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a>
+<a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a><span class="n">log_line</span> <span class="o">=</span> <span class="s1">&#39;127.0.0.1 - - [10/Oct/2023:13:55:36 -0700] &quot;GET /api/data HTTP/1.1&quot; 200 2326&#39;</span>
+<a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a>
+<a id="__codelineno-0-6" name="__codelineno-0-6" href="#__codelineno-0-6"></a><span class="c1"># The highly structured PCRE Regex</span>
+<a id="__codelineno-0-7" name="__codelineno-0-7" href="#__codelineno-0-7"></a><span class="n">log_pattern</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span>
+<a id="__codelineno-0-8" name="__codelineno-0-8" href="#__codelineno-0-8"></a>    <span class="sa">r</span><span class="s1">&#39;^(?P&lt;ip&gt;\S+)&#39;</span>                   <span class="c1"># Capture Group &#39;ip&#39;: 1+ non-whitespace chars at start</span>
+<a id="__codelineno-0-9" name="__codelineno-0-9" href="#__codelineno-0-9"></a>    <span class="sa">r</span><span class="s1">&#39;\s+\S+\s+\S+\s+&#39;</span>                <span class="c1"># Skip identity/user fields (spaces and non-spaces)</span>
+<a id="__codelineno-0-10" name="__codelineno-0-10" href="#__codelineno-0-10"></a>    <span class="sa">r</span><span class="s1">&#39;\[(?P&lt;timestamp&gt;[^\]]+)\]&#39;</span>      <span class="c1"># Capture Group &#39;timestamp&#39;: inside literal brackets</span>
+<a id="__codelineno-0-11" name="__codelineno-0-11" href="#__codelineno-0-11"></a>    <span class="sa">r</span><span class="s1">&#39;\s+&quot;(?P&lt;method&gt;[A-Z]+)\s+&#39;</span>      <span class="c1"># Capture Group &#39;method&#39;: upper case letters after quote</span>
+<a id="__codelineno-0-12" name="__codelineno-0-12" href="#__codelineno-0-12"></a>    <span class="sa">r</span><span class="s1">&#39;(?P&lt;path&gt;\S+)\s+[^&quot;]+&quot;\s+&#39;</span>      <span class="c1"># Capture Group &#39;path&#39;: up to HTTP protocol</span>
+<a id="__codelineno-0-13" name="__codelineno-0-13" href="#__codelineno-0-13"></a>    <span class="sa">r</span><span class="s1">&#39;(?P&lt;status&gt;\d</span><span class="si">{3}</span><span class="s1">)\s+&#39;</span>           <span class="c1"># Capture Group &#39;status&#39;: exactly 3 digits</span>
+<a id="__codelineno-0-14" name="__codelineno-0-14" href="#__codelineno-0-14"></a>    <span class="sa">r</span><span class="s1">&#39;(?P&lt;bytes&gt;\d+)&#39;</span>                 <span class="c1"># Capture Group &#39;bytes&#39;: 1+ digits</span>
+<a id="__codelineno-0-15" name="__codelineno-0-15" href="#__codelineno-0-15"></a><span class="p">)</span>
+<a id="__codelineno-0-16" name="__codelineno-0-16" href="#__codelineno-0-16"></a>
+<a id="__codelineno-0-17" name="__codelineno-0-17" href="#__codelineno-0-17"></a><span class="n">match</span> <span class="o">=</span> <span class="n">log_pattern</span><span class="o">.</span><span class="n">match</span><span class="p">(</span><span class="n">log_line</span><span class="p">)</span>
+<a id="__codelineno-0-18" name="__codelineno-0-18" href="#__codelineno-0-18"></a>
+<a id="__codelineno-0-19" name="__codelineno-0-19" href="#__codelineno-0-19"></a><span class="k">if</span> <span class="n">match</span><span class="p">:</span>
+<a id="__codelineno-0-20" name="__codelineno-0-20" href="#__codelineno-0-20"></a>    <span class="c1"># Named capture groups allow conversion directly to a dictionary</span>
+<a id="__codelineno-0-21" name="__codelineno-0-21" href="#__codelineno-0-21"></a>    <span class="n">parsed_data</span> <span class="o">=</span> <span class="n">match</span><span class="o">.</span><span class="n">groupdict</span><span class="p">()</span>
+<a id="__codelineno-0-22" name="__codelineno-0-22" href="#__codelineno-0-22"></a>    <span class="nb">print</span><span class="p">(</span><span class="n">json</span><span class="o">.</span><span class="n">dumps</span><span class="p">(</span><span class="n">parsed_data</span><span class="p">,</span> <span class="n">indent</span><span class="o">=</span><span class="mi">4</span><span class="p">))</span>
+<a id="__codelineno-0-23" name="__codelineno-0-23" href="#__codelineno-0-23"></a><span class="k">else</span><span class="p">:</span>
+<a id="__codelineno-0-24" name="__codelineno-0-24" href="#__codelineno-0-24"></a>    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Log format invalid.&quot;</span><span class="p">)</span>
+<a id="__codelineno-0-25" name="__codelineno-0-25" href="#__codelineno-0-25"></a>
+<a id="__codelineno-0-26" name="__codelineno-0-26" href="#__codelineno-0-26"></a><span class="c1"># Output:</span>
+<a id="__codelineno-0-27" name="__codelineno-0-27" href="#__codelineno-0-27"></a><span class="c1"># {</span>
+<a id="__codelineno-0-28" name="__codelineno-0-28" href="#__codelineno-0-28"></a><span class="c1">#     &quot;ip&quot;: &quot;127.0.0.1&quot;,</span>
+<a id="__codelineno-0-29" name="__codelineno-0-29" href="#__codelineno-0-29"></a><span class="c1">#     &quot;timestamp&quot;: &quot;10/Oct/2023:13:55:36 -0700&quot;,</span>
+<a id="__codelineno-0-30" name="__codelineno-0-30" href="#__codelineno-0-30"></a><span class="c1">#     &quot;method&quot;: &quot;GET&quot;,</span>
+<a id="__codelineno-0-31" name="__codelineno-0-31" href="#__codelineno-0-31"></a><span class="c1">#     &quot;path&quot;: &quot;/api/data&quot;,</span>
+<a id="__codelineno-0-32" name="__codelineno-0-32" href="#__codelineno-0-32"></a><span class="c1">#     &quot;status&quot;: &quot;200&quot;,</span>
+<a id="__codelineno-0-33" name="__codelineno-0-33" href="#__codelineno-0-33"></a><span class="c1">#     &quot;bytes&quot;: &quot;2326&quot;</span>
+<a id="__codelineno-0-34" name="__codelineno-0-34" href="#__codelineno-0-34"></a><span class="c1"># }</span>
+</code></pre></div></p>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8z"/></svg>
+  Back to top
+</button>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    <script id="__config" type="application/json">{"base": "../..", "features": ["navigation.tabs", "navigation.sections", "navigation.expand", "navigation.top", "search.highlight", "content.code.copy", "content.code.annotate"], "search": "../../assets/javascripts/workers/search.07f07601.min.js", "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}}</script>
+    
+    
+      <script src="../../assets/javascripts/bundle.56dfad97.min.js"></script>
+      
+        <script src="https://unpkg.com/mermaid@10/dist/mermaid.min.js"></script>
+      
+    
+  </body>
+</html>

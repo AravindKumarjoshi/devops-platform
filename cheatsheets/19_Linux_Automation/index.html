@@ -1,0 +1,2432 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="Production-ready reference architecture, manifests, scripts and pipelines for a GCP enterprise DevOps/SRE platform">
+      
+      
+        <meta name="author" content="Platform SRE Team">
+      
+      
+        <link rel="canonical" href="https://AravindKumarjoshi.github.io/devops-platform/cheatsheets/19_Linux_Automation/">
+      
+      
+        <link rel="prev" href="../05_bash_cheatsheet/">
+      
+      
+        <link rel="next" href="../04_powershell_cheatsheet/">
+      
+      
+      <link rel="icon" href="../../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.5.34">
+    
+    
+      
+        <title>Linux Automation - Enterprise GCP DevOps & SRE Platform</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../assets/stylesheets/main.35f28582.min.css">
+      
+        
+        <link rel="stylesheet" href="../../assets/stylesheets/palette.06af60db.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+      <link rel="stylesheet" href="../../assets/_mkdocstrings.css">
+    
+      <link rel="stylesheet" href="../../stylesheets/extra.css">
+    
+    <script>__md_scope=new URL("../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+    
+  </head>
+  
+  
+    
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="cyan">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#chapter-19-linux-automation-system-hardening-textbook-edition" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+<header class="md-header" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href="../.." title="Enterprise GCP DevOps &amp; SRE Platform" class="md-header__button md-logo" aria-label="Enterprise GCP DevOps & SRE Platform" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            Enterprise GCP DevOps & SRE Platform
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Linux Automation
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+    
+    
+    
+    
+      <label class="md-header__button md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+      </label>
+      <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+    
+    
+      <div class="md-header__source">
+        <a href="https://github.com/AravindKumarjoshi/devops-platform" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 6.6.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2024 Fonticons, Inc.--><path d="M439.55 236.05 244 40.45a28.87 28.87 0 0 0-40.81 0l-40.66 40.63 51.52 51.52c27.06-9.14 52.68 16.77 43.39 43.68l49.66 49.66c34.23-11.8 61.18 31 35.47 56.69-26.49 26.49-70.21-2.87-56-37.34L240.22 199v121.85c25.3 12.54 22.26 41.85 9.08 55a34.34 34.34 0 0 1-48.55 0c-17.57-17.6-11.07-46.91 11.25-56v-123c-20.8-8.51-24.6-30.74-18.64-45L142.57 101 8.45 235.14a28.86 28.86 0 0 0 0 40.81l195.61 195.6a28.86 28.86 0 0 0 40.8 0l194.69-194.69a28.86 28.86 0 0 0 0-40.81"/></svg>
+  </div>
+  <div class="md-source__repository">
+    GitHub
+  </div>
+</a>
+      </div>
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+            
+<nav class="md-tabs" aria-label="Tabs" data-md-component="tabs">
+  <div class="md-grid">
+    <ul class="md-tabs__list">
+      
+        
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../.." class="md-tabs__link">
+        
+  
+    
+  
+  Home
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../architecture-diagrams/" class="md-tabs__link">
+          
+  
+  Platform Architecture
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+    
+  
+  
+    
+    
+      <li class="md-tabs__item md-tabs__item--active">
+        <a href="../devops_cloud_engineering_handbook/" class="md-tabs__link">
+          
+  
+  Knowledge Base
+
+        </a>
+      </li>
+    
+  
+
+      
+    </ul>
+  </div>
+</nav>
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+  
+
+
+<nav class="md-nav md-nav--primary md-nav--lifted" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../.." title="Enterprise GCP DevOps &amp; SRE Platform" class="md-nav__button md-logo" aria-label="Enterprise GCP DevOps & SRE Platform" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    Enterprise GCP DevOps & SRE Platform
+  </label>
+  
+    <div class="md-nav__source">
+      <a href="https://github.com/AravindKumarjoshi/devops-platform" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 6.6.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2024 Fonticons, Inc.--><path d="M439.55 236.05 244 40.45a28.87 28.87 0 0 0-40.81 0l-40.66 40.63 51.52 51.52c27.06-9.14 52.68 16.77 43.39 43.68l49.66 49.66c34.23-11.8 61.18 31 35.47 56.69-26.49 26.49-70.21-2.87-56-37.34L240.22 199v121.85c25.3 12.54 22.26 41.85 9.08 55a34.34 34.34 0 0 1-48.55 0c-17.57-17.6-11.07-46.91 11.25-56v-123c-20.8-8.51-24.6-30.74-18.64-45L142.57 101 8.45 235.14a28.86 28.86 0 0 0 0 40.81l195.61 195.6a28.86 28.86 0 0 0 40.8 0l194.69-194.69a28.86 28.86 0 0 0 0-40.81"/></svg>
+  </div>
+  <div class="md-source__repository">
+    GitHub
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../.." class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Home
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_2" >
+        
+          
+          <label class="md-nav__link" for="__nav_2" id="__nav_2_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    Platform Architecture
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2">
+            <span class="md-nav__icon md-icon"></span>
+            Platform Architecture
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../architecture-diagrams/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Architecture Diagrams
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../jenkins-gke-manifests/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Jenkins on GKE Manifests
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../sre-automation-scripts/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    SRE Automation Scripts
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../golden-image-pipeline/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Golden Image Pipeline
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../observability-monitoring/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Observability & Monitoring
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    
+    
+    
+      
+        
+        
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_3" id="__nav_3_label" tabindex="">
+            
+  
+  <span class="md-ellipsis">
+    Knowledge Base
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_3">
+            <span class="md-nav__icon md-icon"></span>
+            Knowledge Base
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../devops_cloud_engineering_handbook/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    DevOps & Cloud Handbook
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+      
+      
+        
+          
+          
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_3_2" >
+        
+          
+          <label class="md-nav__link" for="__nav_3_2" id="__nav_3_2_label" tabindex="">
+            
+  
+  <span class="md-ellipsis">
+    Programming & Core
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_3_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_3_2">
+            <span class="md-nav__icon md-icon"></span>
+            Programming & Core
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../01_sql_cheatsheet/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    SQL
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../02_python_core_cheatsheet/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Python Core
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../03_python_modules_cheatsheet/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Python Modules
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../10_dsa_python_cheatsheet/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    DSA with Python
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../18_Regex_Mastery/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Regex Mastery
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../22_Embedded_C/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Embedded C
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    
+    
+    
+      
+      
+        
+          
+          
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3_3" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_3_3" id="__nav_3_3_label" tabindex="">
+            
+  
+  <span class="md-ellipsis">
+    OS & Automation
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_3_3_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_3_3">
+            <span class="md-nav__icon md-icon"></span>
+            OS & Automation
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../05_bash_cheatsheet/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Linux Bash
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  <span class="md-ellipsis">
+    Linux Automation
+  </span>
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  <span class="md-ellipsis">
+    Linux Automation
+  </span>
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#1-the-core-os-filesystem-disk-management" class="md-nav__link">
+    <span class="md-ellipsis">
+      1. The Core OS, Filesystem &amp; Disk Management
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="1. The Core OS, Filesystem & Disk Management">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#11-the-filesystem-hierarchy-standard-fhs-and-virtual-filesystems" class="md-nav__link">
+    <span class="md-ellipsis">
+      1.1 The Filesystem Hierarchy Standard (FHS) and Virtual Filesystems
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#12-disk-management-persistent-storage" class="md-nav__link">
+    <span class="md-ellipsis">
+      1.2 Disk Management &amp; Persistent Storage
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#13-logical-volume-management-lvm-architecture" class="md-nav__link">
+    <span class="md-ellipsis">
+      1.3 Logical Volume Management (LVM) Architecture
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#2-process-resource-management" class="md-nav__link">
+    <span class="md-ellipsis">
+      2. Process &amp; Resource Management
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="2. Process & Resource Management">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#21-deep-dive-into-systemd" class="md-nav__link">
+    <span class="md-ellipsis">
+      2.1 Deep Dive into systemd
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#22-process-states-and-resource-control" class="md-nav__link">
+    <span class="md-ellipsis">
+      2.2 Process States and Resource Control
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#3-user-group-privilege-hardening" class="md-nav__link">
+    <span class="md-ellipsis">
+      3. User, Group &amp; Privilege Hardening
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="3. User, Group & Privilege Hardening">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#31-advanced-file-permissions" class="md-nav__link">
+    <span class="md-ellipsis">
+      3.1 Advanced File Permissions
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#32-secure-identity-management-sudo-pam" class="md-nav__link">
+    <span class="md-ellipsis">
+      3.2 Secure Identity Management (Sudo &amp; PAM)
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#33-ssh-hardening" class="md-nav__link">
+    <span class="md-ellipsis">
+      3.3 SSH Hardening
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#4-security-architectures-selinux-vs-apparmor" class="md-nav__link">
+    <span class="md-ellipsis">
+      4. Security Architectures: SELinux vs. AppArmor
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="4. Security Architectures: SELinux vs. AppArmor">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#41-selinux-security-enhanced-linux-rhel-default" class="md-nav__link">
+    <span class="md-ellipsis">
+      4.1 SELinux (Security-Enhanced Linux - RHEL Default)
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#42-apparmor-ubuntudebian-default" class="md-nav__link">
+    <span class="md-ellipsis">
+      4.2 AppArmor (Ubuntu/Debian Default)
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#5-network-security-configuration" class="md-nav__link">
+    <span class="md-ellipsis">
+      5. Network Security &amp; Configuration
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="5. Network Security & Configuration">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#51-firewalls-firewalld-rhel-vs-ufw-ubuntu" class="md-nav__link">
+    <span class="md-ellipsis">
+      5.1 Firewalls: firewalld (RHEL) vs. ufw (Ubuntu)
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#52-deep-network-diagnostics" class="md-nav__link">
+    <span class="md-ellipsis">
+      5.2 Deep Network Diagnostics
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#6-true-text-processing-mastery-awk-sed" class="md-nav__link">
+    <span class="md-ellipsis">
+      6. True Text Processing Mastery: awk &amp; sed
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="6. True Text Processing Mastery: awk & sed">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#61-sed-stream-editor-deep-dive" class="md-nav__link">
+    <span class="md-ellipsis">
+      6.1 sed (Stream Editor) Deep Dive
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#62-awk-deep-dive" class="md-nav__link">
+    <span class="md-ellipsis">
+      6.2 awk Deep Dive
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#7-advanced-defensive-shell-scripting" class="md-nav__link">
+    <span class="md-ellipsis">
+      7. Advanced &amp; Defensive Shell Scripting
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="7. Advanced & Defensive Shell Scripting">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#71-defensive-execution-context" class="md-nav__link">
+    <span class="md-ellipsis">
+      7.1 Defensive Execution Context
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#72-signal-handling-with-trap" class="md-nav__link">
+    <span class="md-ellipsis">
+      7.2 Signal Handling with trap
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#73-bash-arrays-indexed-and-associative" class="md-nav__link">
+    <span class="md-ellipsis">
+      7.3 Bash Arrays (Indexed and Associative)
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#74-multi-threading-parallel-processing-in-bash" class="md-nav__link">
+    <span class="md-ellipsis">
+      7.4 Multi-Threading &amp; Parallel Processing in Bash
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#8-the-master-automation-script" class="md-nav__link">
+    <span class="md-ellipsis">
+      8. The Master Automation Script
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../04_powershell_cheatsheet/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    PowerShell
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../20_PowerShell_Mastery/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    PowerShell Mastery
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../21_OS_Architecture/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    OS Architecture
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+      
+      
+        
+          
+          
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_3_4" >
+        
+          
+          <label class="md-nav__link" for="__nav_3_4" id="__nav_3_4_label" tabindex="">
+            
+  
+  <span class="md-ellipsis">
+    DevOps & Infrastructure
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_3_4_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_3_4">
+            <span class="md-nav__icon md-icon"></span>
+            DevOps & Infrastructure
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../06_networking_cheatsheet/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Networking
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../07_docker_cheatsheet/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Docker
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../08_kubernetes_cheatsheet/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Kubernetes
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../13_git_cicd_cheatsheet/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Git & CI/CD
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../12_development_methodologies_cheatsheet/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Development Methodologies
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+      
+      
+        
+          
+          
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_3_5" >
+        
+          
+          <label class="md-nav__link" for="__nav_3_5" id="__nav_3_5_label" tabindex="">
+            
+  
+  <span class="md-ellipsis">
+    APIs & Formats
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_3_5_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_3_5">
+            <span class="md-nav__icon md-icon"></span>
+            APIs & Formats
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../09_backend_api_cheatsheet/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Backend API
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../14_data_serialization_formats_cheatsheet/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Data Serialization
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../15_markdown_mermaid_documentation_cheatsheet/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Markdown & Mermaid
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+      
+      
+        
+          
+          
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_3_6" >
+        
+          
+          <label class="md-nav__link" for="__nav_3_6" id="__nav_3_6_label" tabindex="">
+            
+  
+  <span class="md-ellipsis">
+    Specialized
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_3_6_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_3_6">
+            <span class="md-nav__icon md-icon"></span>
+            Specialized
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../16_cybersecurity_hacking_forensics_manual/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Cybersecurity & Forensics
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../17_data_science_foundations_cheatsheet/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Data Science Foundations
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../11_testing_playwright_cheatsheet/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Testing & Playwright
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+      
+      
+        
+          
+          
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_3_7" >
+        
+          
+          <label class="md-nav__link" for="__nav_3_7" id="__nav_3_7_label" tabindex="">
+            
+  
+  <span class="md-ellipsis">
+    Interview & Context
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_3_7_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_3_7">
+            <span class="md-nav__icon md-icon"></span>
+            Interview & Context
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../interview_questions/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Interview Questions
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../CONTEXT_TRACKER/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Context Tracker
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#1-the-core-os-filesystem-disk-management" class="md-nav__link">
+    <span class="md-ellipsis">
+      1. The Core OS, Filesystem &amp; Disk Management
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="1. The Core OS, Filesystem & Disk Management">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#11-the-filesystem-hierarchy-standard-fhs-and-virtual-filesystems" class="md-nav__link">
+    <span class="md-ellipsis">
+      1.1 The Filesystem Hierarchy Standard (FHS) and Virtual Filesystems
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#12-disk-management-persistent-storage" class="md-nav__link">
+    <span class="md-ellipsis">
+      1.2 Disk Management &amp; Persistent Storage
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#13-logical-volume-management-lvm-architecture" class="md-nav__link">
+    <span class="md-ellipsis">
+      1.3 Logical Volume Management (LVM) Architecture
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#2-process-resource-management" class="md-nav__link">
+    <span class="md-ellipsis">
+      2. Process &amp; Resource Management
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="2. Process & Resource Management">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#21-deep-dive-into-systemd" class="md-nav__link">
+    <span class="md-ellipsis">
+      2.1 Deep Dive into systemd
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#22-process-states-and-resource-control" class="md-nav__link">
+    <span class="md-ellipsis">
+      2.2 Process States and Resource Control
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#3-user-group-privilege-hardening" class="md-nav__link">
+    <span class="md-ellipsis">
+      3. User, Group &amp; Privilege Hardening
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="3. User, Group & Privilege Hardening">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#31-advanced-file-permissions" class="md-nav__link">
+    <span class="md-ellipsis">
+      3.1 Advanced File Permissions
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#32-secure-identity-management-sudo-pam" class="md-nav__link">
+    <span class="md-ellipsis">
+      3.2 Secure Identity Management (Sudo &amp; PAM)
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#33-ssh-hardening" class="md-nav__link">
+    <span class="md-ellipsis">
+      3.3 SSH Hardening
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#4-security-architectures-selinux-vs-apparmor" class="md-nav__link">
+    <span class="md-ellipsis">
+      4. Security Architectures: SELinux vs. AppArmor
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="4. Security Architectures: SELinux vs. AppArmor">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#41-selinux-security-enhanced-linux-rhel-default" class="md-nav__link">
+    <span class="md-ellipsis">
+      4.1 SELinux (Security-Enhanced Linux - RHEL Default)
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#42-apparmor-ubuntudebian-default" class="md-nav__link">
+    <span class="md-ellipsis">
+      4.2 AppArmor (Ubuntu/Debian Default)
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#5-network-security-configuration" class="md-nav__link">
+    <span class="md-ellipsis">
+      5. Network Security &amp; Configuration
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="5. Network Security & Configuration">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#51-firewalls-firewalld-rhel-vs-ufw-ubuntu" class="md-nav__link">
+    <span class="md-ellipsis">
+      5.1 Firewalls: firewalld (RHEL) vs. ufw (Ubuntu)
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#52-deep-network-diagnostics" class="md-nav__link">
+    <span class="md-ellipsis">
+      5.2 Deep Network Diagnostics
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#6-true-text-processing-mastery-awk-sed" class="md-nav__link">
+    <span class="md-ellipsis">
+      6. True Text Processing Mastery: awk &amp; sed
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="6. True Text Processing Mastery: awk & sed">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#61-sed-stream-editor-deep-dive" class="md-nav__link">
+    <span class="md-ellipsis">
+      6.1 sed (Stream Editor) Deep Dive
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#62-awk-deep-dive" class="md-nav__link">
+    <span class="md-ellipsis">
+      6.2 awk Deep Dive
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#7-advanced-defensive-shell-scripting" class="md-nav__link">
+    <span class="md-ellipsis">
+      7. Advanced &amp; Defensive Shell Scripting
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="7. Advanced & Defensive Shell Scripting">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#71-defensive-execution-context" class="md-nav__link">
+    <span class="md-ellipsis">
+      7.1 Defensive Execution Context
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#72-signal-handling-with-trap" class="md-nav__link">
+    <span class="md-ellipsis">
+      7.2 Signal Handling with trap
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#73-bash-arrays-indexed-and-associative" class="md-nav__link">
+    <span class="md-ellipsis">
+      7.3 Bash Arrays (Indexed and Associative)
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#74-multi-threading-parallel-processing-in-bash" class="md-nav__link">
+    <span class="md-ellipsis">
+      7.4 Multi-Threading &amp; Parallel Processing in Bash
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#8-the-master-automation-script" class="md-nav__link">
+    <span class="md-ellipsis">
+      8. The Master Automation Script
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+  
+  
+
+
+<h1 id="chapter-19-linux-automation-system-hardening-textbook-edition">Chapter 19: Linux Automation &amp; System Hardening (Textbook Edition)<a class="headerlink" href="#chapter-19-linux-automation-system-hardening-textbook-edition" title="Permanent link">&para;</a></h1>
+<p>This document provides a comprehensive, engineering-level deep dive into Linux system administration, security hardening, and advanced automation. It heavily contrasts the architectures of the two dominant enterprise ecosystems: <strong>Red Hat Enterprise Linux (RHEL)</strong> and <strong>Ubuntu/Debian</strong>.</p>
+<hr />
+<h2 id="1-the-core-os-filesystem-disk-management">1. The Core OS, Filesystem &amp; Disk Management<a class="headerlink" href="#1-the-core-os-filesystem-disk-management" title="Permanent link">&para;</a></h2>
+<h3 id="11-the-filesystem-hierarchy-standard-fhs-and-virtual-filesystems">1.1 The Filesystem Hierarchy Standard (FHS) and Virtual Filesystems<a class="headerlink" href="#11-the-filesystem-hierarchy-standard-fhs-and-virtual-filesystems" title="Permanent link">&para;</a></h3>
+<p>A Linux system is fundamentally a unified directory tree. Beyond static directories (<code>/etc</code>, <code>/var</code>, <code>/usr</code>), a senior engineer must master the <strong>virtual filesystems</strong> that interface directly with the kernel.</p>
+<ul>
+<li><strong><code>/proc</code> (Process Information Pseudo-Filesystem)</strong>: This does not exist on the hard drive; it is an illusion maintained in RAM by the kernel. Every running process has a directory here named after its Process ID (PID).<ul>
+<li><em>Programmatic Use</em>: Reading <code>/proc/cpuinfo</code> or <code>/proc/meminfo</code> allows scripts to dynamically assess hardware. Writing to <code>/proc/sys/net/ipv4/ip_forward</code> (or using <code>sysctl</code>) changes kernel routing behavior in real-time.</li>
+</ul>
+</li>
+<li><strong><code>/sys</code> (Sysfs)</strong>: Exports information about devices and drivers from the kernel device model to user space. It is strictly used for hardware and power state management (e.g., dynamically disabling a PCI device).</li>
+</ul>
+<h3 id="12-disk-management-persistent-storage">1.2 Disk Management &amp; Persistent Storage<a class="headerlink" href="#12-disk-management-persistent-storage" title="Permanent link">&para;</a></h3>
+<p>Modern Linux storage requires robust partitioning and mounting strategies. </p>
+<p><strong>Partitioning &amp; Formatting:</strong>
+1.  <strong><code>parted</code> / <code>fdisk</code></strong>: Tools to write partition tables (MBR or GPT) to raw block devices (<code>/dev/sdb</code>). GPT is mandatory for disks larger than 2TB.
+2.  <strong><code>mkfs</code></strong>: The front-end for formatting. E.g., <code>mkfs.ext4 /dev/sdb1</code> (Ubuntu default, journaling) or <code>mkfs.xfs /dev/sdb1</code> (RHEL default, high parallel I/O, cannot shrink).</p>
+<p><strong>Persistent Mounting (<code>/etc/fstab</code>):</strong>
+Never mount using device names (like <code>/dev/sdb1</code>), as device initialization order can change upon reboot, breaking the system. Always use the Universally Unique Identifier (UUID).
+1.  Run <code>blkid</code> to extract the UUID of the formatted partition.
+2.  Append to <code>/etc/fstab</code>:
+    <code>UUID=1234abcd-12ab-34cd-56ef-1234567890ab  /data  xfs  defaults,noatime  0  2</code>
+    <em>(Note: <code>noatime</code> disables tracking file read times, drastically reducing disk I/O).</em></p>
+<h3 id="13-logical-volume-management-lvm-architecture">1.3 Logical Volume Management (LVM) Architecture<a class="headerlink" href="#13-logical-volume-management-lvm-architecture" title="Permanent link">&para;</a></h3>
+<p>LVM decouples the physical disk from the filesystem, allowing you to seamlessly span partitions across multiple drives, resize them live, and take snapshots.</p>
+<pre class="mermaid"><code>flowchart TD
+    subgraph Physical_Layer ["Physical Layer"]
+        Disk1[("/dev/sdb (1TB HDD)")]
+        Disk2[("/dev/sdc (1TB HDD)")]
+    end
+
+    subgraph LVM_Architecture ["LVM Architecture"]
+        PV1["Physical Volume (PV)&lt;br&gt;pvcreate /dev/sdb"]
+        PV2["Physical Volume (PV)&lt;br&gt;pvcreate /dev/sdc"]
+
+        VG["Volume Group (VG: 'vg_data')&lt;br&gt;Pool of Storage: 2TB&lt;br&gt;vgcreate vg_data /dev/sdb /dev/sdc"]
+
+        LV1["Logical Volume (LV: 'lv_web')&lt;br&gt;500GB&lt;br&gt;lvcreate -L 500G -n lv_web vg_data"]
+        LV2["Logical Volume (LV: 'lv_db')&lt;br&gt;1.5TB&lt;br&gt;lvcreate -l 100%FREE -n lv_db vg_data"]
+
+        PV1 --&gt; VG
+        PV2 --&gt; VG
+        VG --&gt; LV1
+        VG --&gt; LV2
+    end
+
+    subgraph Filesystem_Layer ["Filesystem Layer"]
+        FS1["mkfs.xfs /dev/vg_data/lv_web&lt;br&gt;Mounted to /var/www"]
+        FS2["mkfs.xfs /dev/vg_data/lv_db&lt;br&gt;Mounted to /var/lib/mysql"]
+    end
+
+    LV1 --&gt; FS1
+    LV2 --&gt; FS2</code></pre>
+<hr />
+<h2 id="2-process-resource-management">2. Process &amp; Resource Management<a class="headerlink" href="#2-process-resource-management" title="Permanent link">&para;</a></h2>
+<h3 id="21-deep-dive-into-systemd">2.1 Deep Dive into <code>systemd</code><a class="headerlink" href="#21-deep-dive-into-systemd" title="Permanent link">&para;</a></h3>
+<p>Systemd is the initialization system (PID 1) that bootstraps user space and strictly manages services.</p>
+<p><strong>Creating Robust Service Files (<code>/etc/systemd/system/myapp.service</code>):</strong>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="k">[Unit]</span>
+<a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a><span class="na">Description</span><span class="o">=</span><span class="s">High Performance Go API</span>
+<a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a><span class="na">After</span><span class="o">=</span><span class="s">network.target postgresql.service</span><span class="w"> </span><span class="c1"># Dependencies</span>
+<a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a>
+<a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a><span class="k">[Service]</span>
+<a id="__codelineno-0-6" name="__codelineno-0-6" href="#__codelineno-0-6"></a><span class="na">Type</span><span class="o">=</span><span class="s">simple</span>
+<a id="__codelineno-0-7" name="__codelineno-0-7" href="#__codelineno-0-7"></a><span class="na">User</span><span class="o">=</span><span class="s">apiuser</span>
+<a id="__codelineno-0-8" name="__codelineno-0-8" href="#__codelineno-0-8"></a><span class="na">Group</span><span class="o">=</span><span class="s">apigroup</span>
+<a id="__codelineno-0-9" name="__codelineno-0-9" href="#__codelineno-0-9"></a><span class="na">WorkingDirectory</span><span class="o">=</span><span class="s">/opt/myapp</span>
+<a id="__codelineno-0-10" name="__codelineno-0-10" href="#__codelineno-0-10"></a><span class="na">ExecStart</span><span class="o">=</span><span class="s">/opt/myapp/api_binary --config /etc/myapp/config.yaml</span>
+<a id="__codelineno-0-11" name="__codelineno-0-11" href="#__codelineno-0-11"></a><span class="na">Restart</span><span class="o">=</span><span class="s">on-failure</span>
+<a id="__codelineno-0-12" name="__codelineno-0-12" href="#__codelineno-0-12"></a><span class="na">RestartSec</span><span class="o">=</span><span class="s">5s</span>
+<a id="__codelineno-0-13" name="__codelineno-0-13" href="#__codelineno-0-13"></a>
+<a id="__codelineno-0-14" name="__codelineno-0-14" href="#__codelineno-0-14"></a><span class="c1"># Hardening / Resource Restrictions</span>
+<a id="__codelineno-0-15" name="__codelineno-0-15" href="#__codelineno-0-15"></a><span class="na">LimitNOFILE</span><span class="o">=</span><span class="s">65535</span><span class="w">         </span><span class="c1"># Ulimit override for open file descriptors</span>
+<a id="__codelineno-0-16" name="__codelineno-0-16" href="#__codelineno-0-16"></a><span class="na">PrivateTmp</span><span class="o">=</span><span class="s">true</span><span class="w">           </span><span class="c1"># Gives the service a segregated /tmp space</span>
+<a id="__codelineno-0-17" name="__codelineno-0-17" href="#__codelineno-0-17"></a><span class="na">ProtectSystem</span><span class="o">=</span><span class="s">full</span><span class="w">        </span><span class="c1"># Mounts /usr, /boot, and /etc read-only for this process</span>
+<a id="__codelineno-0-18" name="__codelineno-0-18" href="#__codelineno-0-18"></a>
+<a id="__codelineno-0-19" name="__codelineno-0-19" href="#__codelineno-0-19"></a><span class="k">[Install]</span>
+<a id="__codelineno-0-20" name="__codelineno-0-20" href="#__codelineno-0-20"></a><span class="na">WantedBy</span><span class="o">=</span><span class="s">multi-user.target</span><span class="w"> </span><span class="c1"># Ensures it starts on boot in headless mode</span>
+</code></pre></div></p>
+<h3 id="22-process-states-and-resource-control">2.2 Process States and Resource Control<a class="headerlink" href="#22-process-states-and-resource-control" title="Permanent link">&para;</a></h3>
+<p>Processes exist in distinct states: Running (<code>R</code>), Sleeping (<code>S</code> - waiting for I/O), Stopped (<code>T</code>), or Zombie (<code>Z</code> - terminated, but parent hasn't reaped it).</p>
+<ul>
+<li><strong><code>nice</code> &amp; <code>renice</code></strong>: Manipulates CPU scheduling priority. Range is -20 (highest priority, requires root) to 19 (lowest priority, "nicest" to other processes). Default is 0.</li>
+<li><strong><code>ulimit</code></strong>: Legacy restriction (e.g., <code>ulimit -n</code> for max open files). Systemd now largely handles this via <code>LimitNOFILE</code> directives.</li>
+<li><strong><code>cgroups</code> (Control Groups)</strong>: The modern kernel feature that limits, accounts for, and isolates resource usage (CPU, memory, disk I/O, network) for a collection of processes. Systemd uses cgroups to ensure a runaway web server cannot consume 100% of the CPU, starving the SSH daemon and preventing admin access.</li>
+</ul>
+<hr />
+<h2 id="3-user-group-privilege-hardening">3. User, Group &amp; Privilege Hardening<a class="headerlink" href="#3-user-group-privilege-hardening" title="Permanent link">&para;</a></h2>
+<h3 id="31-advanced-file-permissions">3.1 Advanced File Permissions<a class="headerlink" href="#31-advanced-file-permissions" title="Permanent link">&para;</a></h3>
+<p>Beyond standard <code>rwx</code> (read, write, execute) permissions, Linux features three advanced bits:
+1.  <strong>SUID (Set-User-ID) <code>chmod 4755</code></strong>: When a file is executed, it runs with the privileges of the file <em>owner</em>, not the user running it. (Crucial for <code>/usr/bin/passwd</code> so users can edit <code>/etc/shadow</code>).
+2.  <strong>SGID (Set-Group-ID) <code>chmod 2755</code></strong>: When applied to a directory, any new files created inside inherit the group of the directory, rather than the primary group of the creating user. Excellent for shared team folders.
+3.  <strong>Sticky Bit <code>chmod 1777</code></strong>: Applied to world-writable directories (like <code>/tmp</code>). It prevents users from deleting or renaming files owned by other users.</p>
+<p><strong>Access Control Lists (ACLs):</strong>
+When standard User/Group/Other permissions are too restrictive, ACLs allow surgical grants.
+*   <code>setfacl -m u:alice:rw /data/report.txt</code> (Grants <em>only</em> user Alice read/write access, ignoring the group).
+*   <code>getfacl /data/report.txt</code> (Views the exact permissions).</p>
+<h3 id="32-secure-identity-management-sudo-pam">3.2 Secure Identity Management (Sudo &amp; PAM)<a class="headerlink" href="#32-secure-identity-management-sudo-pam" title="Permanent link">&para;</a></h3>
+<ul>
+<li><strong><code>/etc/sudoers.d/</code></strong>: Never edit <code>/etc/sudoers</code> directly. Always drop isolated files into <code>sudoers.d/</code> using <code>visudo</code>. <ul>
+<li><em>Example</em>: <code>dbadmin ALL=(root) NOPASSWD: /bin/systemctl restart postgresql</code> allows the <code>dbadmin</code> group to restart the DB without a password, but nothing else.</li>
+</ul>
+</li>
+<li><strong>PAM (Pluggable Authentication Modules)</strong>: The central architectural framework for authentication. Located in <code>/etc/pam.d/</code>. PAM allows you to dynamically stack authentication rules (e.g., enforcing password complexity via <code>pam_cracklib</code>, requiring YubiKey hardware tokens, or locking out accounts after 3 failed SSH attempts via <code>pam_tally2</code> / <code>pam_faillock</code>).</li>
+</ul>
+<h3 id="33-ssh-hardening">3.3 SSH Hardening<a class="headerlink" href="#33-ssh-hardening" title="Permanent link">&para;</a></h3>
+<p>The <code>/etc/ssh/sshd_config</code> file must be aggressively locked down on public-facing servers:
+<div class="highlight"><pre><span></span><code><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a>PermitRootLogin no               # Never allow direct root access
+<a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a>PasswordAuthentication no        # Enforce SSH Key authentication exclusively
+<a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a>X11Forwarding no                 # Disable graphical forwarding to prevent exploits
+<a id="__codelineno-1-4" name="__codelineno-1-4" href="#__codelineno-1-4"></a>AllowUsers alice bob deploy      # Whitelist exact users permitted to connect
+<a id="__codelineno-1-5" name="__codelineno-1-5" href="#__codelineno-1-5"></a>Port 2222                        # Obfuscate the port to reduce automated bot log spam
+</code></pre></div></p>
+<hr />
+<h2 id="4-security-architectures-selinux-vs-apparmor">4. Security Architectures: SELinux vs. AppArmor<a class="headerlink" href="#4-security-architectures-selinux-vs-apparmor" title="Permanent link">&para;</a></h2>
+<p>Mandatory Access Control (MAC) systems override standard Linux permissions. Even if a file is <code>chmod 777</code> (world readable/writable), MAC can deny a process access to it.</p>
+<h3 id="41-selinux-security-enhanced-linux-rhel-default">4.1 SELinux (Security-Enhanced Linux - RHEL Default)<a class="headerlink" href="#41-selinux-security-enhanced-linux-rhel-default" title="Permanent link">&para;</a></h3>
+<p>Developed by the NSA. SELinux assigns <strong>Contexts</strong> (labels) to every file, process, and port. A process (e.g., <code>httpd_t</code>) can only interact with files labeled correctly (e.g., <code>httpd_sys_content_t</code>).</p>
+<ul>
+<li><strong>Viewing Contexts</strong>: Use the <code>-Z</code> flag (<code>ls -lZ</code>, <code>ps -eZ</code>).</li>
+<li><strong>Troubleshooting (<code>audit2allow</code>)</strong>: When SELinux blocks something, it logs it to <code>/var/log/audit/audit.log</code>. You can parse this log using <code>grep denied /var/log/audit/audit.log | audit2allow -m my_custom_policy</code> to automatically generate a permanent rule allowing the behavior.</li>
+<li><strong>Booleans</strong>: Safe toggles to allow common behavior without writing custom policies.<ul>
+<li><code>setsebool -P httpd_can_network_connect 1</code> (Allows Nginx/Apache to act as a reverse proxy and connect to backend APIs. The <code>-P</code> makes it survive reboots).</li>
+</ul>
+</li>
+<li><strong>File Contexts (<code>semanage fcontext</code> &amp; <code>restorecon</code>)</strong>: If you move web files to <code>/opt/www</code>, you must tell SELinux:<ul>
+<li><code>semanage fcontext -a -t httpd_sys_content_t "/opt/www(/.*)?"</code> (Updates the central database).</li>
+<li><code>restorecon -Rv /opt/www</code> (Physically applies the labels to the files).</li>
+</ul>
+</li>
+</ul>
+<h3 id="42-apparmor-ubuntudebian-default">4.2 AppArmor (Ubuntu/Debian Default)<a class="headerlink" href="#42-apparmor-ubuntudebian-default" title="Permanent link">&para;</a></h3>
+<p>Instead of labeling every file, AppArmor assigns <strong>Profiles</strong> to specific program binaries. A profile defines exactly what file paths and network capabilities that specific binary is allowed to access.</p>
+<ul>
+<li>Profiles are stored in <code>/etc/apparmor.d/</code>.</li>
+<li><strong>Enforce vs Complain Mode</strong>: <code>aa-complain /usr/sbin/nginx</code> allows the program to violate its profile, but aggressively logs the violations. Engineers use this during testing to see what the application <em>wants</em> to do. Once the profile is adjusted to allow the required actions, they lock it down using <code>aa-enforce /usr/sbin/nginx</code>.</li>
+</ul>
+<hr />
+<h2 id="5-network-security-configuration">5. Network Security &amp; Configuration<a class="headerlink" href="#5-network-security-configuration" title="Permanent link">&para;</a></h2>
+<h3 id="51-firewalls-firewalld-rhel-vs-ufw-ubuntu">5.1 Firewalls: <code>firewalld</code> (RHEL) vs. <code>ufw</code> (Ubuntu)<a class="headerlink" href="#51-firewalls-firewalld-rhel-vs-ufw-ubuntu" title="Permanent link">&para;</a></h3>
+<p>Both are high-level frontends manipulating the underlying kernel <code>nftables</code>/<code>iptables</code>.</p>
+<ul>
+<li><strong><code>firewalld</code></strong>: Uses a <strong>Zones</strong> architecture (e.g., <code>public</code>, <code>dmz</code>, <code>internal</code>). Interfaces are assigned to zones, and rules are assigned to zones.<ul>
+<li><code>firewall-cmd --zone=public --add-service=https --permanent</code></li>
+<li><code>firewall-cmd --reload</code></li>
+</ul>
+</li>
+<li><strong><code>ufw</code> (Uncomplicated Firewall)</strong>: Simpler, rule-based firewall.<ul>
+<li><code>ufw default deny incoming</code></li>
+<li><code>ufw limit ssh</code> (Allows SSH but rate-limits brute force attempts).</li>
+<li><code>ufw allow 80,443/tcp</code></li>
+<li><code>ufw enable</code></li>
+</ul>
+</li>
+</ul>
+<h3 id="52-deep-network-diagnostics">5.2 Deep Network Diagnostics<a class="headerlink" href="#52-deep-network-diagnostics" title="Permanent link">&para;</a></h3>
+<ul>
+<li><strong><code>ip</code> suite</strong>: The modern replacement for <code>ifconfig</code> and <code>route</code>.<ul>
+<li><code>ip a</code> (Addresses and MACs).</li>
+<li><code>ip route</code> (Routing table: determines where traffic goes).</li>
+<li><code>ip link set eth0 down</code> (Brings interface offline).</li>
+</ul>
+</li>
+<li><strong><code>ss</code> (Socket Statistics)</strong>: Replacement for <code>netstat</code>. Directly queries kernel memory for immense speed.<ul>
+<li><code>ss -tulnp</code> (TCP, UDP, Listening, Numeric ports/IPs, Processes). Essential for seeing what application is binding to port 8080.</li>
+</ul>
+</li>
+<li><strong><code>tcpdump</code></strong>: The ultimate packet analyzer.<ul>
+<li><code>tcpdump -i eth0 tcp port 443 -n</code> (Sniff all HTTPS traffic on interface eth0, avoiding slow reverse-DNS lookups).</li>
+<li><code>tcpdump -i any host 10.0.0.5 -w capture.pcap</code> (Capture all traffic communicating with a specific host and write to a binary file for Wireshark analysis).</li>
+</ul>
+</li>
+</ul>
+<hr />
+<h2 id="6-true-text-processing-mastery-awk-sed">6. True Text Processing Mastery: <code>awk</code> &amp; <code>sed</code><a class="headerlink" href="#6-true-text-processing-mastery-awk-sed" title="Permanent link">&para;</a></h2>
+<h3 id="61-sed-stream-editor-deep-dive">6.1 <code>sed</code> (Stream Editor) Deep Dive<a class="headerlink" href="#61-sed-stream-editor-deep-dive" title="Permanent link">&para;</a></h3>
+<p><code>sed</code> modifies streams of text on the fly. 
+*   <strong>In-place editing</strong>: <code>-i</code> modifies the file on disk. (Always backup: <code>-i.bak</code>).
+*   <strong>Address Ranges</strong>: <code>sed '10,20d' file.txt</code> (Deletes lines 10 through 20).
+*   <strong>Regex Capturing &amp; Replacing</strong>:
+    <code>sed -E 's/([A-Z]+)\s+([0-9]+)/\2 - \1/g' file.txt</code>
+    <em>(Finds "WORD 123" and flips it to "123 - WORD" using backreferences <code>\1</code> and <code>\2</code>).</em>
+*   <strong>Multi-line Parsing (<code>N</code>, <code>P</code>, <code>D</code>)</strong>: <code>sed</code> processes one line at a time. The <code>N</code> command pulls the <em>next</em> line into the pattern space, allowing you to run regex across physical line breaks.</p>
+<h3 id="62-awk-deep-dive">6.2 <code>awk</code> Deep Dive<a class="headerlink" href="#62-awk-deep-dive" title="Permanent link">&para;</a></h3>
+<p><code>awk</code> is a fully featured data processing language. It splits every line into variables based on the Field Separator (<code>FS</code>, default is whitespace).
+*   <code>$0</code> = The entire line. <code>$1</code> = First column. <code>$NF</code> = The very last column.
+*   <strong><code>BEGIN</code> and <code>END</code> blocks</strong>: <code>BEGIN</code> runs once before any text is read (perfect for initializing variables or headers). <code>END</code> runs after the entire file is processed (perfect for printing totals).</p>
+<p><strong>Complex Use Case: Parsing Nginx Access Logs</strong>
+Calculate the total bandwidth (in Megabytes) consumed by strictly successful (HTTP 200) requests, grouped by IP address.
+<div class="highlight"><pre><span></span><code><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a>awk<span class="w"> </span><span class="s1">&#39;</span>
+<a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a><span class="s1">    # Initialize variables before reading the file</span>
+<a id="__codelineno-2-3" name="__codelineno-2-3" href="#__codelineno-2-3"></a><span class="s1">    BEGIN { print &quot;--- Bandwidth Usage per IP (HTTP 200 Only) ---&quot; }</span>
+<a id="__codelineno-2-4" name="__codelineno-2-4" href="#__codelineno-2-4"></a>
+<a id="__codelineno-2-5" name="__codelineno-2-5" href="#__codelineno-2-5"></a><span class="s1">    # Process each line: If Field 9 (Status) is 200</span>
+<a id="__codelineno-2-6" name="__codelineno-2-6" href="#__codelineno-2-6"></a><span class="s1">    $9 == &quot;200&quot; {</span>
+<a id="__codelineno-2-7" name="__codelineno-2-7" href="#__codelineno-2-7"></a><span class="s1">        # Add Field 10 (Bytes) to an associative array, keyed by Field 1 (IP)</span>
+<a id="__codelineno-2-8" name="__codelineno-2-8" href="#__codelineno-2-8"></a><span class="s1">        ip_bytes[$1] += $10</span>
+<a id="__codelineno-2-9" name="__codelineno-2-9" href="#__codelineno-2-9"></a><span class="s1">    }</span>
+<a id="__codelineno-2-10" name="__codelineno-2-10" href="#__codelineno-2-10"></a>
+<a id="__codelineno-2-11" name="__codelineno-2-11" href="#__codelineno-2-11"></a><span class="s1">    # After the file is fully processed, print the results</span>
+<a id="__codelineno-2-12" name="__codelineno-2-12" href="#__codelineno-2-12"></a><span class="s1">    END {</span>
+<a id="__codelineno-2-13" name="__codelineno-2-13" href="#__codelineno-2-13"></a><span class="s1">        for (ip in ip_bytes) {</span>
+<a id="__codelineno-2-14" name="__codelineno-2-14" href="#__codelineno-2-14"></a><span class="s1">            # Convert bytes to MB (Bytes / 1024 / 1024)</span>
+<a id="__codelineno-2-15" name="__codelineno-2-15" href="#__codelineno-2-15"></a><span class="s1">            printf &quot;%-15s : %.2f MB\n&quot;, ip, ip_bytes[ip] / 1048576</span>
+<a id="__codelineno-2-16" name="__codelineno-2-16" href="#__codelineno-2-16"></a><span class="s1">        }</span>
+<a id="__codelineno-2-17" name="__codelineno-2-17" href="#__codelineno-2-17"></a><span class="s1">    }</span>
+<a id="__codelineno-2-18" name="__codelineno-2-18" href="#__codelineno-2-18"></a><span class="s1">&#39;</span><span class="w"> </span>/var/log/nginx/access.log
+</code></pre></div></p>
+<hr />
+<h2 id="7-advanced-defensive-shell-scripting">7. Advanced &amp; Defensive Shell Scripting<a class="headerlink" href="#7-advanced-defensive-shell-scripting" title="Permanent link">&para;</a></h2>
+<h3 id="71-defensive-execution-context">7.1 Defensive Execution Context<a class="headerlink" href="#71-defensive-execution-context" title="Permanent link">&para;</a></h3>
+<p>Every production script must begin with this strict directive:
+<div class="highlight"><pre><span></span><code><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a><span class="nb">set</span><span class="w"> </span>-euo<span class="w"> </span>pipefail
+<a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a><span class="c1"># -e: Exit immediately if ANY command returns a non-zero exit code.</span>
+<a id="__codelineno-3-3" name="__codelineno-3-3" href="#__codelineno-3-3"></a><span class="c1"># -u: Exit immediately if attempting to use an uninitialized/undefined variable.</span>
+<a id="__codelineno-3-4" name="__codelineno-3-4" href="#__codelineno-3-4"></a><span class="c1"># -o pipefail: If a command inside a pipeline fails (e.g., `failing_cmd | grep &quot;foo&quot;`), </span>
+<a id="__codelineno-3-5" name="__codelineno-3-5" href="#__codelineno-3-5"></a><span class="c1">#              the entire pipeline fails, rather than hiding the error behind grep&#39;s success.</span>
+</code></pre></div></p>
+<h3 id="72-signal-handling-with-trap">7.2 Signal Handling with <code>trap</code><a class="headerlink" href="#72-signal-handling-with-trap" title="Permanent link">&para;</a></h3>
+<p>When scripts create temporary files, database locks, or mounts, a sudden user cancellation (Ctrl+C / <code>SIGINT</code>) can leave the system in a broken state. <code>trap</code> intercepts signals and runs a guaranteed cleanup function.
+<div class="highlight"><pre><span></span><code><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a><span class="nv">TEMP_DIR</span><span class="o">=</span><span class="k">$(</span>mktemp<span class="w"> </span>-d<span class="k">)</span>
+<a id="__codelineno-4-2" name="__codelineno-4-2" href="#__codelineno-4-2"></a>cleanup<span class="o">()</span><span class="w"> </span><span class="o">{</span>
+<a id="__codelineno-4-3" name="__codelineno-4-3" href="#__codelineno-4-3"></a><span class="w">    </span><span class="nb">echo</span><span class="w"> </span><span class="s2">&quot;Caught exit signal! Cleaning up </span><span class="si">${</span><span class="nv">TEMP_DIR</span><span class="si">}</span><span class="s2">...&quot;</span>
+<a id="__codelineno-4-4" name="__codelineno-4-4" href="#__codelineno-4-4"></a><span class="w">    </span>rm<span class="w"> </span>-rf<span class="w"> </span><span class="s2">&quot;</span><span class="si">${</span><span class="nv">TEMP_DIR</span><span class="si">}</span><span class="s2">&quot;</span>
+<a id="__codelineno-4-5" name="__codelineno-4-5" href="#__codelineno-4-5"></a><span class="o">}</span>
+<a id="__codelineno-4-6" name="__codelineno-4-6" href="#__codelineno-4-6"></a><span class="nb">trap</span><span class="w"> </span>cleanup<span class="w"> </span>EXIT<span class="w"> </span>ERR<span class="w"> </span>SIGINT<span class="w"> </span>SIGTERM
+</code></pre></div></p>
+<h3 id="73-bash-arrays-indexed-and-associative">7.3 Bash Arrays (Indexed and Associative)<a class="headerlink" href="#73-bash-arrays-indexed-and-associative" title="Permanent link">&para;</a></h3>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a><span class="c1"># Indexed Array</span>
+<a id="__codelineno-5-2" name="__codelineno-5-2" href="#__codelineno-5-2"></a><span class="nb">declare</span><span class="w"> </span>-a<span class="w"> </span><span class="nv">PORTS</span><span class="o">=(</span><span class="m">80</span><span class="w"> </span><span class="m">443</span><span class="w"> </span><span class="m">8080</span><span class="o">)</span>
+<a id="__codelineno-5-3" name="__codelineno-5-3" href="#__codelineno-5-3"></a><span class="k">for</span><span class="w"> </span>p<span class="w"> </span><span class="k">in</span><span class="w"> </span><span class="s2">&quot;</span><span class="si">${</span><span class="nv">PORTS</span><span class="p">[@]</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">;</span><span class="w"> </span><span class="k">do</span><span class="w"> </span><span class="nb">echo</span><span class="w"> </span><span class="s2">&quot;Scanning port </span><span class="nv">$p</span><span class="s2">&quot;</span><span class="p">;</span><span class="w"> </span><span class="k">done</span>
+<a id="__codelineno-5-4" name="__codelineno-5-4" href="#__codelineno-5-4"></a>
+<a id="__codelineno-5-5" name="__codelineno-5-5" href="#__codelineno-5-5"></a><span class="c1"># Associative Array (Key-Value map. Requires Bash 4+)</span>
+<a id="__codelineno-5-6" name="__codelineno-5-6" href="#__codelineno-5-6"></a><span class="nb">declare</span><span class="w"> </span>-A<span class="w"> </span>DB_CONFIG
+<a id="__codelineno-5-7" name="__codelineno-5-7" href="#__codelineno-5-7"></a><span class="nv">DB_CONFIG</span><span class="o">=(</span><span class="w"> </span><span class="o">[</span><span class="s2">&quot;host&quot;</span><span class="o">]=</span><span class="s2">&quot;10.0.0.5&quot;</span><span class="w"> </span><span class="o">[</span><span class="s2">&quot;user&quot;</span><span class="o">]=</span><span class="s2">&quot;dbadmin&quot;</span><span class="w"> </span><span class="o">[</span><span class="s2">&quot;port&quot;</span><span class="o">]=</span><span class="s2">&quot;5432&quot;</span><span class="w"> </span><span class="o">)</span>
+<a id="__codelineno-5-8" name="__codelineno-5-8" href="#__codelineno-5-8"></a><span class="nb">echo</span><span class="w"> </span><span class="s2">&quot;Connecting to </span><span class="si">${</span><span class="nv">DB_CONFIG</span><span class="p">[</span><span class="s2">&quot;host&quot;</span><span class="p">]</span><span class="si">}</span><span class="s2"> on port </span><span class="si">${</span><span class="nv">DB_CONFIG</span><span class="p">[</span><span class="s2">&quot;port&quot;</span><span class="p">]</span><span class="si">}</span><span class="s2">...&quot;</span>
+</code></pre></div>
+<h3 id="74-multi-threading-parallel-processing-in-bash">7.4 Multi-Threading &amp; Parallel Processing in Bash<a class="headerlink" href="#74-multi-threading-parallel-processing-in-bash" title="Permanent link">&para;</a></h3>
+<p>Bash processes synchronously by default. For massive workloads, you must invoke parallel execution.
+*   <strong>Background Jobs (<code>&amp;</code> and <code>wait</code>)</strong>:
+    <div class="highlight"><pre><span></span><code><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a><span class="k">for</span><span class="w"> </span>server<span class="w"> </span><span class="k">in</span><span class="w"> </span><span class="s2">&quot;</span><span class="si">${</span><span class="nv">SERVERS</span><span class="p">[@]</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">;</span><span class="w"> </span><span class="k">do</span>
+<a id="__codelineno-6-2" name="__codelineno-6-2" href="#__codelineno-6-2"></a><span class="w">    </span>ssh<span class="w"> </span>root@<span class="nv">$server</span><span class="w"> </span><span class="s2">&quot;apt-get update&quot;</span><span class="w"> </span><span class="p">&amp;</span><span class="w">   </span><span class="c1"># The &amp; throws the task to the background</span>
+<a id="__codelineno-6-3" name="__codelineno-6-3" href="#__codelineno-6-3"></a><span class="k">done</span>
+<a id="__codelineno-6-4" name="__codelineno-6-4" href="#__codelineno-6-4"></a><span class="nb">wait</span><span class="w"> </span><span class="c1"># Pauses script execution until all background jobs complete</span>
+<a id="__codelineno-6-5" name="__codelineno-6-5" href="#__codelineno-6-5"></a><span class="nb">echo</span><span class="w"> </span><span class="s2">&quot;All servers updated simultaneously!&quot;</span>
+</code></pre></div>
+*   <strong><code>xargs -P</code> (Multi-Core Processing)</strong>:
+    <code>cat list_of_1000_images.txt | xargs -n 1 -P 8 optimize_image_tool</code>
+    <em>(Pulls 1 image at a time (<code>-n 1</code>) and keeps exactly 8 instances of the optimization tool running concurrently (<code>-P 8</code>), maximizing an 8-core CPU).</em></p>
+<hr />
+<h2 id="8-the-master-automation-script">8. The Master Automation Script<a class="headerlink" href="#8-the-master-automation-script" title="Permanent link">&para;</a></h2>
+<p>Below is a production-grade, defensive script that orchestrates OS detection, Logical Volume Management (LVM), advanced text processing (<code>sed</code>/<code>awk</code>), and Mandatory Access Control (SELinux) configuration to deploy a hardened Nginx web server.</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a><span class="ch">#!/usr/bin/env bash</span>
+<a id="__codelineno-7-2" name="__codelineno-7-2" href="#__codelineno-7-2"></a><span class="c1"># ==============================================================================</span>
+<a id="__codelineno-7-3" name="__codelineno-7-3" href="#__codelineno-7-3"></a><span class="c1"># Script:  enterprise_nginx_deploy.sh</span>
+<a id="__codelineno-7-4" name="__codelineno-7-4" href="#__codelineno-7-4"></a><span class="c1"># Purpose: Defensively provision LVM, install Nginx, harden configs, and setup MAC.</span>
+<a id="__codelineno-7-5" name="__codelineno-7-5" href="#__codelineno-7-5"></a><span class="c1"># Target:  RHEL/CentOS or Ubuntu/Debian (Auto-detected)</span>
+<a id="__codelineno-7-6" name="__codelineno-7-6" href="#__codelineno-7-6"></a><span class="c1"># ==============================================================================</span>
+<a id="__codelineno-7-7" name="__codelineno-7-7" href="#__codelineno-7-7"></a>
+<a id="__codelineno-7-8" name="__codelineno-7-8" href="#__codelineno-7-8"></a><span class="c1"># 1. STRICT DEFENSIVE CONTEXT</span>
+<a id="__codelineno-7-9" name="__codelineno-7-9" href="#__codelineno-7-9"></a><span class="nb">set</span><span class="w"> </span>-euo<span class="w"> </span>pipefail
+<a id="__codelineno-7-10" name="__codelineno-7-10" href="#__codelineno-7-10"></a>
+<a id="__codelineno-7-11" name="__codelineno-7-11" href="#__codelineno-7-11"></a><span class="c1"># 2. VARIABLE DEFINITIONS</span>
+<a id="__codelineno-7-12" name="__codelineno-7-12" href="#__codelineno-7-12"></a><span class="nb">readonly</span><span class="w"> </span><span class="nv">DOMAIN</span><span class="o">=</span><span class="s2">&quot;app.internal&quot;</span>
+<a id="__codelineno-7-13" name="__codelineno-7-13" href="#__codelineno-7-13"></a><span class="nb">readonly</span><span class="w"> </span><span class="nv">LVM_VG</span><span class="o">=</span><span class="s2">&quot;vg_data&quot;</span>
+<a id="__codelineno-7-14" name="__codelineno-7-14" href="#__codelineno-7-14"></a><span class="nb">readonly</span><span class="w"> </span><span class="nv">LVM_LV</span><span class="o">=</span><span class="s2">&quot;lv_www&quot;</span>
+<a id="__codelineno-7-15" name="__codelineno-7-15" href="#__codelineno-7-15"></a><span class="nb">readonly</span><span class="w"> </span><span class="nv">MOUNT_POINT</span><span class="o">=</span><span class="s2">&quot;/var/www&quot;</span>
+<a id="__codelineno-7-16" name="__codelineno-7-16" href="#__codelineno-7-16"></a><span class="nb">readonly</span><span class="w"> </span><span class="nv">WEB_ROOT</span><span class="o">=</span><span class="s2">&quot;</span><span class="si">${</span><span class="nv">MOUNT_POINT</span><span class="si">}</span><span class="s2">/</span><span class="si">${</span><span class="nv">DOMAIN</span><span class="si">}</span><span class="s2">&quot;</span>
+<a id="__codelineno-7-17" name="__codelineno-7-17" href="#__codelineno-7-17"></a><span class="nb">readonly</span><span class="w"> </span><span class="nv">TEMP_CONF</span><span class="o">=</span><span class="k">$(</span>mktemp<span class="k">)</span>
+<a id="__codelineno-7-18" name="__codelineno-7-18" href="#__codelineno-7-18"></a>
+<a id="__codelineno-7-19" name="__codelineno-7-19" href="#__codelineno-7-19"></a><span class="c1"># 3. SIGNAL HANDLING (TRAP)</span>
+<a id="__codelineno-7-20" name="__codelineno-7-20" href="#__codelineno-7-20"></a>cleanup<span class="o">()</span><span class="w"> </span><span class="o">{</span>
+<a id="__codelineno-7-21" name="__codelineno-7-21" href="#__codelineno-7-21"></a><span class="w">    </span><span class="nb">echo</span><span class="w"> </span><span class="s2">&quot;[INFO] Cleaning up temporary configurations...&quot;</span>
+<a id="__codelineno-7-22" name="__codelineno-7-22" href="#__codelineno-7-22"></a><span class="w">    </span>rm<span class="w"> </span>-f<span class="w"> </span><span class="s2">&quot;</span><span class="si">${</span><span class="nv">TEMP_CONF</span><span class="si">}</span><span class="s2">&quot;</span>
+<a id="__codelineno-7-23" name="__codelineno-7-23" href="#__codelineno-7-23"></a><span class="o">}</span>
+<a id="__codelineno-7-24" name="__codelineno-7-24" href="#__codelineno-7-24"></a><span class="nb">trap</span><span class="w"> </span>cleanup<span class="w"> </span>EXIT<span class="w"> </span>ERR<span class="w"> </span>SIGINT<span class="w"> </span>SIGTERM
+<a id="__codelineno-7-25" name="__codelineno-7-25" href="#__codelineno-7-25"></a>
+<a id="__codelineno-7-26" name="__codelineno-7-26" href="#__codelineno-7-26"></a><span class="c1"># 4. PRIVILEGE VALIDATION</span>
+<a id="__codelineno-7-27" name="__codelineno-7-27" href="#__codelineno-7-27"></a><span class="k">if</span><span class="w"> </span><span class="o">[[</span><span class="w"> </span><span class="s2">&quot;</span><span class="si">${</span><span class="nv">EUID</span><span class="si">}</span><span class="s2">&quot;</span><span class="w"> </span>-ne<span class="w"> </span><span class="m">0</span><span class="w"> </span><span class="o">]]</span><span class="p">;</span><span class="w"> </span><span class="k">then</span>
+<a id="__codelineno-7-28" name="__codelineno-7-28" href="#__codelineno-7-28"></a><span class="w">    </span><span class="nb">echo</span><span class="w"> </span><span class="s2">&quot;[ERROR] Deployment must be run as root.&quot;</span><span class="w"> </span>&gt;<span class="p">&amp;</span><span class="m">2</span>
+<a id="__codelineno-7-29" name="__codelineno-7-29" href="#__codelineno-7-29"></a><span class="w">    </span><span class="nb">exit</span><span class="w"> </span><span class="m">1</span>
+<a id="__codelineno-7-30" name="__codelineno-7-30" href="#__codelineno-7-30"></a><span class="k">fi</span>
+<a id="__codelineno-7-31" name="__codelineno-7-31" href="#__codelineno-7-31"></a>
+<a id="__codelineno-7-32" name="__codelineno-7-32" href="#__codelineno-7-32"></a><span class="c1"># 5. OS DETECTION &amp; PACKAGE MANAGEMENT</span>
+<a id="__codelineno-7-33" name="__codelineno-7-33" href="#__codelineno-7-33"></a><span class="nb">echo</span><span class="w"> </span><span class="s2">&quot;[INFO] Detecting Operating System...&quot;</span>
+<a id="__codelineno-7-34" name="__codelineno-7-34" href="#__codelineno-7-34"></a><span class="k">if</span><span class="w"> </span>grep<span class="w"> </span>-qi<span class="w"> </span>-E<span class="w"> </span><span class="s1">&#39;redhat|centos|rocky&#39;</span><span class="w"> </span>/etc/os-release<span class="p">;</span><span class="w"> </span><span class="k">then</span>
+<a id="__codelineno-7-35" name="__codelineno-7-35" href="#__codelineno-7-35"></a><span class="w">    </span><span class="nb">readonly</span><span class="w"> </span><span class="nv">OS_FAMILY</span><span class="o">=</span><span class="s2">&quot;RHEL&quot;</span>
+<a id="__codelineno-7-36" name="__codelineno-7-36" href="#__codelineno-7-36"></a><span class="w">    </span><span class="nb">readonly</span><span class="w"> </span><span class="nv">PKG_MGR</span><span class="o">=</span><span class="s2">&quot;dnf&quot;</span>
+<a id="__codelineno-7-37" name="__codelineno-7-37" href="#__codelineno-7-37"></a><span class="w">    </span><span class="nb">readonly</span><span class="w"> </span><span class="nv">FIREWALL</span><span class="o">=</span><span class="s2">&quot;firewalld&quot;</span>
+<a id="__codelineno-7-38" name="__codelineno-7-38" href="#__codelineno-7-38"></a><span class="k">elif</span><span class="w"> </span>grep<span class="w"> </span>-qi<span class="w"> </span>-E<span class="w"> </span><span class="s1">&#39;ubuntu|debian&#39;</span><span class="w"> </span>/etc/os-release<span class="p">;</span><span class="w"> </span><span class="k">then</span>
+<a id="__codelineno-7-39" name="__codelineno-7-39" href="#__codelineno-7-39"></a><span class="w">    </span><span class="nb">readonly</span><span class="w"> </span><span class="nv">OS_FAMILY</span><span class="o">=</span><span class="s2">&quot;DEBIAN&quot;</span>
+<a id="__codelineno-7-40" name="__codelineno-7-40" href="#__codelineno-7-40"></a><span class="w">    </span><span class="nb">readonly</span><span class="w"> </span><span class="nv">PKG_MGR</span><span class="o">=</span><span class="s2">&quot;apt-get&quot;</span>
+<a id="__codelineno-7-41" name="__codelineno-7-41" href="#__codelineno-7-41"></a><span class="w">    </span><span class="nb">readonly</span><span class="w"> </span><span class="nv">FIREWALL</span><span class="o">=</span><span class="s2">&quot;ufw&quot;</span>
+<a id="__codelineno-7-42" name="__codelineno-7-42" href="#__codelineno-7-42"></a><span class="k">else</span>
+<a id="__codelineno-7-43" name="__codelineno-7-43" href="#__codelineno-7-43"></a><span class="w">    </span><span class="nb">echo</span><span class="w"> </span><span class="s2">&quot;[ERROR] Unsupported OS.&quot;</span><span class="w"> </span>&gt;<span class="p">&amp;</span><span class="m">2</span>
+<a id="__codelineno-7-44" name="__codelineno-7-44" href="#__codelineno-7-44"></a><span class="w">    </span><span class="nb">exit</span><span class="w"> </span><span class="m">1</span>
+<a id="__codelineno-7-45" name="__codelineno-7-45" href="#__codelineno-7-45"></a><span class="k">fi</span>
+<a id="__codelineno-7-46" name="__codelineno-7-46" href="#__codelineno-7-46"></a>
+<a id="__codelineno-7-47" name="__codelineno-7-47" href="#__codelineno-7-47"></a><span class="nb">echo</span><span class="w"> </span><span class="s2">&quot;[INFO] OS detected: </span><span class="si">${</span><span class="nv">OS_FAMILY</span><span class="si">}</span><span class="s2">. Updating repositories and installing Nginx...&quot;</span>
+<a id="__codelineno-7-48" name="__codelineno-7-48" href="#__codelineno-7-48"></a><span class="k">if</span><span class="w"> </span><span class="o">[[</span><span class="w"> </span><span class="s2">&quot;</span><span class="si">${</span><span class="nv">OS_FAMILY</span><span class="si">}</span><span class="s2">&quot;</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="s2">&quot;RHEL&quot;</span><span class="w"> </span><span class="o">]]</span><span class="p">;</span><span class="w"> </span><span class="k">then</span>
+<a id="__codelineno-7-49" name="__codelineno-7-49" href="#__codelineno-7-49"></a><span class="w">    </span><span class="si">${</span><span class="nv">PKG_MGR</span><span class="si">}</span><span class="w"> </span>update<span class="w"> </span>-y
+<a id="__codelineno-7-50" name="__codelineno-7-50" href="#__codelineno-7-50"></a><span class="w">    </span><span class="si">${</span><span class="nv">PKG_MGR</span><span class="si">}</span><span class="w"> </span>install<span class="w"> </span>-y<span class="w"> </span>nginx<span class="w"> </span>firewalld<span class="w"> </span>lvm2
+<a id="__codelineno-7-51" name="__codelineno-7-51" href="#__codelineno-7-51"></a><span class="k">else</span>
+<a id="__codelineno-7-52" name="__codelineno-7-52" href="#__codelineno-7-52"></a><span class="w">    </span><span class="si">${</span><span class="nv">PKG_MGR</span><span class="si">}</span><span class="w"> </span>update<span class="w"> </span>-qq
+<a id="__codelineno-7-53" name="__codelineno-7-53" href="#__codelineno-7-53"></a><span class="w">    </span><span class="si">${</span><span class="nv">PKG_MGR</span><span class="si">}</span><span class="w"> </span>install<span class="w"> </span>-y<span class="w"> </span>-qq<span class="w"> </span>nginx<span class="w"> </span>ufw<span class="w"> </span>lvm2
+<a id="__codelineno-7-54" name="__codelineno-7-54" href="#__codelineno-7-54"></a><span class="k">fi</span>
+<a id="__codelineno-7-55" name="__codelineno-7-55" href="#__codelineno-7-55"></a>
+<a id="__codelineno-7-56" name="__codelineno-7-56" href="#__codelineno-7-56"></a><span class="c1"># 6. LOGICAL VOLUME MANAGEMENT (LVM)</span>
+<a id="__codelineno-7-57" name="__codelineno-7-57" href="#__codelineno-7-57"></a><span class="c1"># Assuming /dev/sdb is a raw unformatted drive attached to the VM for web data</span>
+<a id="__codelineno-7-58" name="__codelineno-7-58" href="#__codelineno-7-58"></a><span class="nb">echo</span><span class="w"> </span><span class="s2">&quot;[INFO] Configuring LVM on /dev/sdb...&quot;</span>
+<a id="__codelineno-7-59" name="__codelineno-7-59" href="#__codelineno-7-59"></a><span class="k">if</span><span class="w"> </span>!<span class="w"> </span>vgs<span class="w"> </span><span class="si">${</span><span class="nv">LVM_VG</span><span class="si">}</span><span class="w"> </span>&gt;/dev/null<span class="w"> </span><span class="m">2</span>&gt;<span class="p">&amp;</span><span class="m">1</span><span class="p">;</span><span class="w"> </span><span class="k">then</span>
+<a id="__codelineno-7-60" name="__codelineno-7-60" href="#__codelineno-7-60"></a><span class="w">    </span>pvcreate<span class="w"> </span>/dev/sdb
+<a id="__codelineno-7-61" name="__codelineno-7-61" href="#__codelineno-7-61"></a><span class="w">    </span>vgcreate<span class="w"> </span><span class="si">${</span><span class="nv">LVM_VG</span><span class="si">}</span><span class="w"> </span>/dev/sdb
+<a id="__codelineno-7-62" name="__codelineno-7-62" href="#__codelineno-7-62"></a><span class="w">    </span>lvcreate<span class="w"> </span>-l<span class="w"> </span><span class="m">100</span>%FREE<span class="w"> </span>-n<span class="w"> </span><span class="si">${</span><span class="nv">LVM_LV</span><span class="si">}</span><span class="w"> </span><span class="si">${</span><span class="nv">LVM_VG</span><span class="si">}</span>
+<a id="__codelineno-7-63" name="__codelineno-7-63" href="#__codelineno-7-63"></a><span class="w">    </span>mkfs.xfs<span class="w"> </span>/dev/<span class="si">${</span><span class="nv">LVM_VG</span><span class="si">}</span>/<span class="si">${</span><span class="nv">LVM_LV</span><span class="si">}</span>
+<a id="__codelineno-7-64" name="__codelineno-7-64" href="#__codelineno-7-64"></a>
+<a id="__codelineno-7-65" name="__codelineno-7-65" href="#__codelineno-7-65"></a><span class="w">    </span><span class="c1"># Persistent mount via fstab</span>
+<a id="__codelineno-7-66" name="__codelineno-7-66" href="#__codelineno-7-66"></a><span class="w">    </span>mkdir<span class="w"> </span>-p<span class="w"> </span><span class="si">${</span><span class="nv">MOUNT_POINT</span><span class="si">}</span>
+<a id="__codelineno-7-67" name="__codelineno-7-67" href="#__codelineno-7-67"></a><span class="w">    </span><span class="nb">echo</span><span class="w"> </span><span class="s2">&quot;/dev/</span><span class="si">${</span><span class="nv">LVM_VG</span><span class="si">}</span><span class="s2">/</span><span class="si">${</span><span class="nv">LVM_LV</span><span class="si">}</span><span class="s2">  </span><span class="si">${</span><span class="nv">MOUNT_POINT</span><span class="si">}</span><span class="s2">  xfs  defaults,noatime  0  2&quot;</span><span class="w"> </span>&gt;&gt;<span class="w"> </span>/etc/fstab
+<a id="__codelineno-7-68" name="__codelineno-7-68" href="#__codelineno-7-68"></a><span class="w">    </span>mount<span class="w"> </span>-a
+<a id="__codelineno-7-69" name="__codelineno-7-69" href="#__codelineno-7-69"></a><span class="k">fi</span>
+<a id="__codelineno-7-70" name="__codelineno-7-70" href="#__codelineno-7-70"></a>
+<a id="__codelineno-7-71" name="__codelineno-7-71" href="#__codelineno-7-71"></a><span class="nb">echo</span><span class="w"> </span><span class="s2">&quot;[INFO] Creating web root at </span><span class="si">${</span><span class="nv">WEB_ROOT</span><span class="si">}</span><span class="s2">...&quot;</span>
+<a id="__codelineno-7-72" name="__codelineno-7-72" href="#__codelineno-7-72"></a>mkdir<span class="w"> </span>-p<span class="w"> </span><span class="s2">&quot;</span><span class="si">${</span><span class="nv">WEB_ROOT</span><span class="si">}</span><span class="s2">&quot;</span>
+<a id="__codelineno-7-73" name="__codelineno-7-73" href="#__codelineno-7-73"></a><span class="nb">echo</span><span class="w"> </span><span class="s2">&quot;&lt;h1&gt;Secured Enterprise Nginx&lt;/h1&gt;&quot;</span><span class="w"> </span>&gt;<span class="w"> </span><span class="s2">&quot;</span><span class="si">${</span><span class="nv">WEB_ROOT</span><span class="si">}</span><span class="s2">/index.html&quot;</span>
+<a id="__codelineno-7-74" name="__codelineno-7-74" href="#__codelineno-7-74"></a>
+<a id="__codelineno-7-75" name="__codelineno-7-75" href="#__codelineno-7-75"></a><span class="k">if</span><span class="w"> </span><span class="o">[[</span><span class="w"> </span><span class="s2">&quot;</span><span class="si">${</span><span class="nv">OS_FAMILY</span><span class="si">}</span><span class="s2">&quot;</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="s2">&quot;RHEL&quot;</span><span class="w"> </span><span class="o">]]</span><span class="p">;</span><span class="w"> </span><span class="k">then</span>
+<a id="__codelineno-7-76" name="__codelineno-7-76" href="#__codelineno-7-76"></a><span class="w">    </span>chown<span class="w"> </span>-R<span class="w"> </span>nginx:nginx<span class="w"> </span><span class="s2">&quot;</span><span class="si">${</span><span class="nv">MOUNT_POINT</span><span class="si">}</span><span class="s2">&quot;</span>
+<a id="__codelineno-7-77" name="__codelineno-7-77" href="#__codelineno-7-77"></a><span class="k">else</span>
+<a id="__codelineno-7-78" name="__codelineno-7-78" href="#__codelineno-7-78"></a><span class="w">    </span>chown<span class="w"> </span>-R<span class="w"> </span>www-data:www-data<span class="w"> </span><span class="s2">&quot;</span><span class="si">${</span><span class="nv">MOUNT_POINT</span><span class="si">}</span><span class="s2">&quot;</span>
+<a id="__codelineno-7-79" name="__codelineno-7-79" href="#__codelineno-7-79"></a><span class="k">fi</span>
+<a id="__codelineno-7-80" name="__codelineno-7-80" href="#__codelineno-7-80"></a>chmod<span class="w"> </span>-R<span class="w"> </span><span class="m">2755</span><span class="w"> </span><span class="s2">&quot;</span><span class="si">${</span><span class="nv">MOUNT_POINT</span><span class="si">}</span><span class="s2">&quot;</span><span class="w"> </span><span class="c1"># SGID applied</span>
+<a id="__codelineno-7-81" name="__codelineno-7-81" href="#__codelineno-7-81"></a>
+<a id="__codelineno-7-82" name="__codelineno-7-82" href="#__codelineno-7-82"></a><span class="c1"># 7. SELINUX MAC CONFIGURATION (RHEL ONLY)</span>
+<a id="__codelineno-7-83" name="__codelineno-7-83" href="#__codelineno-7-83"></a><span class="k">if</span><span class="w"> </span><span class="o">[[</span><span class="w"> </span><span class="s2">&quot;</span><span class="si">${</span><span class="nv">OS_FAMILY</span><span class="si">}</span><span class="s2">&quot;</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="s2">&quot;RHEL&quot;</span><span class="w"> </span><span class="o">]]</span><span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span>getenforce<span class="w"> </span><span class="p">|</span><span class="w"> </span>grep<span class="w"> </span>-qi<span class="w"> </span><span class="s1">&#39;Enforcing&#39;</span><span class="p">;</span><span class="w"> </span><span class="k">then</span>
+<a id="__codelineno-7-84" name="__codelineno-7-84" href="#__codelineno-7-84"></a><span class="w">    </span><span class="nb">echo</span><span class="w"> </span><span class="s2">&quot;[INFO] Configuring SELinux Contexts for </span><span class="si">${</span><span class="nv">MOUNT_POINT</span><span class="si">}</span><span class="s2">...&quot;</span>
+<a id="__codelineno-7-85" name="__codelineno-7-85" href="#__codelineno-7-85"></a><span class="w">    </span>semanage<span class="w"> </span>fcontext<span class="w"> </span>-a<span class="w"> </span>-t<span class="w"> </span>httpd_sys_content_t<span class="w"> </span><span class="s2">&quot;</span><span class="si">${</span><span class="nv">MOUNT_POINT</span><span class="si">}</span><span class="s2">(/.*)?&quot;</span>
+<a id="__codelineno-7-86" name="__codelineno-7-86" href="#__codelineno-7-86"></a><span class="w">    </span>restorecon<span class="w"> </span>-Rv<span class="w"> </span><span class="s2">&quot;</span><span class="si">${</span><span class="nv">MOUNT_POINT</span><span class="si">}</span><span class="s2">&quot;</span>
+<a id="__codelineno-7-87" name="__codelineno-7-87" href="#__codelineno-7-87"></a><span class="k">fi</span>
+<a id="__codelineno-7-88" name="__codelineno-7-88" href="#__codelineno-7-88"></a>
+<a id="__codelineno-7-89" name="__codelineno-7-89" href="#__codelineno-7-89"></a><span class="c1"># 8. TEXT PROCESSING (SED &amp; AWK): Hardening Nginx</span>
+<a id="__codelineno-7-90" name="__codelineno-7-90" href="#__codelineno-7-90"></a><span class="nb">echo</span><span class="w"> </span><span class="s2">&quot;[INFO] Hardening Nginx Configuration (Disabling Server Tokens)...&quot;</span>
+<a id="__codelineno-7-91" name="__codelineno-7-91" href="#__codelineno-7-91"></a><span class="nb">readonly</span><span class="w"> </span><span class="nv">NGINX_CONF</span><span class="o">=</span><span class="s2">&quot;/etc/nginx/nginx.conf&quot;</span>
+<a id="__codelineno-7-92" name="__codelineno-7-92" href="#__codelineno-7-92"></a><span class="k">if</span><span class="w"> </span>grep<span class="w"> </span>-q<span class="w"> </span><span class="s2">&quot;server_tokens&quot;</span><span class="w"> </span><span class="s2">&quot;</span><span class="si">${</span><span class="nv">NGINX_CONF</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">;</span><span class="w"> </span><span class="k">then</span>
+<a id="__codelineno-7-93" name="__codelineno-7-93" href="#__codelineno-7-93"></a><span class="w">    </span>sed<span class="w"> </span>-i<span class="w"> </span>-E<span class="w"> </span><span class="s1">&#39;s/.*server_tokens.*/\tserver_tokens off;/&#39;</span><span class="w"> </span><span class="s2">&quot;</span><span class="si">${</span><span class="nv">NGINX_CONF</span><span class="si">}</span><span class="s2">&quot;</span>
+<a id="__codelineno-7-94" name="__codelineno-7-94" href="#__codelineno-7-94"></a><span class="k">else</span>
+<a id="__codelineno-7-95" name="__codelineno-7-95" href="#__codelineno-7-95"></a><span class="w">    </span><span class="c1"># Inject directly inside the http {} block using awk</span>
+<a id="__codelineno-7-96" name="__codelineno-7-96" href="#__codelineno-7-96"></a><span class="w">    </span>awk<span class="w"> </span><span class="s1">&#39;/http \{/ { print; print &quot;\tserver_tokens off;&quot;; next }1&#39;</span><span class="w"> </span><span class="s2">&quot;</span><span class="si">${</span><span class="nv">NGINX_CONF</span><span class="si">}</span><span class="s2">&quot;</span><span class="w"> </span>&gt;<span class="w"> </span><span class="s2">&quot;</span><span class="si">${</span><span class="nv">TEMP_CONF</span><span class="si">}</span><span class="s2">&quot;</span>
+<a id="__codelineno-7-97" name="__codelineno-7-97" href="#__codelineno-7-97"></a><span class="w">    </span>mv<span class="w"> </span><span class="s2">&quot;</span><span class="si">${</span><span class="nv">TEMP_CONF</span><span class="si">}</span><span class="s2">&quot;</span><span class="w"> </span><span class="s2">&quot;</span><span class="si">${</span><span class="nv">NGINX_CONF</span><span class="si">}</span><span class="s2">&quot;</span>
+<a id="__codelineno-7-98" name="__codelineno-7-98" href="#__codelineno-7-98"></a><span class="k">fi</span>
+<a id="__codelineno-7-99" name="__codelineno-7-99" href="#__codelineno-7-99"></a>
+<a id="__codelineno-7-100" name="__codelineno-7-100" href="#__codelineno-7-100"></a><span class="c1"># 9. FIREWALL CONFIGURATION</span>
+<a id="__codelineno-7-101" name="__codelineno-7-101" href="#__codelineno-7-101"></a><span class="nb">echo</span><span class="w"> </span><span class="s2">&quot;[INFO] Configuring Firewall (</span><span class="si">${</span><span class="nv">FIREWALL</span><span class="si">}</span><span class="s2">)...&quot;</span>
+<a id="__codelineno-7-102" name="__codelineno-7-102" href="#__codelineno-7-102"></a><span class="k">if</span><span class="w"> </span><span class="o">[[</span><span class="w"> </span><span class="s2">&quot;</span><span class="si">${</span><span class="nv">FIREWALL</span><span class="si">}</span><span class="s2">&quot;</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="s2">&quot;firewalld&quot;</span><span class="w"> </span><span class="o">]]</span><span class="p">;</span><span class="w"> </span><span class="k">then</span>
+<a id="__codelineno-7-103" name="__codelineno-7-103" href="#__codelineno-7-103"></a><span class="w">    </span>systemctl<span class="w"> </span><span class="nb">enable</span><span class="w"> </span>--now<span class="w"> </span>firewalld
+<a id="__codelineno-7-104" name="__codelineno-7-104" href="#__codelineno-7-104"></a><span class="w">    </span>firewall-cmd<span class="w"> </span>--zone<span class="o">=</span>public<span class="w"> </span>--add-service<span class="o">=</span>http<span class="w"> </span>--permanent
+<a id="__codelineno-7-105" name="__codelineno-7-105" href="#__codelineno-7-105"></a><span class="w">    </span>firewall-cmd<span class="w"> </span>--reload
+<a id="__codelineno-7-106" name="__codelineno-7-106" href="#__codelineno-7-106"></a><span class="k">elif</span><span class="w"> </span><span class="o">[[</span><span class="w"> </span><span class="s2">&quot;</span><span class="si">${</span><span class="nv">FIREWALL</span><span class="si">}</span><span class="s2">&quot;</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="s2">&quot;ufw&quot;</span><span class="w"> </span><span class="o">]]</span><span class="p">;</span><span class="w"> </span><span class="k">then</span>
+<a id="__codelineno-7-107" name="__codelineno-7-107" href="#__codelineno-7-107"></a><span class="w">    </span>ufw<span class="w"> </span>allow<span class="w"> </span><span class="s1">&#39;Nginx HTTP&#39;</span>
+<a id="__codelineno-7-108" name="__codelineno-7-108" href="#__codelineno-7-108"></a><span class="w">    </span>ufw<span class="w"> </span>allow<span class="w"> </span><span class="s1">&#39;OpenSSH&#39;</span>
+<a id="__codelineno-7-109" name="__codelineno-7-109" href="#__codelineno-7-109"></a><span class="w">    </span>ufw<span class="w"> </span>--force<span class="w"> </span><span class="nb">enable</span>
+<a id="__codelineno-7-110" name="__codelineno-7-110" href="#__codelineno-7-110"></a><span class="k">fi</span>
+<a id="__codelineno-7-111" name="__codelineno-7-111" href="#__codelineno-7-111"></a>
+<a id="__codelineno-7-112" name="__codelineno-7-112" href="#__codelineno-7-112"></a><span class="c1"># 10. SYSTEMD SERVICE REGISTRATION</span>
+<a id="__codelineno-7-113" name="__codelineno-7-113" href="#__codelineno-7-113"></a><span class="nb">echo</span><span class="w"> </span><span class="s2">&quot;[INFO] Enabling and starting Nginx via systemd...&quot;</span>
+<a id="__codelineno-7-114" name="__codelineno-7-114" href="#__codelineno-7-114"></a>systemctl<span class="w"> </span>daemon-reload
+<a id="__codelineno-7-115" name="__codelineno-7-115" href="#__codelineno-7-115"></a>systemctl<span class="w"> </span><span class="nb">enable</span><span class="w"> </span>--now<span class="w"> </span>nginx
+<a id="__codelineno-7-116" name="__codelineno-7-116" href="#__codelineno-7-116"></a>systemctl<span class="w"> </span>restart<span class="w"> </span>nginx
+<a id="__codelineno-7-117" name="__codelineno-7-117" href="#__codelineno-7-117"></a>
+<a id="__codelineno-7-118" name="__codelineno-7-118" href="#__codelineno-7-118"></a><span class="nb">echo</span><span class="w"> </span><span class="s2">&quot;[SUCCESS] Enterprise Deployment Complete.&quot;</span>
+<a id="__codelineno-7-119" name="__codelineno-7-119" href="#__codelineno-7-119"></a><span class="nb">exit</span><span class="w"> </span><span class="m">0</span>
+</code></pre></div>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8z"/></svg>
+  Back to top
+</button>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    <script id="__config" type="application/json">{"base": "../..", "features": ["navigation.tabs", "navigation.sections", "navigation.expand", "navigation.top", "search.highlight", "content.code.copy", "content.code.annotate"], "search": "../../assets/javascripts/workers/search.07f07601.min.js", "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}}</script>
+    
+    
+      <script src="../../assets/javascripts/bundle.56dfad97.min.js"></script>
+      
+        <script src="https://unpkg.com/mermaid@10/dist/mermaid.min.js"></script>
+      
+    
+  </body>
+</html>

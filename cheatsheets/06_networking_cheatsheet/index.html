@@ -1,0 +1,3039 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="Production-ready reference architecture, manifests, scripts and pipelines for a GCP enterprise DevOps/SRE platform">
+      
+      
+        <meta name="author" content="Platform SRE Team">
+      
+      
+        <link rel="canonical" href="https://AravindKumarjoshi.github.io/devops-platform/cheatsheets/06_networking_cheatsheet/">
+      
+      
+        <link rel="prev" href="../21_OS_Architecture/">
+      
+      
+        <link rel="next" href="../07_docker_cheatsheet/">
+      
+      
+      <link rel="icon" href="../../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.5.34">
+    
+    
+      
+        <title>Networking - Enterprise GCP DevOps & SRE Platform</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../assets/stylesheets/main.35f28582.min.css">
+      
+        
+        <link rel="stylesheet" href="../../assets/stylesheets/palette.06af60db.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+      <link rel="stylesheet" href="../../assets/_mkdocstrings.css">
+    
+      <link rel="stylesheet" href="../../stylesheets/extra.css">
+    
+    <script>__md_scope=new URL("../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+    
+  </head>
+  
+  
+    
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="cyan">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#networking-python-network-modules-comprehensive-cheat-sheet" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+<header class="md-header" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href="../.." title="Enterprise GCP DevOps &amp; SRE Platform" class="md-header__button md-logo" aria-label="Enterprise GCP DevOps & SRE Platform" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            Enterprise GCP DevOps & SRE Platform
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Networking
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+    
+    
+    
+    
+      <label class="md-header__button md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+      </label>
+      <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+    
+    
+      <div class="md-header__source">
+        <a href="https://github.com/AravindKumarjoshi/devops-platform" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 6.6.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2024 Fonticons, Inc.--><path d="M439.55 236.05 244 40.45a28.87 28.87 0 0 0-40.81 0l-40.66 40.63 51.52 51.52c27.06-9.14 52.68 16.77 43.39 43.68l49.66 49.66c34.23-11.8 61.18 31 35.47 56.69-26.49 26.49-70.21-2.87-56-37.34L240.22 199v121.85c25.3 12.54 22.26 41.85 9.08 55a34.34 34.34 0 0 1-48.55 0c-17.57-17.6-11.07-46.91 11.25-56v-123c-20.8-8.51-24.6-30.74-18.64-45L142.57 101 8.45 235.14a28.86 28.86 0 0 0 0 40.81l195.61 195.6a28.86 28.86 0 0 0 40.8 0l194.69-194.69a28.86 28.86 0 0 0 0-40.81"/></svg>
+  </div>
+  <div class="md-source__repository">
+    GitHub
+  </div>
+</a>
+      </div>
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+            
+<nav class="md-tabs" aria-label="Tabs" data-md-component="tabs">
+  <div class="md-grid">
+    <ul class="md-tabs__list">
+      
+        
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../.." class="md-tabs__link">
+        
+  
+    
+  
+  Home
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../architecture-diagrams/" class="md-tabs__link">
+          
+  
+  Platform Architecture
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+    
+  
+  
+    
+    
+      <li class="md-tabs__item md-tabs__item--active">
+        <a href="../devops_cloud_engineering_handbook/" class="md-tabs__link">
+          
+  
+  Knowledge Base
+
+        </a>
+      </li>
+    
+  
+
+      
+    </ul>
+  </div>
+</nav>
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+  
+
+
+<nav class="md-nav md-nav--primary md-nav--lifted" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../.." title="Enterprise GCP DevOps &amp; SRE Platform" class="md-nav__button md-logo" aria-label="Enterprise GCP DevOps & SRE Platform" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    Enterprise GCP DevOps & SRE Platform
+  </label>
+  
+    <div class="md-nav__source">
+      <a href="https://github.com/AravindKumarjoshi/devops-platform" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 6.6.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2024 Fonticons, Inc.--><path d="M439.55 236.05 244 40.45a28.87 28.87 0 0 0-40.81 0l-40.66 40.63 51.52 51.52c27.06-9.14 52.68 16.77 43.39 43.68l49.66 49.66c34.23-11.8 61.18 31 35.47 56.69-26.49 26.49-70.21-2.87-56-37.34L240.22 199v121.85c25.3 12.54 22.26 41.85 9.08 55a34.34 34.34 0 0 1-48.55 0c-17.57-17.6-11.07-46.91 11.25-56v-123c-20.8-8.51-24.6-30.74-18.64-45L142.57 101 8.45 235.14a28.86 28.86 0 0 0 0 40.81l195.61 195.6a28.86 28.86 0 0 0 40.8 0l194.69-194.69a28.86 28.86 0 0 0 0-40.81"/></svg>
+  </div>
+  <div class="md-source__repository">
+    GitHub
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../.." class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Home
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_2" >
+        
+          
+          <label class="md-nav__link" for="__nav_2" id="__nav_2_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    Platform Architecture
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2">
+            <span class="md-nav__icon md-icon"></span>
+            Platform Architecture
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../architecture-diagrams/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Architecture Diagrams
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../jenkins-gke-manifests/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Jenkins on GKE Manifests
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../sre-automation-scripts/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    SRE Automation Scripts
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../golden-image-pipeline/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Golden Image Pipeline
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../observability-monitoring/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Observability & Monitoring
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    
+    
+    
+      
+        
+        
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_3" id="__nav_3_label" tabindex="">
+            
+  
+  <span class="md-ellipsis">
+    Knowledge Base
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_3">
+            <span class="md-nav__icon md-icon"></span>
+            Knowledge Base
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../devops_cloud_engineering_handbook/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    DevOps & Cloud Handbook
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+      
+      
+        
+          
+          
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_3_2" >
+        
+          
+          <label class="md-nav__link" for="__nav_3_2" id="__nav_3_2_label" tabindex="">
+            
+  
+  <span class="md-ellipsis">
+    Programming & Core
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_3_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_3_2">
+            <span class="md-nav__icon md-icon"></span>
+            Programming & Core
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../01_sql_cheatsheet/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    SQL
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../02_python_core_cheatsheet/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Python Core
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../03_python_modules_cheatsheet/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Python Modules
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../10_dsa_python_cheatsheet/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    DSA with Python
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../18_Regex_Mastery/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Regex Mastery
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../22_Embedded_C/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Embedded C
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+      
+      
+        
+          
+          
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_3_3" >
+        
+          
+          <label class="md-nav__link" for="__nav_3_3" id="__nav_3_3_label" tabindex="">
+            
+  
+  <span class="md-ellipsis">
+    OS & Automation
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_3_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_3_3">
+            <span class="md-nav__icon md-icon"></span>
+            OS & Automation
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../05_bash_cheatsheet/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Linux Bash
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../19_Linux_Automation/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Linux Automation
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../04_powershell_cheatsheet/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    PowerShell
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../20_PowerShell_Mastery/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    PowerShell Mastery
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../21_OS_Architecture/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    OS Architecture
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    
+    
+    
+      
+      
+        
+          
+          
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3_4" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_3_4" id="__nav_3_4_label" tabindex="">
+            
+  
+  <span class="md-ellipsis">
+    DevOps & Infrastructure
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_3_4_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_3_4">
+            <span class="md-nav__icon md-icon"></span>
+            DevOps & Infrastructure
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  <span class="md-ellipsis">
+    Networking
+  </span>
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  <span class="md-ellipsis">
+    Networking
+  </span>
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#table-of-contents" class="md-nav__link">
+    <span class="md-ellipsis">
+      Table of Contents
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#1-osi-tcpip-reference-models" class="md-nav__link">
+    <span class="md-ellipsis">
+      1. OSI &amp; TCP/IP Reference Models
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="1. OSI & TCP/IP Reference Models">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#what-is-it" class="md-nav__link">
+    <span class="md-ellipsis">
+      What is it?
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#layer-breakdown-pdus" class="md-nav__link">
+    <span class="md-ellipsis">
+      Layer Breakdown &amp; PDUs
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#encapsulation-decapsulation" class="md-nav__link">
+    <span class="md-ellipsis">
+      Encapsulation &amp; Decapsulation
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#2-ipv4-ipv6-addressing-subnetting" class="md-nav__link">
+    <span class="md-ellipsis">
+      2. IPv4 &amp; IPv6 Addressing &amp; Subnetting
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="2. IPv4 & IPv6 Addressing & Subnetting">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#what-is-it_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      What is it?
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#ipv4-cidr-notation" class="md-nav__link">
+    <span class="md-ellipsis">
+      IPv4 &amp; CIDR Notation
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#ipv6-addressing" class="md-nav__link">
+    <span class="md-ellipsis">
+      IPv6 Addressing
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#3-tcp-udp-deep-dive" class="md-nav__link">
+    <span class="md-ellipsis">
+      3. TCP &amp; UDP Deep Dive
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="3. TCP & UDP Deep Dive">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#what-is-it_2" class="md-nav__link">
+    <span class="md-ellipsis">
+      What is it?
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#tcp-3-way-handshake-4-way-teardown" class="md-nav__link">
+    <span class="md-ellipsis">
+      TCP 3-Way Handshake &amp; 4-Way Teardown
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#tcp-flags-state-machine" class="md-nav__link">
+    <span class="md-ellipsis">
+      TCP Flags &amp; State Machine
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#udp-quic" class="md-nav__link">
+    <span class="md-ellipsis">
+      UDP &amp; QUIC
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#4-dns-dhcp-architecture" class="md-nav__link">
+    <span class="md-ellipsis">
+      4. DNS &amp; DHCP Architecture
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="4. DNS & DHCP Architecture">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#dns-domain-name-system" class="md-nav__link">
+    <span class="md-ellipsis">
+      DNS (Domain Name System)
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#dhcp-dynamic-host-configuration-protocol" class="md-nav__link">
+    <span class="md-ellipsis">
+      DHCP (Dynamic Host Configuration Protocol)
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#5-http11-http2-http3-httpstls" class="md-nav__link">
+    <span class="md-ellipsis">
+      5. HTTP/1.1, HTTP/2, HTTP/3 &amp; HTTPS/TLS
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="5. HTTP/1.1, HTTP/2, HTTP/3 & HTTPS/TLS">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#http-evolution" class="md-nav__link">
+    <span class="md-ellipsis">
+      HTTP Evolution
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#tls-transport-layer-security" class="md-nav__link">
+    <span class="md-ellipsis">
+      TLS (Transport Layer Security)
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#6-routing-switching-mechanics" class="md-nav__link">
+    <span class="md-ellipsis">
+      6. Routing &amp; Switching Mechanics
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="6. Routing & Switching Mechanics">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#layer-2-switching-vlans" class="md-nav__link">
+    <span class="md-ellipsis">
+      Layer 2: Switching &amp; VLANs
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#layer-3-routing-ospf-bgp" class="md-nav__link">
+    <span class="md-ellipsis">
+      Layer 3: Routing (OSPF &amp; BGP)
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#7-firewalls-nat-load-balancing" class="md-nav__link">
+    <span class="md-ellipsis">
+      7. Firewalls, NAT &amp; Load Balancing
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="7. Firewalls, NAT & Load Balancing">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#firewalls-netfilter-iptables-nftables" class="md-nav__link">
+    <span class="md-ellipsis">
+      Firewalls &amp; Netfilter (iptables / nftables)
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#nat-network-address-translation" class="md-nav__link">
+    <span class="md-ellipsis">
+      NAT (Network Address Translation)
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#load-balancing" class="md-nav__link">
+    <span class="md-ellipsis">
+      Load Balancing
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#8-cloud-container-networking" class="md-nav__link">
+    <span class="md-ellipsis">
+      8. Cloud &amp; Container Networking
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="8. Cloud & Container Networking">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#linux-network-namespaces" class="md-nav__link">
+    <span class="md-ellipsis">
+      Linux Network Namespaces
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#container-networking-cni" class="md-nav__link">
+    <span class="md-ellipsis">
+      Container Networking &amp; CNI
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#9-low-level-network-under-the-hood-mechanics-kernel-physical-layer" class="md-nav__link">
+    <span class="md-ellipsis">
+      9. Low-Level Network Under-the-Hood Mechanics (Kernel &amp; Physical Layer)
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="9. Low-Level Network Under-the-Hood Mechanics (Kernel & Physical Layer)">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#what-is-it_3" class="md-nav__link">
+    <span class="md-ellipsis">
+      What is it?
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#packet-flow-from-wire-to-socket" class="md-nav__link">
+    <span class="md-ellipsis">
+      Packet Flow: From Wire to Socket
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#virtual-interfaces-namespaces" class="md-nav__link">
+    <span class="md-ellipsis">
+      Virtual Interfaces &amp; Namespaces
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#10-curl-command-mastery-deep-dive" class="md-nav__link">
+    <span class="md-ellipsis">
+      10. curl Command Mastery &amp; Deep Dive
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="10. curl Command Mastery & Deep Dive">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#what-is-it_4" class="md-nav__link">
+    <span class="md-ellipsis">
+      What is it?
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#syntax-configuration" class="md-nav__link">
+    <span class="md-ellipsis">
+      Syntax / Configuration
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#custom-performance-profiling-with-w-write-out" class="md-nav__link">
+    <span class="md-ellipsis">
+      Custom Performance Profiling with -w / --write-out
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#11-python-networking-modules" class="md-nav__link">
+    <span class="md-ellipsis">
+      11. Python Networking Modules
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="11. Python Networking Modules">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#socket-ssl" class="md-nav__link">
+    <span class="md-ellipsis">
+      socket &amp; ssl
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#ipaddress" class="md-nav__link">
+    <span class="md-ellipsis">
+      ipaddress
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#scapy-third-party" class="md-nav__link">
+    <span class="md-ellipsis">
+      scapy (Third-Party)
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#12-real-world-devops-network-troubleshooting-guide" class="md-nav__link">
+    <span class="md-ellipsis">
+      12. Real-World DevOps Network Troubleshooting Guide
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="12. Real-World DevOps Network Troubleshooting Guide">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#the-layer-by-layer-diagnostic-workflow" class="md-nav__link">
+    <span class="md-ellipsis">
+      The Layer-by-Layer Diagnostic Workflow
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#tcpdump-bpf-syntax-mastery" class="md-nav__link">
+    <span class="md-ellipsis">
+      tcpdump BPF Syntax Mastery
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../07_docker_cheatsheet/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Docker
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../08_kubernetes_cheatsheet/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Kubernetes
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../13_git_cicd_cheatsheet/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Git & CI/CD
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../12_development_methodologies_cheatsheet/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Development Methodologies
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+      
+      
+        
+          
+          
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_3_5" >
+        
+          
+          <label class="md-nav__link" for="__nav_3_5" id="__nav_3_5_label" tabindex="">
+            
+  
+  <span class="md-ellipsis">
+    APIs & Formats
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_3_5_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_3_5">
+            <span class="md-nav__icon md-icon"></span>
+            APIs & Formats
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../09_backend_api_cheatsheet/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Backend API
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../14_data_serialization_formats_cheatsheet/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Data Serialization
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../15_markdown_mermaid_documentation_cheatsheet/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Markdown & Mermaid
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+      
+      
+        
+          
+          
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_3_6" >
+        
+          
+          <label class="md-nav__link" for="__nav_3_6" id="__nav_3_6_label" tabindex="">
+            
+  
+  <span class="md-ellipsis">
+    Specialized
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_3_6_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_3_6">
+            <span class="md-nav__icon md-icon"></span>
+            Specialized
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../16_cybersecurity_hacking_forensics_manual/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Cybersecurity & Forensics
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../17_data_science_foundations_cheatsheet/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Data Science Foundations
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../11_testing_playwright_cheatsheet/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Testing & Playwright
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+      
+      
+        
+          
+          
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_3_7" >
+        
+          
+          <label class="md-nav__link" for="__nav_3_7" id="__nav_3_7_label" tabindex="">
+            
+  
+  <span class="md-ellipsis">
+    Interview & Context
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_3_7_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_3_7">
+            <span class="md-nav__icon md-icon"></span>
+            Interview & Context
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../interview_questions/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Interview Questions
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../CONTEXT_TRACKER/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Context Tracker
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#table-of-contents" class="md-nav__link">
+    <span class="md-ellipsis">
+      Table of Contents
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#1-osi-tcpip-reference-models" class="md-nav__link">
+    <span class="md-ellipsis">
+      1. OSI &amp; TCP/IP Reference Models
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="1. OSI & TCP/IP Reference Models">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#what-is-it" class="md-nav__link">
+    <span class="md-ellipsis">
+      What is it?
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#layer-breakdown-pdus" class="md-nav__link">
+    <span class="md-ellipsis">
+      Layer Breakdown &amp; PDUs
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#encapsulation-decapsulation" class="md-nav__link">
+    <span class="md-ellipsis">
+      Encapsulation &amp; Decapsulation
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#2-ipv4-ipv6-addressing-subnetting" class="md-nav__link">
+    <span class="md-ellipsis">
+      2. IPv4 &amp; IPv6 Addressing &amp; Subnetting
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="2. IPv4 & IPv6 Addressing & Subnetting">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#what-is-it_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      What is it?
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#ipv4-cidr-notation" class="md-nav__link">
+    <span class="md-ellipsis">
+      IPv4 &amp; CIDR Notation
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#ipv6-addressing" class="md-nav__link">
+    <span class="md-ellipsis">
+      IPv6 Addressing
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#3-tcp-udp-deep-dive" class="md-nav__link">
+    <span class="md-ellipsis">
+      3. TCP &amp; UDP Deep Dive
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="3. TCP & UDP Deep Dive">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#what-is-it_2" class="md-nav__link">
+    <span class="md-ellipsis">
+      What is it?
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#tcp-3-way-handshake-4-way-teardown" class="md-nav__link">
+    <span class="md-ellipsis">
+      TCP 3-Way Handshake &amp; 4-Way Teardown
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#tcp-flags-state-machine" class="md-nav__link">
+    <span class="md-ellipsis">
+      TCP Flags &amp; State Machine
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#udp-quic" class="md-nav__link">
+    <span class="md-ellipsis">
+      UDP &amp; QUIC
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#4-dns-dhcp-architecture" class="md-nav__link">
+    <span class="md-ellipsis">
+      4. DNS &amp; DHCP Architecture
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="4. DNS & DHCP Architecture">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#dns-domain-name-system" class="md-nav__link">
+    <span class="md-ellipsis">
+      DNS (Domain Name System)
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#dhcp-dynamic-host-configuration-protocol" class="md-nav__link">
+    <span class="md-ellipsis">
+      DHCP (Dynamic Host Configuration Protocol)
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#5-http11-http2-http3-httpstls" class="md-nav__link">
+    <span class="md-ellipsis">
+      5. HTTP/1.1, HTTP/2, HTTP/3 &amp; HTTPS/TLS
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="5. HTTP/1.1, HTTP/2, HTTP/3 & HTTPS/TLS">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#http-evolution" class="md-nav__link">
+    <span class="md-ellipsis">
+      HTTP Evolution
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#tls-transport-layer-security" class="md-nav__link">
+    <span class="md-ellipsis">
+      TLS (Transport Layer Security)
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#6-routing-switching-mechanics" class="md-nav__link">
+    <span class="md-ellipsis">
+      6. Routing &amp; Switching Mechanics
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="6. Routing & Switching Mechanics">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#layer-2-switching-vlans" class="md-nav__link">
+    <span class="md-ellipsis">
+      Layer 2: Switching &amp; VLANs
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#layer-3-routing-ospf-bgp" class="md-nav__link">
+    <span class="md-ellipsis">
+      Layer 3: Routing (OSPF &amp; BGP)
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#7-firewalls-nat-load-balancing" class="md-nav__link">
+    <span class="md-ellipsis">
+      7. Firewalls, NAT &amp; Load Balancing
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="7. Firewalls, NAT & Load Balancing">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#firewalls-netfilter-iptables-nftables" class="md-nav__link">
+    <span class="md-ellipsis">
+      Firewalls &amp; Netfilter (iptables / nftables)
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#nat-network-address-translation" class="md-nav__link">
+    <span class="md-ellipsis">
+      NAT (Network Address Translation)
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#load-balancing" class="md-nav__link">
+    <span class="md-ellipsis">
+      Load Balancing
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#8-cloud-container-networking" class="md-nav__link">
+    <span class="md-ellipsis">
+      8. Cloud &amp; Container Networking
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="8. Cloud & Container Networking">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#linux-network-namespaces" class="md-nav__link">
+    <span class="md-ellipsis">
+      Linux Network Namespaces
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#container-networking-cni" class="md-nav__link">
+    <span class="md-ellipsis">
+      Container Networking &amp; CNI
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#9-low-level-network-under-the-hood-mechanics-kernel-physical-layer" class="md-nav__link">
+    <span class="md-ellipsis">
+      9. Low-Level Network Under-the-Hood Mechanics (Kernel &amp; Physical Layer)
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="9. Low-Level Network Under-the-Hood Mechanics (Kernel & Physical Layer)">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#what-is-it_3" class="md-nav__link">
+    <span class="md-ellipsis">
+      What is it?
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#packet-flow-from-wire-to-socket" class="md-nav__link">
+    <span class="md-ellipsis">
+      Packet Flow: From Wire to Socket
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#virtual-interfaces-namespaces" class="md-nav__link">
+    <span class="md-ellipsis">
+      Virtual Interfaces &amp; Namespaces
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#10-curl-command-mastery-deep-dive" class="md-nav__link">
+    <span class="md-ellipsis">
+      10. curl Command Mastery &amp; Deep Dive
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="10. curl Command Mastery & Deep Dive">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#what-is-it_4" class="md-nav__link">
+    <span class="md-ellipsis">
+      What is it?
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#syntax-configuration" class="md-nav__link">
+    <span class="md-ellipsis">
+      Syntax / Configuration
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#custom-performance-profiling-with-w-write-out" class="md-nav__link">
+    <span class="md-ellipsis">
+      Custom Performance Profiling with -w / --write-out
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#11-python-networking-modules" class="md-nav__link">
+    <span class="md-ellipsis">
+      11. Python Networking Modules
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="11. Python Networking Modules">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#socket-ssl" class="md-nav__link">
+    <span class="md-ellipsis">
+      socket &amp; ssl
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#ipaddress" class="md-nav__link">
+    <span class="md-ellipsis">
+      ipaddress
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#scapy-third-party" class="md-nav__link">
+    <span class="md-ellipsis">
+      scapy (Third-Party)
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#12-real-world-devops-network-troubleshooting-guide" class="md-nav__link">
+    <span class="md-ellipsis">
+      12. Real-World DevOps Network Troubleshooting Guide
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="12. Real-World DevOps Network Troubleshooting Guide">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#the-layer-by-layer-diagnostic-workflow" class="md-nav__link">
+    <span class="md-ellipsis">
+      The Layer-by-Layer Diagnostic Workflow
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#tcpdump-bpf-syntax-mastery" class="md-nav__link">
+    <span class="md-ellipsis">
+      tcpdump BPF Syntax Mastery
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+  
+  
+
+
+<h1 id="networking-python-network-modules-comprehensive-cheat-sheet">📘 Networking &amp; Python Network Modules — Comprehensive Cheat Sheet<a class="headerlink" href="#networking-python-network-modules-comprehensive-cheat-sheet" title="Permanent link">&para;</a></h1>
+<blockquote>
+<p><strong>Author</strong>: AI-Generated for DevOps &amp; Cloud Engineers
+<strong>Last Updated</strong>: 2026-08-05
+<strong>Pages</strong>: ~50+ pages (Equivalent Depth &amp; Coverage) | <strong>Sections</strong>: 12 | <strong>Examples</strong>: Comprehensive Production Snippets</p>
+</blockquote>
+<h2 id="table-of-contents">Table of Contents<a class="headerlink" href="#table-of-contents" title="Permanent link">&para;</a></h2>
+<ol>
+<li><a href="#1-osi--tcpip-reference-models">OSI &amp; TCP/IP Reference Models</a></li>
+<li><a href="#2-ipv4--ipv6-addressing--subnetting">IPv4 &amp; IPv6 Addressing &amp; Subnetting</a></li>
+<li><a href="#3-tcp--udp-deep-dive">TCP &amp; UDP Deep Dive</a></li>
+<li><a href="#4-dns--dhcp-architecture">DNS &amp; DHCP Architecture</a></li>
+<li><a href="#5-http11-http2-http3--httpstls">HTTP/1.1, HTTP/2, HTTP/3 &amp; HTTPS/TLS</a></li>
+<li><a href="#6-routing--switching-mechanics">Routing &amp; Switching Mechanics</a></li>
+<li><a href="#7-firewalls-nat--load-balancing">Firewalls, NAT &amp; Load Balancing</a></li>
+<li><a href="#8-cloud--container-networking">Cloud &amp; Container Networking</a></li>
+<li><a href="#9-low-level-network-under-the-hood-mechanics-kernel--physical-layer">Low-Level Network Under-the-Hood Mechanics (Kernel &amp; Physical Layer)</a></li>
+<li><a href="#10-curl-command-mastery--deep-dive"><code>curl</code> Command Mastery &amp; Deep Dive</a></li>
+<li><a href="#11-python-networking-modules">Python Networking Modules</a></li>
+<li><a href="#12-real-world-devops-network-troubleshooting-guide">Real-World DevOps Network Troubleshooting Guide</a></li>
+</ol>
+<hr />
+<h2 id="1-osi-tcpip-reference-models">1. OSI &amp; TCP/IP Reference Models<a class="headerlink" href="#1-osi-tcpip-reference-models" title="Permanent link">&para;</a></h2>
+<pre class="mermaid"><code>graph LR
+    subgraph OSI["OSI 7-Layer Model"]
+        L7["7. Application"]
+        L6["6. Presentation"]
+        L5["5. Session"]
+        L4["4. Transport"]
+        L3["3. Network"]
+        L2["2. Data Link"]
+        L1["1. Physical"]
+    end
+
+    subgraph TCP["TCP/IP Model"]
+        TA["Application"]
+        TT["Transport"]
+        TI["Internet"]
+        TN["Network Access"]
+    end
+
+    L7 --- TA
+    L6 --- TA
+    L5 --- TA
+    L4 --- TT
+    L3 --- TI
+    L2 --- TN
+    L1 --- TN</code></pre>
+<h3 id="what-is-it">What is it?<a class="headerlink" href="#what-is-it" title="Permanent link">&para;</a></h3>
+<p>The OSI (Open Systems Interconnection) model is a conceptual framework that standardizes the communication functions of a telecommunication or computing system without regard to its underlying internal structure. The TCP/IP model is a more concise, practical model matching the suite of protocols governing the Internet. </p>
+<h3 id="layer-breakdown-pdus">Layer Breakdown &amp; PDUs<a class="headerlink" href="#layer-breakdown-pdus" title="Permanent link">&para;</a></h3>
+<table>
+<thead>
+<tr>
+<th>OSI Layer</th>
+<th>TCP/IP Layer</th>
+<th>PDU (Protocol Data Unit)</th>
+<th>Function</th>
+<th>Protocols</th>
+<th>Hardware/Tools</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>7. Application</strong></td>
+<td>Application</td>
+<td>Data / Message</td>
+<td>End-user services, network apps</td>
+<td>HTTP, DNS, SMTP, SSH, BGP</td>
+<td>L7 Proxies, WAF</td>
+</tr>
+<tr>
+<td><strong>6. Presentation</strong></td>
+<td>Application</td>
+<td>Data</td>
+<td>Data formatting, encryption, compression</td>
+<td>TLS, SSL, JPEG, ASCII</td>
+<td>OS level, SSL Offloaders</td>
+</tr>
+<tr>
+<td><strong>5. Session</strong></td>
+<td>Application</td>
+<td>Data</td>
+<td>Establishing and terminating connections</td>
+<td>NetBIOS, PPTP</td>
+<td>OS level</td>
+</tr>
+<tr>
+<td><strong>4. Transport</strong></td>
+<td>Transport</td>
+<td>Segment (TCP) / Datagram (UDP)</td>
+<td>End-to-end connections and reliability</td>
+<td>TCP, UDP, QUIC</td>
+<td>L4 Load Balancers</td>
+</tr>
+<tr>
+<td><strong>3. Network</strong></td>
+<td>Internet</td>
+<td>Packet</td>
+<td>Path determination and logical addressing (IP)</td>
+<td>IPv4, IPv6, ICMP, IPSec, OSPF</td>
+<td>Routers, L3 Switches</td>
+</tr>
+<tr>
+<td><strong>2. Data Link</strong></td>
+<td>Network Access</td>
+<td>Frame</td>
+<td>MAC addressing, error detection, switching</td>
+<td>Ethernet, 802.11, MAC, ARP, VLAN</td>
+<td>Switches, Bridges, NICs</td>
+</tr>
+<tr>
+<td><strong>1. Physical</strong></td>
+<td>Network Access</td>
+<td>Bits</td>
+<td>Physical medium transmission (electrical/optical)</td>
+<td>1000BASE-T, RS-232, OTN</td>
+<td>Cables, Hubs, Transceivers</td>
+</tr>
+</tbody>
+</table>
+<h3 id="encapsulation-decapsulation">Encapsulation &amp; Decapsulation<a class="headerlink" href="#encapsulation-decapsulation" title="Permanent link">&para;</a></h3>
+<ul>
+<li><strong>Encapsulation</strong>: As data moves top-down (Layer 7 → Layer 1) on the sender's side, each layer adds its own header (and sometimes trailer).</li>
+<li>Data → +TCP Header = Segment → +IP Header = Packet → +MAC/Ethernet Header &amp; FCS = Frame → Bits.</li>
+<li><strong>Decapsulation</strong>: Bottom-up (Layer 1 → Layer 7) on the receiver's side, peeling off headers.</li>
+</ul>
+<blockquote>
+<p>💡 <strong>Best Practice</strong>: Map your alerting and monitoring strictly to the layers. Uptime monitoring (ping) is L3. Port checks (telnet/nc) are L4. Synthetic transactions (curl) are L7.
+⚠️ <strong>Common Pitfalls</strong>: Confusing L3/L4 load balancers (fast, blind to HTTP headers) with L7 proxies (slower, can inspect paths/headers).
+🔧 <strong>DevOps Pro Tip</strong>: Use <code>tcpdump</code> to inspect encapsulation directly. The <code>-e</code> flag shows the L2 Ethernet header, helping diagnose MAC-level issues.</p>
+</blockquote>
+<hr />
+<h2 id="2-ipv4-ipv6-addressing-subnetting">2. IPv4 &amp; IPv6 Addressing &amp; Subnetting<a class="headerlink" href="#2-ipv4-ipv6-addressing-subnetting" title="Permanent link">&para;</a></h2>
+<h3 id="what-is-it_1">What is it?<a class="headerlink" href="#what-is-it_1" title="Permanent link">&para;</a></h3>
+<p>Logical addressing of nodes on a network. Subnetting divides a larger network into smaller, manageable, and performant sub-networks, isolating broadcast domains.</p>
+<h3 id="ipv4-cidr-notation">IPv4 &amp; CIDR Notation<a class="headerlink" href="#ipv4-cidr-notation" title="Permanent link">&para;</a></h3>
+<ul>
+<li>IPv4 is 32-bit (4 octets). </li>
+<li><strong>CIDR (Classless Inter-Domain Routing)</strong>: <code>/24</code> means the first 24 bits represent the Network ID, the remaining 8 bits are for Hosts.</li>
+</ul>
+<p><strong>Math for CIDR <code>/26</code></strong>:
+- Subnet Mask: <code>255.255.255.192</code> (Binary: <code>11111111.11111111.11111111.11000000</code>)
+- Total IPs: <code>2^(32-26) = 2^6 = 64</code>
+- Usable Hosts: <code>64 - 2 = 62</code> (Subtract Network and Broadcast addresses).
+- If IP is <code>192.168.1.50/26</code>:
+  - Network ID: <code>192.168.1.0</code> (First IP)
+  - Broadcast: <code>192.168.1.63</code> (Last IP)</p>
+<p><strong>AWS VPC / K8s Specifics</strong>:
+- AWS reserves 5 IPs per subnet: Network, Router, DNS, Future Use, Broadcast.
+- If using <code>/26</code> in AWS, Usable IPs = <code>64 - 5 = 59</code>.</p>
+<h3 id="ipv6-addressing">IPv6 Addressing<a class="headerlink" href="#ipv6-addressing" title="Permanent link">&para;</a></h3>
+<ul>
+<li>128-bit address (8 groups of 4 hex digits).</li>
+<li><strong>Compression Rules</strong>: </li>
+<li>Omit leading zeros (<code>00AB</code> → <code>AB</code>).</li>
+<li>Replace contiguous blocks of zeros with <code>::</code> (Once per address!).</li>
+<li>Example: <code>2001:0db8:0000:0000:0000:ff00:0042:8329</code> → <code>2001:db8::ff00:42:8329</code>.</li>
+<li><strong>SLAAC (Stateless Address Autoconfiguration)</strong> &amp; <strong>EUI-64</strong>: Hosts can autogenerate their own IPv6 using the network prefix provided by the router and their own MAC address, flipping the 7th bit of the MAC and inserting <code>ff:fe</code> in the middle.</li>
+</ul>
+<blockquote>
+<p>💡 <strong>Best Practice</strong>: When designing AWS VPCs, leave space between subnets. Allocate a <code>/16</code> for VPC, and <code>/20</code>s or <code>/24</code>s for subnets across Availability Zones to allow for expansion.
+⚠️ <strong>Common Pitfalls</strong>: Overlapping IP space when creating VPN tunnels or VPC peering. Always use unique RFC1918 space per region/app.
+🔧 <strong>DevOps Pro Tip</strong>: Use <code>sipcalc</code> or Python's <code>ipaddress</code> module to validate subnets in CI/CD before Terraform applies VPC changes.</p>
+</blockquote>
+<hr />
+<h2 id="3-tcp-udp-deep-dive">3. TCP &amp; UDP Deep Dive<a class="headerlink" href="#3-tcp-udp-deep-dive" title="Permanent link">&para;</a></h2>
+<pre class="mermaid"><code>sequenceDiagram
+    participant C as Client
+    participant S as Server
+    Note over C,S: 3-Way Handshake (Connection Establishment)
+    C-&gt;&gt;S: SYN (Seq=x)
+    S-&gt;&gt;C: SYN-ACK (Seq=y, Ack=x+1)
+    C-&gt;&gt;S: ACK (Seq=x+1, Ack=y+1)
+    Note over C,S: Data Transfer Phase
+    C-&gt;&gt;S: PSH, ACK (Data)
+    S-&gt;&gt;C: ACK (Data Receipt)
+    Note over C,S: 4-Way Teardown (Connection Termination)
+    C-&gt;&gt;S: FIN (Seq=a)
+    S-&gt;&gt;C: ACK (Ack=a+1)
+    Note over S: Server enters CLOSE_WAIT
+    S-&gt;&gt;C: FIN (Seq=b)
+    C-&gt;&gt;S: ACK (Ack=b+1)
+    Note over C: Client enters TIME_WAIT (2*MSL)</code></pre>
+<h3 id="what-is-it_2">What is it?<a class="headerlink" href="#what-is-it_2" title="Permanent link">&para;</a></h3>
+<p>Transport layer protocols determining how data segments are delivered. 
+- <strong>TCP (Transmission Control Protocol)</strong>: Connection-oriented, reliable, ordered, flow/congestion control.
+- <strong>UDP (User Datagram Protocol)</strong>: Connectionless, unreliable, low-latency, "fire and forget".</p>
+<h3 id="tcp-3-way-handshake-4-way-teardown">TCP 3-Way Handshake &amp; 4-Way Teardown<a class="headerlink" href="#tcp-3-way-handshake-4-way-teardown" title="Permanent link">&para;</a></h3>
+<ul>
+<li><strong>Handshake</strong>:</li>
+<li>Client → Server: <code>SYN</code> (Seq=x)</li>
+<li>Server → Client: <code>SYN-ACK</code> (Seq=y, Ack=x+1)</li>
+<li>Client → Server: <code>ACK</code> (Seq=x+1, Ack=y+1)</li>
+<li><strong>Teardown</strong>:</li>
+<li>Client → Server: <code>FIN</code></li>
+<li>Server → Client: <code>ACK</code> (Enters <code>CLOSE_WAIT</code>)</li>
+<li>Server → Client: <code>FIN</code></li>
+<li>Client → Server: <code>ACK</code> (Enters <code>TIME_WAIT</code> for 2*MSL to handle delayed packets)</li>
+</ul>
+<h3 id="tcp-flags-state-machine">TCP Flags &amp; State Machine<a class="headerlink" href="#tcp-flags-state-machine" title="Permanent link">&para;</a></h3>
+<ul>
+<li><strong>SYN</strong> (Synchronize), <strong>ACK</strong> (Acknowledgment), <strong>FIN</strong> (Finish), <strong>RST</strong> (Reset - abort connection), <strong>PSH</strong> (Push - flush buffers), <strong>URG</strong> (Urgent pointer).</li>
+<li><strong>Congestion Control</strong>: Algorithms like <code>Cubic</code> (default Linux) or <code>BBR</code> (Bottleneck Bandwidth and Round-trip propagation time - optimized by Google for high latency/loss networks).</li>
+</ul>
+<h3 id="udp-quic">UDP &amp; QUIC<a class="headerlink" href="#udp-quic" title="Permanent link">&para;</a></h3>
+<ul>
+<li>UDP header is tiny: Source Port, Dest Port, Length, Checksum.</li>
+<li><strong>QUIC</strong>: Built on UDP. Solves TCP Head-of-Line blocking, includes TLS 1.3 inherently, supports 0-RTT handshakes.</li>
+</ul>
+<blockquote>
+<p>💡 <strong>Best Practice</strong>: Tune sysctls for high-traffic servers. Enable BBR: <code>sysctl -w net.ipv4.tcp_congestion_control=bbr</code>. 
+⚠️ <strong>Common Pitfalls</strong>: Running out of ephemeral ports or exhausting connections stuck in <code>TIME_WAIT</code>. Fix by tuning <code>net.ipv4.ip_local_port_range</code> and <code>tcp_tw_reuse</code>.
+🔧 <strong>DevOps Pro Tip</strong>: When a service randomly drops connections under load, check for SYN cookies kicking in using <code>dmesg | grep "TCP: possible SYN flooding"</code>.</p>
+</blockquote>
+<hr />
+<h2 id="4-dns-dhcp-architecture">4. DNS &amp; DHCP Architecture<a class="headerlink" href="#4-dns-dhcp-architecture" title="Permanent link">&para;</a></h2>
+<pre class="mermaid"><code>sequenceDiagram
+    participant U as Client (Browser)
+    participant R as Local Resolver (Recursive)
+    participant Root as Root Server (.)
+    participant TLD as TLD Server (.com)
+    participant Auth as Authoritative Server
+    U-&gt;&gt;R: 1. Recursive Query (example.com)
+    R-&gt;&gt;Root: 2. Iterative Query (example.com)
+    Root--&gt;&gt;R: 3. Referral to .com TLD
+    R-&gt;&gt;TLD: 4. Iterative Query (example.com)
+    TLD--&gt;&gt;R: 5. Referral to Authoritative DNS
+    R-&gt;&gt;Auth: 6. Iterative Query (example.com)
+    Auth--&gt;&gt;R: 7. A Record (IP Address)
+    R--&gt;&gt;U: 8. Answer (IP Address)</code></pre>
+<h3 id="dns-domain-name-system">DNS (Domain Name System)<a class="headerlink" href="#dns-domain-name-system" title="Permanent link">&para;</a></h3>
+<p>Translates names to IPs. 
+- <strong>Recursive vs Iterative</strong>: Your local resolver does a <em>recursive</em> query to the upstream DNS. The upstream DNS does <em>iterative</em> queries to the Root, TLD, and Authoritative servers on your behalf.
+- <strong>Record Types</strong>:
+  - <code>A</code>: IPv4
+  - <code>AAAA</code>: IPv6
+  - <code>CNAME</code>: Alias to another name (cannot exist at the root/apex of a domain).
+  - <code>ALIAS/ANAME</code>: Cloud-specific flattened CNAME to allow root aliases.
+  - <code>PTR</code>: Reverse lookup (IP to name).
+  - <code>MX</code>: Mail exchange.
+  - <code>TXT</code>: Text strings (used for SPF, DKIM, DMARC verification).
+- <strong>Split-Horizon</strong>: Returning different IPs for the same domain based on the source IP (e.g., resolving <code>db.internal</code> inside a VPC vs outside).</p>
+<h3 id="dhcp-dynamic-host-configuration-protocol">DHCP (Dynamic Host Configuration Protocol)<a class="headerlink" href="#dhcp-dynamic-host-configuration-protocol" title="Permanent link">&para;</a></h3>
+<p>Automates IP assignment.
+- <strong>DORA Process</strong>:
+  1. <strong>D</strong>iscover: Client broadcasts looking for server.
+  2. <strong>O</strong>ffer: Server offers an IP.
+  3. <strong>R</strong>equest: Client requests the offered IP.
+  4. <strong>A</strong>cknowledge: Server acknowledges the lease.
+- <strong>Option 82</strong>: Relay agent info; allows routers to forward DHCP broadcasts to a centralized DHCP server on another subnet.</p>
+<blockquote>
+<p>💡 <strong>Best Practice</strong>: Keep DNS TTLs low (e.g., 60 seconds) during migrations. Increase to 3600+ for stable records to reduce latency and query costs.
+⚠️ <strong>Common Pitfalls</strong>: Using CNAMEs at the zone apex. Standard DNS forbids this; use AWS Route53 ALIAS or Cloudflare Flattening.
+🔧 <strong>DevOps Pro Tip</strong>: Use <code>dig +trace domain.com</code> to see the exact iterative path your query takes through the global DNS hierarchy.</p>
+</blockquote>
+<hr />
+<h2 id="5-http11-http2-http3-httpstls">5. HTTP/1.1, HTTP/2, HTTP/3 &amp; HTTPS/TLS<a class="headerlink" href="#5-http11-http2-http3-httpstls" title="Permanent link">&para;</a></h2>
+<h3 id="http-evolution">HTTP Evolution<a class="headerlink" href="#http-evolution" title="Permanent link">&para;</a></h3>
+<ul>
+<li><strong>HTTP/1.1</strong>: Text-based, keep-alive connections, prone to Head-of-Line (HoL) blocking (one slow request blocks the TCP connection).</li>
+<li><strong>HTTP/2</strong>: Binary framing, multiplexing (multiple parallel requests over one TCP connection), server push, header compression (HPACK).</li>
+<li><strong>HTTP/3</strong>: Runs over QUIC (UDP). Eliminates TCP HoL blocking.</li>
+</ul>
+<h3 id="tls-transport-layer-security">TLS (Transport Layer Security)<a class="headerlink" href="#tls-transport-layer-security" title="Permanent link">&para;</a></h3>
+<pre class="mermaid"><code>sequenceDiagram
+    participant C as Client
+    participant S as Server
+    Note over C,S: 1-RTT Handshake
+    C-&gt;&gt;S: ClientHello (Key Share, Cipher Suites)
+    S-&gt;&gt;C: ServerHello (Key Share, Certificate, Finished)
+    Note over C,S: Secure Channel Established
+    C-&gt;&gt;S: Finished, Application Data
+    S-&gt;&gt;C: Application Data</code></pre>
+<ul>
+<li><strong>TLS 1.2 vs 1.3</strong>: TLS 1.3 reduces the handshake from 2 RTT (Round Trip Time) to 1 RTT, and supports 0-RTT for resumed sessions. Drops weak ciphers (RSA key exchange) in favor of forward secrecy (ECDHE).</li>
+<li><strong>mTLS (Mutual TLS)</strong>: Both client and server authenticate each other using certificates. Foundation of Zero-Trust (e.g., Istio/Linkerd in Kubernetes).</li>
+<li><strong>SAN (Subject Alternative Name)</strong>: Replaced wildcard/Common Name matching. Allows one cert to secure multiple domains (<code>app.com</code>, <code>api.app.com</code>).</li>
+</ul>
+<blockquote>
+<p>💡 <strong>Best Practice</strong>: Terminate TLS at your Load Balancer or Ingress Controller to offload CPU from application pods, unless compliance requires end-to-end encryption.
+⚠️ <strong>Common Pitfalls</strong>: Forgetting to renew certs. Always automate via ACME/Certbot or AWS ACM.
+🔧 <strong>DevOps Pro Tip</strong>: Use <code>openssl s_client -connect domain.com:443 -showcerts</code> to debug certificate chains and expiration dates from the CLI.</p>
+</blockquote>
+<hr />
+<h2 id="6-routing-switching-mechanics">6. Routing &amp; Switching Mechanics<a class="headerlink" href="#6-routing-switching-mechanics" title="Permanent link">&para;</a></h2>
+<h3 id="layer-2-switching-vlans">Layer 2: Switching &amp; VLANs<a class="headerlink" href="#layer-2-switching-vlans" title="Permanent link">&para;</a></h3>
+<ul>
+<li><strong>VLANs (802.1Q)</strong>: Inserts a 4-byte tag into the Ethernet frame to logically separate broadcast domains on the same physical switch.</li>
+<li><strong>STP/RSTP (Spanning Tree)</strong>: Prevents L2 broadcast storms/loops by blocking redundant links. </li>
+<li><strong>ARP (Address Resolution Protocol)</strong>: Maps IP to MAC. Defense against ARP Poisoning requires Dynamic ARP Inspection (DAI) on switches.</li>
+</ul>
+<h3 id="layer-3-routing-ospf-bgp">Layer 3: Routing (OSPF &amp; BGP)<a class="headerlink" href="#layer-3-routing-ospf-bgp" title="Permanent link">&para;</a></h3>
+<ul>
+<li><strong>Static vs Dynamic</strong>: Static routes are hardcoded (<code>ip route add</code>). Dynamic routing protocols (OSPF, BGP) adapt to topology changes.</li>
+<li><strong>OSPF (Open Shortest Path First)</strong>: Interior Gateway Protocol (IGP). Link-state. Uses Dijkstra's algorithm to compute the lowest "cost" path based on bandwidth. Uses Areas (Area 0 is backbone).</li>
+<li><strong>BGP (Border Gateway Protocol)</strong>: Exterior Gateway Protocol (EGP) powering the Internet. Path-vector. </li>
+<li><strong>eBGP</strong>: Between different Autonomous Systems (AS).</li>
+<li><strong>iBGP</strong>: Within the same AS.</li>
+<li><strong>Metrics</strong>: AS_PATH (shorter is better), Local Preference (higher is better for outbound), MED (lower is better for inbound).</li>
+</ul>
+<blockquote>
+<p>💡 <strong>Best Practice</strong>: In AWS Transit Gateway or Direct Connect, use BGP to dynamically advertise VPC CIDRs back to on-prem datacenters.
+⚠️ <strong>Common Pitfalls</strong>: Asymmetric routing—traffic leaves via Router A but returns via Router B, causing stateful firewalls to drop the return packets.
+🔧 <strong>DevOps Pro Tip</strong>: In Linux, view the routing table with <code>ip route show</code>. To see exactly how a specific IP will be routed: <code>ip route get 8.8.8.8</code>.</p>
+</blockquote>
+<hr />
+<h2 id="7-firewalls-nat-load-balancing">7. Firewalls, NAT &amp; Load Balancing<a class="headerlink" href="#7-firewalls-nat-load-balancing" title="Permanent link">&para;</a></h2>
+<h3 id="firewalls-netfilter-iptables-nftables">Firewalls &amp; Netfilter (iptables / nftables)<a class="headerlink" href="#firewalls-netfilter-iptables-nftables" title="Permanent link">&para;</a></h3>
+<ul>
+<li><strong>Stateful vs Stateless</strong>: </li>
+<li><em>Stateless (AWS NACL)</em>: Evaluates every packet independently. You must explicitly open ephemeral return ports.</li>
+<li><em>Stateful (AWS Security Group, iptables)</em>: Remembers connections. If outbound is allowed, the inbound return traffic is automatically allowed.</li>
+<li><strong>iptables architecture</strong>: </li>
+<li><em>Tables</em>: <code>filter</code> (default filtering), <code>nat</code> (address translation), <code>mangle</code> (header modification).</li>
+<li><em>Chains</em>: <code>INPUT</code>, <code>FORWARD</code>, <code>OUTPUT</code>, <code>PREROUTING</code>, <code>POSTROUTING</code>.</li>
+</ul>
+<h3 id="nat-network-address-translation">NAT (Network Address Translation)<a class="headerlink" href="#nat-network-address-translation" title="Permanent link">&para;</a></h3>
+<ul>
+<li><strong>SNAT (Source NAT)</strong>: Alters the source IP (e.g., outbound internet access from private subnets via NAT Gateway). Happens in <code>POSTROUTING</code>.</li>
+<li><strong>DNAT (Destination NAT)</strong>: Alters destination IP (e.g., port forwarding to an internal server). Happens in <code>PREROUTING</code>.</li>
+</ul>
+<h3 id="load-balancing">Load Balancing<a class="headerlink" href="#load-balancing" title="Permanent link">&para;</a></h3>
+<ul>
+<li><strong>L4 (Transport)</strong>: Forwards TCP/UDP packets. Very fast. (AWS NLB, HAProxy TCP mode).</li>
+<li><strong>L7 (Application)</strong>: Terminates connection, inspects HTTP paths/headers, makes routing decisions, initiates new connection to backend. (AWS ALB, Nginx, Traefik).</li>
+<li><strong>Algorithms</strong>: Round Robin, Least Connections, IP Hash (Consistent Hashing for sticky sessions).</li>
+</ul>
+<blockquote>
+<p>💡 <strong>Best Practice</strong>: Prefer L7 load balancing for microservices (allows path-based routing like <code>/api/v1</code> → Service A). Use L4 for raw throughput (databases, real-time gaming).
+⚠️ <strong>Common Pitfalls</strong>: Connection timeouts on long-lived TCP connections (like websockets) through L4 balancers. Set TCP keepalives to prevent silent drops.
+🔧 <strong>DevOps Pro Tip</strong>: To debug iptables drops, add a LOG rule: <code>iptables -A INPUT -j LOG --log-prefix "IPTables-Drop: "</code>. Check <code>/var/log/messages</code> or <code>dmesg</code>.</p>
+</blockquote>
+<hr />
+<h2 id="8-cloud-container-networking">8. Cloud &amp; Container Networking<a class="headerlink" href="#8-cloud-container-networking" title="Permanent link">&para;</a></h2>
+<h3 id="linux-network-namespaces">Linux Network Namespaces<a class="headerlink" href="#linux-network-namespaces" title="Permanent link">&para;</a></h3>
+<p>Namespaces isolate network stacks (interfaces, routing tables, iptables rules). This is how Docker and K8s isolate pods.
+<div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="c1"># Create a namespace, add a veth pair to connect it to the host</span>
+<a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a>ip<span class="w"> </span>netns<span class="w"> </span>add<span class="w"> </span>blue
+<a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a>ip<span class="w"> </span>link<span class="w"> </span>add<span class="w"> </span>veth0<span class="w"> </span><span class="nb">type</span><span class="w"> </span>veth<span class="w"> </span>peer<span class="w"> </span>name<span class="w"> </span>veth1
+<a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a>ip<span class="w"> </span>link<span class="w"> </span><span class="nb">set</span><span class="w"> </span>veth1<span class="w"> </span>netns<span class="w"> </span>blue
+<a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a>ip<span class="w"> </span>netns<span class="w"> </span><span class="nb">exec</span><span class="w"> </span>blue<span class="w"> </span>ip<span class="w"> </span>addr<span class="w"> </span>add<span class="w"> </span><span class="m">10</span>.0.0.2/24<span class="w"> </span>dev<span class="w"> </span>veth1
+<a id="__codelineno-0-6" name="__codelineno-0-6" href="#__codelineno-0-6"></a>ip<span class="w"> </span>netns<span class="w"> </span><span class="nb">exec</span><span class="w"> </span>blue<span class="w"> </span>ip<span class="w"> </span>link<span class="w"> </span><span class="nb">set</span><span class="w"> </span>veth1<span class="w"> </span>up
+</code></pre></div></p>
+<h3 id="container-networking-cni">Container Networking &amp; CNI<a class="headerlink" href="#container-networking-cni" title="Permanent link">&para;</a></h3>
+<ul>
+<li><strong>Docker (<code>docker0</code>)</strong>: Uses a virtual bridge. Containers are attached via veth pairs and NAT'd to the host IP.</li>
+<li><strong>Kubernetes CNI</strong>: Every pod gets a unique IP. </li>
+<li><em>Calico</em>: Uses BGP to route pod IPs across nodes.</li>
+<li><em>Cilium</em>: Uses eBPF for high-performance networking, security, and observability directly in the kernel without iptables.</li>
+<li><strong>Overlays (VXLAN / GENEVE)</strong>: Encapsulates L2 frames inside UDP packets to stretch L2 networks over L3 infrastructure (used by AWS VPCs and K8s Flannel/Cilium).</li>
+</ul>
+<blockquote>
+<p>💡 <strong>Best Practice</strong>: In Kubernetes, prefer Cilium (eBPF) over kube-proxy (iptables) for massive clusters to avoid O(N) iptables rule parsing overhead.
+⚠️ <strong>Common Pitfalls</strong>: MTU mismatch in overlay networks. VXLAN adds 50 bytes of overhead. If host MTU is 1500, pod MTU must be 1450, otherwise large packets get dropped.
+🔧 <strong>DevOps Pro Tip</strong>: Use <code>nsenter</code> to run diagnostic tools like <code>tcpdump</code> inside a stripped-down container's network namespace: <code>nsenter -t &lt;PID&gt; -n netstat -tulpn</code>.</p>
+</blockquote>
+<hr />
+<h2 id="9-low-level-network-under-the-hood-mechanics-kernel-physical-layer">9. Low-Level Network Under-the-Hood Mechanics (Kernel &amp; Physical Layer)<a class="headerlink" href="#9-low-level-network-under-the-hood-mechanics-kernel-physical-layer" title="Permanent link">&para;</a></h2>
+<pre class="mermaid"><code>graph TD
+    Wire["Ethernet Electrical/Optical Signaling"] --&gt; NIC["NIC (Hardware)"]
+    NIC --&gt;|DMA| RingBuffer["RX Ring Buffer (RAM)"]
+    RingBuffer --&gt;|Hard IRQ| CPU["CPU Interrupt"]
+    CPU -.-&gt;|Disabled to prevent storm| NAPI["NAPI SoftIRQ Polling"]
+    NAPI --&gt; SKB["Allocate sk_buff (Kernel Memory)"]
+    SKB --&gt; IPRCV["ip_rcv() (Network Layer)"]
+    IPRCV --&gt; Netfilter["Netfilter PREROUTING Hook (iptables/DNAT)"]
+    Netfilter --&gt; Route["Routing Decision (ip_local_deliver)"]
+    Route --&gt; TCPRCV["tcp_v4_rcv() (Transport Layer)"]
+    TCPRCV --&gt; SocketBuf["Socket Receive Buffer Queue"]
+    SocketBuf --&gt;|Wakeup| Epoll["epoll_wait() Notification"]
+    Epoll --&gt; App["User-Space Application (read / recv)"]</code></pre>
+<h3 id="what-is-it_3">What is it?<a class="headerlink" href="#what-is-it_3" title="Permanent link">&para;</a></h3>
+<p>A deep dive into how packets flow from the bare-metal Ethernet wire up to a user-space application socket in Linux. Understanding this is crucial for tuning high-performance systems (HFT, proxies) and diagnosing microscopic latency issues.</p>
+<h3 id="packet-flow-from-wire-to-socket">Packet Flow: From Wire to Socket<a class="headerlink" href="#packet-flow-from-wire-to-socket" title="Permanent link">&para;</a></h3>
+<ol>
+<li><strong>Physical &amp; Data Link Layer (Hardware):</strong></li>
+<li>Ethernet electrical/optical signals hit the Network Interface Card (NIC).</li>
+<li>The NIC validates the Frame Check Sequence (FCS) and MAC address.</li>
+<li>Using <strong>Direct Memory Access (DMA)</strong>, the NIC copies the packet into an RX (Receive) ring buffer in RAM without interrupting the CPU.</li>
+<li><strong>Interrupts &amp; NAPI (New API):</strong></li>
+<li>NIC sends a <strong>Hard IRQ (Interrupt Request)</strong> to the CPU.</li>
+<li>To prevent "interrupt storms" under high load, modern Linux uses <strong>NAPI</strong>. The Hard IRQ is disabled, and the kernel switches to polling mode via a <strong>SoftIRQ</strong> (<code>NET_RX_SOFTIRQ</code>), efficiently draining the RX ring buffer in batches.</li>
+<li><strong>Kernel Network Stack (<code>sk_buff</code>):</strong></li>
+<li>The packet is mapped to a <code>sk_buff</code> (Socket Buffer), the fundamental Linux kernel structure representing a network packet. The <code>sk_buff</code> is passed up the stack, avoiding memory copies where possible by just adjusting pointers (<code>data</code>, <code>tail</code>, <code>mac_header</code>, <code>network_header</code>).</li>
+<li><strong>Network Layer (IP) &amp; Netfilter:</strong></li>
+<li>The packet enters <code>ip_rcv()</code>.</li>
+<li>It hits the <strong>Netfilter PREROUTING</strong> hook (where DNAT and early iptables rules live).</li>
+<li>The kernel routing table determines if the packet is local or needs forwarding. If local, it passes to <code>ip_local_deliver()</code>.</li>
+<li><strong>Transport Layer (TCP/UDP):</strong></li>
+<li>For TCP, it enters <code>tcp_v4_rcv()</code>.</li>
+<li>The kernel looks up the corresponding socket (connection state).</li>
+<li>The payload is appended to the socket's Receive Buffer.</li>
+<li>An ACK is generated and sent back down the stack.</li>
+<li><strong>User-Space &amp; <code>epoll</code>:</strong></li>
+<li>The application (e.g., Nginx, Node.js) isn't constantly polling. It's sleeping on <code>epoll_wait()</code>.</li>
+<li>The kernel wakes up the process, signaling that data is ready to read.</li>
+<li>The application calls <code>read()</code> or <code>recvfrom()</code>, which copies the payload from the kernel socket buffer into user-space memory (unless Zero-Copy techniques like <code>sendfile</code> or <code>io_uring</code> are used).</li>
+</ol>
+<h3 id="virtual-interfaces-namespaces">Virtual Interfaces &amp; Namespaces<a class="headerlink" href="#virtual-interfaces-namespaces" title="Permanent link">&para;</a></h3>
+<ul>
+<li><strong>veth (Virtual Ethernet)</strong>: Act as local tunnels. Packets sent into one veth pair emerge from the other. Used to connect Network Namespaces (Docker/K8s pods) to the host root namespace bridge (<code>cni0</code> or <code>docker0</code>).</li>
+<li><strong>tun/tap</strong>: Virtual network kernel devices. <code>TAP</code> operates at Layer 2 (Ethernet frames), <code>TUN</code> operates at Layer 3 (IP packets). Used by VPNs (OpenVPN, WireGuard). User-space applications read/write to these interfaces directly.</li>
+<li><strong>Bridge</strong>: A software switch in the kernel. Forwards packets based on MAC address tables.</li>
+</ul>
+<blockquote>
+<p>💡 <strong>Best Practice</strong>: For extreme network performance (e.g., 100Gbps+), bypass the Linux kernel entirely using <strong>DPDK (Data Plane Development Kit)</strong> or <strong>XDP (eXpress Data Path)</strong> with eBPF to drop/process packets directly at the NIC driver level before <code>sk_buff</code> allocation.
+⚠️ <strong>Common Pitfalls</strong>: Ring buffer exhaustion. If the CPU is too slow to drain the RX ring buffer via SoftIRQ, packets are dropped at the NIC level. Monitor this with <code>ethtool -S eth0 | grep rx_dropped</code>.
+🔧 <strong>DevOps Pro Tip</strong>: Tune NIC ring buffers using <code>ethtool -G eth0 rx 4096</code>. Distribute interrupt handling across multiple CPU cores using <strong>RSS (Receive Side Scaling)</strong> and IRQ pinning (<code>irqbalance</code>).</p>
+</blockquote>
+<hr />
+<h2 id="10-curl-command-mastery-deep-dive">10. <code>curl</code> Command Mastery &amp; Deep Dive<a class="headerlink" href="#10-curl-command-mastery-deep-dive" title="Permanent link">&para;</a></h2>
+<h3 id="what-is-it_4">What is it?<a class="headerlink" href="#what-is-it_4" title="Permanent link">&para;</a></h3>
+<p><code>curl</code> is the ultimate command-line tool for transferring data over various protocols. For DevOps, it's the primary tool for synthetic monitoring, API interaction, and latency profiling.</p>
+<h3 id="syntax-configuration">Syntax / Configuration<a class="headerlink" href="#syntax-configuration" title="Permanent link">&para;</a></h3>
+<ul>
+<li><strong>HTTP Methods &amp; Data:</strong></li>
+<li><code>-X / --request &lt;METHOD&gt;</code>: Specify the HTTP method (GET, POST, PUT, DELETE).</li>
+<li><code>-G / --get</code>: Force <code>curl</code> to append <code>-d</code> data to the URL as a query string instead of a POST body.</li>
+<li><code>-d / --data &lt;data&gt;</code>: Send data (defaults to POST and <code>application/x-www-form-urlencoded</code>).</li>
+<li><code>--data-raw &lt;data&gt;</code>: Send data without interpreting <code>@</code> (which usually loads from a file).</li>
+<li><code>--data-urlencode &lt;data&gt;</code>: URL-encode the data safely before sending.</li>
+<li><strong>Headers &amp; Identity:</strong></li>
+<li><code>-H / --header &lt;header&gt;</code>: Add a custom HTTP header (e.g., <code>-H "Content-Type: application/json"</code>).</li>
+<li><code>-u / --user &lt;user:password&gt;</code>: Basic authentication.</li>
+<li><strong>Output &amp; Verbosity:</strong></li>
+<li><code>-i / --include</code>: Include the HTTP response headers in the output.</li>
+<li><code>-I / --head</code>: Fetch headers only (issues a HEAD request).</li>
+<li><code>-v / --verbose</code>: Print detailed connection, TLS, and request/response headers (outputs to stderr).</li>
+<li><code>-s / --silent</code>: Mute progress meter and error messages.</li>
+<li><code>-S / --show-error</code>: Use with <code>-s</code>. Mutes progress but still shows errors if they occur.</li>
+<li><code>-f / --fail</code>: Fail silently (return non-zero exit code) on HTTP errors (4xx/5xx) without printing the error page.</li>
+<li><code>-o / --output &lt;file&gt;</code>: Write output to a file instead of stdout.</li>
+<li><code>-O / --remote-name</code>: Write output to a local file named like the remote file.</li>
+<li><strong>Network &amp; TLS:</strong></li>
+<li><code>-L / --location</code>: Follow HTTP 3xx redirects.</li>
+<li><code>--compressed</code>: Request a compressed response (gzip, br) and decompress it automatically.</li>
+<li><code>--resolve &lt;host:port:address&gt;</code>: Force <code>curl</code> to resolve a host to a specific IP (bypassing DNS and <code>/etc/hosts</code> - crucial for testing SNI behind load balancers).</li>
+<li><code>--cacert &lt;file&gt;</code>: Use a custom CA certificate bundle.</li>
+<li><code>-k / --insecure</code>: Skip TLS certificate validation (dangerous in prod, useful for self-signed dev certs).</li>
+<li><code>--ciphers &lt;list&gt;</code>: Specify TLS ciphers.</li>
+<li><code>--http2</code> / <code>--http3</code>: Force specific HTTP protocol versions.</li>
+</ul>
+<h3 id="custom-performance-profiling-with-w-write-out">Custom Performance Profiling with <code>-w / --write-out</code><a class="headerlink" href="#custom-performance-profiling-with-w-write-out" title="Permanent link">&para;</a></h3>
+<p>You can use <code>curl</code> to extract precise millisecond timings of every phase of the network lifecycle.</p>
+<p><em>Production Working Example: <code>curl-format.txt</code></em>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a>\n
+<a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a>    time_namelookup:  %{time_namelookup}s\n
+<a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a>       time_connect:  %{time_connect}s\n
+<a id="__codelineno-1-4" name="__codelineno-1-4" href="#__codelineno-1-4"></a>    time_appconnect:  %{time_appconnect}s\n
+<a id="__codelineno-1-5" name="__codelineno-1-5" href="#__codelineno-1-5"></a>   time_pretransfer:  %{time_pretransfer}s\n
+<a id="__codelineno-1-6" name="__codelineno-1-6" href="#__codelineno-1-6"></a>      time_redirect:  %{time_redirect}s\n
+<a id="__codelineno-1-7" name="__codelineno-1-7" href="#__codelineno-1-7"></a> time_starttransfer:  %{time_starttransfer}s\n
+<a id="__codelineno-1-8" name="__codelineno-1-8" href="#__codelineno-1-8"></a>                    ----------\n
+<a id="__codelineno-1-9" name="__codelineno-1-9" href="#__codelineno-1-9"></a>         time_total:  %{time_total}s\n
+<a id="__codelineno-1-10" name="__codelineno-1-10" href="#__codelineno-1-10"></a>\n
+</code></pre></div></p>
+<p><em>Executing the profile:</em>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a>curl<span class="w"> </span>-w<span class="w"> </span><span class="s2">&quot;@curl-format.txt&quot;</span><span class="w"> </span>-o<span class="w"> </span>/dev/null<span class="w"> </span>-s<span class="w"> </span><span class="s2">&quot;https://api.github.com&quot;</span>
+</code></pre></div></p>
+<p><em>Output Analysis:</em>
+- <code>time_namelookup</code>: DNS resolution time. If this is high, your DNS resolver is slow.
+- <code>time_connect</code>: TCP handshake time (SYN -&gt; SYN-ACK -&gt; ACK). High? Network latency or routing issue.
+- <code>time_appconnect</code>: TLS handshake time. High? CPU overhead or long certificate chains.
+- <code>time_pretransfer</code>: Total time from start until just before data transfer begins.
+- <code>time_starttransfer</code>: Time to first byte (TTFB) from the server. High? The backend application or database is slow!
+- <code>time_total</code>: Total round trip time.</p>
+<blockquote>
+<p>💡 <strong>Best Practice</strong>: In CI/CD pipelines or bash scripts, always use <code>curl -fsSL</code> to ensure safe, silent, redirect-following downloads that exit non-zero on failure.
+⚠️ <strong>Common Pitfalls</strong>: Using <code>-d</code> without explicit headers for JSON. Always specify <code>-H "Content-Type: application/json"</code> when sending JSON, otherwise the server might reject the <code>application/x-www-form-urlencoded</code> default.
+🔧 <strong>DevOps Pro Tip</strong>: Use <code>--resolve</code> to test blue/green deployments or new Ingress nodes <em>before</em> flipping global DNS: <code>curl -H "Host: myapp.com" --resolve myapp.com:443:10.0.0.5 https://myapp.com</code></p>
+</blockquote>
+<hr />
+<h2 id="11-python-networking-modules">11. Python Networking Modules<a class="headerlink" href="#11-python-networking-modules" title="Permanent link">&para;</a></h2>
+<p>Python provides powerful standard libraries and third-party tools for network engineering and automation.</p>
+<h3 id="socket-ssl"><code>socket</code> &amp; <code>ssl</code><a class="headerlink" href="#socket-ssl" title="Permanent link">&para;</a></h3>
+<p>Raw TCP/UDP communication and TLS wrapping.
+<div class="highlight"><pre><span></span><code><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a><span class="kn">import</span> <span class="nn">socket</span>
+<a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a><span class="kn">import</span> <span class="nn">ssl</span>
+<a id="__codelineno-3-3" name="__codelineno-3-3" href="#__codelineno-3-3"></a>
+<a id="__codelineno-3-4" name="__codelineno-3-4" href="#__codelineno-3-4"></a><span class="c1"># TCP Client with TLS</span>
+<a id="__codelineno-3-5" name="__codelineno-3-5" href="#__codelineno-3-5"></a><span class="n">hostname</span> <span class="o">=</span> <span class="s1">&#39;www.python.org&#39;</span>
+<a id="__codelineno-3-6" name="__codelineno-3-6" href="#__codelineno-3-6"></a><span class="n">context</span> <span class="o">=</span> <span class="n">ssl</span><span class="o">.</span><span class="n">create_default_context</span><span class="p">()</span>
+<a id="__codelineno-3-7" name="__codelineno-3-7" href="#__codelineno-3-7"></a>
+<a id="__codelineno-3-8" name="__codelineno-3-8" href="#__codelineno-3-8"></a><span class="k">with</span> <span class="n">socket</span><span class="o">.</span><span class="n">create_connection</span><span class="p">((</span><span class="n">hostname</span><span class="p">,</span> <span class="mi">443</span><span class="p">),</span> <span class="n">timeout</span><span class="o">=</span><span class="mi">5</span><span class="p">)</span> <span class="k">as</span> <span class="n">sock</span><span class="p">:</span>
+<a id="__codelineno-3-9" name="__codelineno-3-9" href="#__codelineno-3-9"></a>    <span class="k">with</span> <span class="n">context</span><span class="o">.</span><span class="n">wrap_socket</span><span class="p">(</span><span class="n">sock</span><span class="p">,</span> <span class="n">server_hostname</span><span class="o">=</span><span class="n">hostname</span><span class="p">)</span> <span class="k">as</span> <span class="n">ssock</span><span class="p">:</span>
+<a id="__codelineno-3-10" name="__codelineno-3-10" href="#__codelineno-3-10"></a>        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;TLS Version: </span><span class="si">{</span><span class="n">ssock</span><span class="o">.</span><span class="n">version</span><span class="p">()</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<a id="__codelineno-3-11" name="__codelineno-3-11" href="#__codelineno-3-11"></a>        <span class="n">ssock</span><span class="o">.</span><span class="n">sendall</span><span class="p">(</span><span class="sa">b</span><span class="s2">&quot;GET / HTTP/1.1</span><span class="se">\r\n</span><span class="s2">Host: &quot;</span> <span class="o">+</span> <span class="n">hostname</span><span class="o">.</span><span class="n">encode</span><span class="p">()</span> <span class="o">+</span> <span class="sa">b</span><span class="s2">&quot;</span><span class="se">\r\n\r\n</span><span class="s2">&quot;</span><span class="p">)</span>
+<a id="__codelineno-3-12" name="__codelineno-3-12" href="#__codelineno-3-12"></a>        <span class="n">response</span> <span class="o">=</span> <span class="n">ssock</span><span class="o">.</span><span class="n">recv</span><span class="p">(</span><span class="mi">1024</span><span class="p">)</span>
+<a id="__codelineno-3-13" name="__codelineno-3-13" href="#__codelineno-3-13"></a>        <span class="nb">print</span><span class="p">(</span><span class="n">response</span><span class="o">.</span><span class="n">decode</span><span class="p">()</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">)[</span><span class="mi">0</span><span class="p">])</span> <span class="c1"># HTTP/1.1 200 OK</span>
+</code></pre></div></p>
+<h3 id="ipaddress"><code>ipaddress</code><a class="headerlink" href="#ipaddress" title="Permanent link">&para;</a></h3>
+<p>Flawless IP and CIDR math, replacing regex or custom bit-shifting.
+<div class="highlight"><pre><span></span><code><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a><span class="kn">import</span> <span class="nn">ipaddress</span>
+<a id="__codelineno-4-2" name="__codelineno-4-2" href="#__codelineno-4-2"></a>
+<a id="__codelineno-4-3" name="__codelineno-4-3" href="#__codelineno-4-3"></a><span class="n">vpc</span> <span class="o">=</span> <span class="n">ipaddress</span><span class="o">.</span><span class="n">ip_network</span><span class="p">(</span><span class="s1">&#39;10.0.0.0/22&#39;</span><span class="p">)</span>
+<a id="__codelineno-4-4" name="__codelineno-4-4" href="#__codelineno-4-4"></a><span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Total IPs: </span><span class="si">{</span><span class="n">vpc</span><span class="o">.</span><span class="n">num_addresses</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<a id="__codelineno-4-5" name="__codelineno-4-5" href="#__codelineno-4-5"></a><span class="c1"># Subnetting a VPC into smaller /24s</span>
+<a id="__codelineno-4-6" name="__codelineno-4-6" href="#__codelineno-4-6"></a><span class="k">for</span> <span class="n">subnet</span> <span class="ow">in</span> <span class="n">vpc</span><span class="o">.</span><span class="n">subnets</span><span class="p">(</span><span class="n">new_prefix</span><span class="o">=</span><span class="mi">24</span><span class="p">):</span>
+<a id="__codelineno-4-7" name="__codelineno-4-7" href="#__codelineno-4-7"></a>    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Subnet: </span><span class="si">{</span><span class="n">subnet</span><span class="si">}</span><span class="s2"> | Broadcast: </span><span class="si">{</span><span class="n">subnet</span><span class="o">.</span><span class="n">broadcast_address</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<a id="__codelineno-4-8" name="__codelineno-4-8" href="#__codelineno-4-8"></a>
+<a id="__codelineno-4-9" name="__codelineno-4-9" href="#__codelineno-4-9"></a><span class="n">ip</span> <span class="o">=</span> <span class="n">ipaddress</span><span class="o">.</span><span class="n">ip_address</span><span class="p">(</span><span class="s1">&#39;10.0.0.50&#39;</span><span class="p">)</span>
+<a id="__codelineno-4-10" name="__codelineno-4-10" href="#__codelineno-4-10"></a><span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Is private?&quot;</span><span class="p">,</span> <span class="n">ip</span><span class="o">.</span><span class="n">is_private</span><span class="p">)</span>
+<a id="__codelineno-4-11" name="__codelineno-4-11" href="#__codelineno-4-11"></a><span class="nb">print</span><span class="p">(</span><span class="s2">&quot;In VPC?&quot;</span><span class="p">,</span> <span class="n">ip</span> <span class="ow">in</span> <span class="n">vpc</span><span class="p">)</span>
+</code></pre></div></p>
+<h3 id="scapy-third-party"><code>scapy</code> (Third-Party)<a class="headerlink" href="#scapy-third-party" title="Permanent link">&para;</a></h3>
+<p>Packet crafting, parsing, and injection. Ultimate tool for writing custom pingers, port scanners, or protocol fuzzers.
+<div class="highlight"><pre><span></span><code><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a><span class="c1"># pip install scapy</span>
+<a id="__codelineno-5-2" name="__codelineno-5-2" href="#__codelineno-5-2"></a><span class="kn">from</span> <span class="nn">scapy.all</span> <span class="kn">import</span> <span class="n">IP</span><span class="p">,</span> <span class="n">TCP</span><span class="p">,</span> <span class="n">sr1</span><span class="p">,</span> <span class="n">ICMP</span>
+<a id="__codelineno-5-3" name="__codelineno-5-3" href="#__codelineno-5-3"></a>
+<a id="__codelineno-5-4" name="__codelineno-5-4" href="#__codelineno-5-4"></a><span class="c1"># Crafting a SYN packet for a basic port scan</span>
+<a id="__codelineno-5-5" name="__codelineno-5-5" href="#__codelineno-5-5"></a><span class="n">target_ip</span> <span class="o">=</span> <span class="s2">&quot;8.8.8.8&quot;</span>
+<a id="__codelineno-5-6" name="__codelineno-5-6" href="#__codelineno-5-6"></a><span class="n">target_port</span> <span class="o">=</span> <span class="mi">53</span>
+<a id="__codelineno-5-7" name="__codelineno-5-7" href="#__codelineno-5-7"></a><span class="n">syn_pkt</span> <span class="o">=</span> <span class="n">IP</span><span class="p">(</span><span class="n">dst</span><span class="o">=</span><span class="n">target_ip</span><span class="p">)</span><span class="o">/</span><span class="n">TCP</span><span class="p">(</span><span class="n">dport</span><span class="o">=</span><span class="n">target_port</span><span class="p">,</span> <span class="n">flags</span><span class="o">=</span><span class="s2">&quot;S&quot;</span><span class="p">)</span>
+<a id="__codelineno-5-8" name="__codelineno-5-8" href="#__codelineno-5-8"></a>
+<a id="__codelineno-5-9" name="__codelineno-5-9" href="#__codelineno-5-9"></a><span class="c1"># Send and wait for 1 response (sr1)</span>
+<a id="__codelineno-5-10" name="__codelineno-5-10" href="#__codelineno-5-10"></a><span class="n">response</span> <span class="o">=</span> <span class="n">sr1</span><span class="p">(</span><span class="n">syn_pkt</span><span class="p">,</span> <span class="n">timeout</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">verbose</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+<a id="__codelineno-5-11" name="__codelineno-5-11" href="#__codelineno-5-11"></a><span class="k">if</span> <span class="n">response</span> <span class="ow">and</span> <span class="n">response</span><span class="o">.</span><span class="n">haslayer</span><span class="p">(</span><span class="n">TCP</span><span class="p">):</span>
+<a id="__codelineno-5-12" name="__codelineno-5-12" href="#__codelineno-5-12"></a>    <span class="k">if</span> <span class="n">response</span><span class="o">.</span><span class="n">getlayer</span><span class="p">(</span><span class="n">TCP</span><span class="p">)</span><span class="o">.</span><span class="n">flags</span> <span class="o">==</span> <span class="mh">0x12</span><span class="p">:</span> <span class="c1"># SYN-ACK</span>
+<a id="__codelineno-5-13" name="__codelineno-5-13" href="#__codelineno-5-13"></a>        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Port </span><span class="si">{</span><span class="n">target_port</span><span class="si">}</span><span class="s2"> is OPEN&quot;</span><span class="p">)</span>
+</code></pre></div></p>
+<blockquote>
+<p>💡 <strong>Best Practice</strong>: When building network daemons in Python, prefer <code>asyncio</code> streams or <code>Twisted</code> over native blocking <code>socket</code> programming for massive concurrency.
+⚠️ <strong>Common Pitfalls</strong>: Forgetting to set <code>timeout</code> on sockets. The default timeout is infinite, meaning a slow server can hang your Python script forever.
+🔧 <strong>DevOps Pro Tip</strong>: Use <code>ipaddress</code> to build dynamic AWS Security Group rules via Boto3 by calculating exact subnets instead of hardcoding strings.</p>
+</blockquote>
+<hr />
+<h2 id="12-real-world-devops-network-troubleshooting-guide">12. Real-World DevOps Network Troubleshooting Guide<a class="headerlink" href="#12-real-world-devops-network-troubleshooting-guide" title="Permanent link">&para;</a></h2>
+<h3 id="the-layer-by-layer-diagnostic-workflow">The Layer-by-Layer Diagnostic Workflow<a class="headerlink" href="#the-layer-by-layer-diagnostic-workflow" title="Permanent link">&para;</a></h3>
+<ol>
+<li><strong>Layer 1/2 (Link/Interfaces)</strong></li>
+<li><code>ip link show</code>: Are the interfaces UP?</li>
+<li><code>ethtool eth0</code>: Check link speed and duplex settings.</li>
+<li>
+<p><code>ip neigh show</code>: Check the ARP table. Is the router's MAC resolved?</p>
+</li>
+<li>
+<p><strong>Layer 3 (Routing &amp; IP)</strong></p>
+</li>
+<li><code>ip addr show</code>: Does the interface have the correct IP?</li>
+<li><code>ip route show</code>: Is there a default route (<code>default via ...</code>)?</li>
+<li><code>ping -c 4 &lt;ip&gt;</code>: Basic ICMP reachability.</li>
+<li>
+<p><code>mtr &lt;ip&gt;</code>: Combines ping and traceroute to find exactly which hop is dropping packets.</p>
+</li>
+<li>
+<p><strong>Layer 4 (Transport &amp; Ports)</strong></p>
+</li>
+<li><code>ss -tulpn</code>: Modern <code>netstat</code>. Show all listening TCP/UDP ports and the associated PID.</li>
+<li><code>nc -vz &lt;ip&gt; &lt;port&gt;</code>: Quick check if a remote TCP port is open.</li>
+<li>
+<p><code>iperf3 -c &lt;server_ip&gt;</code>: Test raw TCP/UDP bandwidth between two nodes to rule out QoS throttling.</p>
+</li>
+<li>
+<p><strong>Layer 7 (Application &amp; DNS)</strong></p>
+</li>
+<li><code>dig A domain.com +short</code>: Verify DNS resolution.</li>
+<li><code>curl -Iv https://domain.com</code>: Inspect HTTP headers, TLS certificate chain, and exact HTTP response codes.</li>
+<li><code>curl --trace-time -v ...</code>: Time profiling to see if DNS, TCP connect, or TLS negotiation is the bottleneck.</li>
+</ol>
+<h3 id="tcpdump-bpf-syntax-mastery"><code>tcpdump</code> BPF Syntax Mastery<a class="headerlink" href="#tcpdump-bpf-syntax-mastery" title="Permanent link">&para;</a></h3>
+<p>When all else fails, look at the packets on the wire.
+<div class="highlight"><pre><span></span><code><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a><span class="c1"># Capture specific host and port</span>
+<a id="__codelineno-6-2" name="__codelineno-6-2" href="#__codelineno-6-2"></a>tcpdump<span class="w"> </span>-i<span class="w"> </span>eth0<span class="w"> </span>host<span class="w"> </span><span class="m">10</span>.0.0.5<span class="w"> </span>and<span class="w"> </span>port<span class="w"> </span><span class="m">443</span><span class="w"> </span>-n<span class="w"> </span>-v
+<a id="__codelineno-6-3" name="__codelineno-6-3" href="#__codelineno-6-3"></a>
+<a id="__codelineno-6-4" name="__codelineno-6-4" href="#__codelineno-6-4"></a><span class="c1"># Capture TCP SYN packets only (finding connection attempts)</span>
+<a id="__codelineno-6-5" name="__codelineno-6-5" href="#__codelineno-6-5"></a>tcpdump<span class="w"> </span>-i<span class="w"> </span>eth0<span class="w"> </span><span class="s1">&#39;tcp[tcpflags] &amp; tcp-syn != 0&#39;</span><span class="w"> </span>-n
+<a id="__codelineno-6-6" name="__codelineno-6-6" href="#__codelineno-6-6"></a>
+<a id="__codelineno-6-7" name="__codelineno-6-7" href="#__codelineno-6-7"></a><span class="c1"># Capture HTTP GET requests (ASCII decode)</span>
+<a id="__codelineno-6-8" name="__codelineno-6-8" href="#__codelineno-6-8"></a>tcpdump<span class="w"> </span>-i<span class="w"> </span>eth0<span class="w"> </span>-A<span class="w"> </span>-s<span class="w"> </span><span class="m">0</span><span class="w"> </span><span class="s1">&#39;tcp port 80 and (((ip[2:2] - ((ip[0]&amp;0xf)&lt;&lt;2)) - ((tcp[12]&amp;0xf0)&gt;&gt;2)) != 0)&#39;</span>
+</code></pre></div></p>
+<blockquote>
+<p>💡 <strong>Best Practice</strong>: Always use <code>-n</code> with <code>tcpdump</code> and <code>ss</code> to disable reverse DNS lookups, which heavily lag the output.
+⚠️ <strong>Common Pitfalls</strong>: Testing an external IP from inside the network (Hairpin NAT failure). Always test external IPs from truly external sources.
+🔧 <strong>DevOps Pro Tip</strong>: When diagnosing "Connection Refused" vs "Connection Timeout":
+- <em>Refused</em>: Handshake reached the server, but nothing is listening on the port. Check <code>ss -tulpn</code> on the server.
+- <em>Timeout</em>: Packets are being dropped into a black hole. Check Firewalls, Security Groups, or routing tables.</p>
+</blockquote>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8z"/></svg>
+  Back to top
+</button>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    <script id="__config" type="application/json">{"base": "../..", "features": ["navigation.tabs", "navigation.sections", "navigation.expand", "navigation.top", "search.highlight", "content.code.copy", "content.code.annotate"], "search": "../../assets/javascripts/workers/search.07f07601.min.js", "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}}</script>
+    
+    
+      <script src="../../assets/javascripts/bundle.56dfad97.min.js"></script>
+      
+        <script src="https://unpkg.com/mermaid@10/dist/mermaid.min.js"></script>
+      
+    
+  </body>
+</html>
