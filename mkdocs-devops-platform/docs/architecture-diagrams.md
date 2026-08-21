@@ -1,273 +1,481 @@
 # Architecture Diagrams
 
-Welcome to the Enterprise GCP DevOps & SRE Platform architecture documentation. This platform embodies a strong GitOps culture, ensuring that all infrastructure and platform changes are version-controlled, auditable, and peer-reviewed. The diagrams below map out the critical systems within our environment, illustrating how the centralized shared VPC, CI/CD pipelines, SRE alert flows, and golden image pipelines are orchestrated to deliver a secure, scalable, and resilient platform.
+This page documents the five core architectural flows of the Enterprise GCP DevOps & SRE Platform. Each diagram is split into focused views using tabs — start with the **Overview** tab, then drill into sub-components. All diagrams use [Mermaid.js](https://mermaid.js.org/) and can be scrolled horizontally if needed.
 
 ---
 
 ## 1. GCP Centralized Shared VPC — Platform Overview
 
-Our GCP infrastructure leverages a Centralized Shared VPC model to maintain strict network isolation and centralized security controls. The Shared VPC Host Project provides the core networking infrastructure, including the shared-vpc network, Cloud NAT, Cloud Router, and Interconnect/VPN back to our on-premises data centers. Service projects are attached to this host, allowing the GKE Platform, Data Platform, and App Platform to consume the shared network while remaining logically isolated. Additionally, VPC Service Controls establish a security perimeter around these projects to prevent data exfiltration, and Private Google Access ensures secure communication with Google APIs.
+### What this diagram shows
+The platform is built on GCP's **Shared VPC** model. A single **Host Project** owns all network resources (subnets, Cloud NAT, Cloud Router, VPN/Interconnect to on-premises). Three **Service Projects** attach to it and consume the shared network without owning it. This centralizes network policy, firewall rules, and egress control in one place.
 
-```mermaid
-graph TD
-    subgraph On-Premises
-        SNOW[ServiceNow]
-        GHE[GitHub Enterprise]
-    end
+**Why Shared VPC?** It gives the Security team full control over all network egress and ingress through a single pane, while allowing individual product teams to manage their own compute resources independently.
 
-    subgraph Cross-Cutting Services
-        KMS[Cloud KMS]
-        IAM[IAM & Workload Identity]
-    end
+=== "Network Foundation"
 
-    subgraph VPC-SC Perimeter
-        subgraph SharedVPC_Host_Project
-            SVPC[shared-vpc network]
-            NAT[Cloud NAT]
-            CR[Cloud Router]
-            VPN[Interconnect/VPN]
+    ### Network Foundation — Host Project
+    This view shows the Host Project networking core: the shared VPC, Cloud NAT for outbound internet access, Cloud Router for BGP peering, and the Interconnect/VPN that bridges GCP with your on-premises data center.
+
+    ```mermaid
+    graph LR
+        subgraph OnPrem["🏢 On-Premises Data Center"]
+            DC[Corporate Network]
+            SNOW_OP[ServiceNow Instance]
+            GHE_OP[GitHub Enterprise Server]
         end
 
-        subgraph GKE-Platform-Project
-            GKE[GKE Cluster]
+        subgraph HostProject["🔵 Shared VPC Host Project\n(enterprise-vpc-host)"]
+            SVPC[shared-vpc Network\n10.0.0.0/8]
+            CR[Cloud Router\nASN 65001]
+            NAT[Cloud NAT\nShared IP Pool]
+            VPN[Cloud VPN / Interconnect\n10Gbps Dedicated]
+            FW[Cloud Firewall Rules\nCentralized Policy]
+        end
+
+        DC <-->|"Encrypted Tunnel"| VPN
+        VPN --> CR
+        CR --> SVPC
+        SVPC --> NAT
+        NAT -->|"Outbound Internet\n(No external IPs needed)"| Internet((Internet))
+        SVPC --> FW
+        SNOW_OP -->|"HTTPS"| VPN
+        GHE_OP -->|"HTTPS"| VPN
+    ```
+
+    !!! info "Key Design: No External IPs"
+        All GCE VMs, GKE nodes, and Cloud Build workers use **Cloud NAT** for outbound internet access. No resource has a public external IP. Inbound access is only via IAP (Identity-Aware Proxy) tunnel or Internal Load Balancers.
+
+=== "Service Projects"
+
+    ### Service Project Topology
+    Three Service Projects attach to the Host Project and inherit its subnets. Each project is owned by a different team but all traffic flows through the centrally managed network.
+
+    ```mermaid
+    graph LR
+        SVPC["Shared VPC\n(Host Project)"] 
+
+        subgraph GKE_PROJ["🟢 GKE Platform Project\n(enterprise-platform-prod)"]
+            GKE[GKE Cluster\ngke-prod-us-central1]
             AR[Artifact Registry]
             CB[Cloud Build]
-            subgraph GKE_Namespaces
-                JNS[jenkins-prod]
-                APPNS[app namespaces]
+        end
+
+        subgraph DATA_PROJ["🟡 Data Platform Project\n(enterprise-data-prod)"]
+            BQ[BigQuery\nData Warehouse]
+            DP[Dataproc\nSpark/Hadoop]
+            GCS[Cloud Storage\nData Lake]
+        end
+
+        subgraph APP_PROJ["🟠 App Platform Project\n(enterprise-app-prod)"]
+            CF_SNOW[Cloud Function\nServiceNow Webhook]
+            CF_SLACK[Cloud Function\nSlack PagerDuty Bot]
+            CR_RUN[Cloud Run\nApp Services]
+        end
+
+        SVPC -->|"Subnet: gke-nodes-subnet"| GKE_PROJ
+        SVPC -->|"Subnet: data-subnet"| DATA_PROJ
+        SVPC -->|"Subnet: app-subnet"| APP_PROJ
+    ```
+
+=== "Security Perimeter"
+
+    ### VPC Service Controls & IAM
+    **VPC Service Controls** wraps all three service projects in a security perimeter. API calls that would move data outside the perimeter (e.g., a BigQuery export to an external GCS bucket) are automatically blocked.
+
+    ```mermaid
+    graph TD
+        subgraph VPC_SC["🔒 VPC Service Controls Perimeter"]
+            subgraph PROJECTS["Protected Projects"]
+                P1[GKE Platform Project]
+                P2[Data Platform Project]
+                P3[App Platform Project]
             end
-            GKE --> GKE_Namespaces
+            KMS[Cloud KMS\nKey Management]
+            SM[Secret Manager\nCredentials Store]
         end
 
-        subgraph Data-Platform-Project
-            DP[Dataproc]
-            BQ[BigQuery]
-            GCS[Cloud Storage]
+        IAM["Cloud IAM\nWorkload Identity\nLeast Privilege"] 
+        CALOG["Cloud Audit Logs\nAll Admin Activity"]
+        SCC["Security Command Center\nThreat Detection"]
+
+        IAM -->|"Controls access to"| VPC_SC
+        PROJECTS -->|"All actions logged"| CALOG
+        CALOG --> SCC
+        KMS -->|"Encrypts data at rest\nin all projects"| PROJECTS
+        SM -->|"Injects secrets at runtime\n(no hardcoded creds)"| PROJECTS
+    ```
+
+    !!! warning "VPC-SC Access Policy"
+        Any new GCP API that a service project needs must be added to the VPC-SC **access policy** via a PR in the `terraform/vpc-service-controls/` directory. Requests go through SecOps review.
+
+=== "External Integrations"
+
+    ### External System Integration Points
+    ServiceNow (on-prem ITSM) and GitHub Enterprise connect to GCP through the VPN tunnel, hitting API Gateway and Cloud Build respectively.
+
+    ```mermaid
+    graph LR
+        subgraph External["🌐 External Systems"]
+            SNOW[ServiceNow\nOn-Premises]
+            GHE[GitHub Enterprise\nOn-Premises]
+            PD[PagerDuty\nSaaS]
+            DD[Datadog\nSaaS]
         end
 
-        subgraph App-Platform-Project
-            CRUN[Cloud Run]
-            CF_SNOW[Cloud Function - SNOW Webhook]
-            CF_SLACK[Cloud Function - Slack PD Bot]
+        subgraph GCP["☁️ GCP Entry Points"]
+            APIGW[API Gateway\nOpenAPI spec\nAuth + Rate limiting]
+            CBT[Cloud Build Trigger\nGitHub App]
+            CF_SNOW[Cloud Function\nSNOW Webhook Handler]
+            CF_SLACK[Cloud Function\nSlack → PD Bot]
         end
-    end
 
-    SVPC --> GKE-Platform-Project
-    SVPC --> Data-Platform-Project
-    SVPC --> App-Platform-Project
-    
-    CR --> NAT
-    CR --> VPN
-    VPN <--> On-Premises
-    
-    SNOW --> |API Calls| API_GW[API Gateway]
-    API_GW --> |Trigger| CF_SNOW
-    
-    GHE --> |Webhooks| CB
-    CB --> |Push Images| AR
-    
-    KMS -.-> |Key Mgmt| GKE-Platform-Project
-    KMS -.-> |Key Mgmt| Data-Platform-Project
-    KMS -.-> |Key Mgmt| App-Platform-Project
-    
-    IAM -.-> |AuthZ & GSA bindings| GKE-Platform-Project
-    IAM -.-> |AuthZ & GSA bindings| Data-Platform-Project
-    IAM -.-> |AuthZ & GSA bindings| App-Platform-Project
-```
+        SNOW -->|"Outbound REST\nHMAC-SHA256 signed"| APIGW
+        APIGW --> CF_SNOW
+        CF_SNOW -->|"IAM grants /\nVM creation"| GCP
+
+        GHE -->|"Webhook push event"| CBT
+        CBT -->|"Triggers pipeline"| GCP
+
+        CF_SLACK -->|"POST /incidents"| PD
+        GCP -->|"Agent metrics/logs"| DD
+    ```
 
 ---
 
 ## 2. Jenkins on GKE — Controller & Dynamic Agent Architecture
 
-Our CI/CD workhorse is Jenkins running securely on Google Kubernetes Engine. Configuration is managed strictly via Jenkins Configuration as Code (JCasC), minimizing drift and manual UI changes. The setup relies on the Kubernetes Cloud plugin to dynamically provision ephemeral build agents tailored to specific tasks, minimizing resource usage and attack surface. Agents authenticate to Google services, such as Artifact Registry, seamlessly and securely via Workload Identity without needing static service account keys, while the Jenkins Controller relies on a resilient regional SSD PersistentVolumeClaim (PVC) for configuration and job history persistence.
+### What this diagram shows
+Jenkins runs as a single **Controller Pod** in the `jenkins-prod` namespace. It never executes builds itself. Instead, it uses the **Kubernetes Cloud plugin** to dynamically spawn ephemeral **Agent Pods** in the `jenkins-agents` namespace — one pod per build stage. When the stage finishes, the pod is destroyed. This means:
+- **Zero idle agents** wasting resources
+- **Each build gets a clean, fresh environment**
+- **Different build types get different pod templates** (Maven ≠ Node.js ≠ Kaniko)
 
-```mermaid
-graph TD
-    DEV[Developer Browser]
-    GHE[GitHub Enterprise]
-    SONAR[SonarQube External]
-    GCP_AR[Artifact Registry]
-    WI[Workload Identity Binding]
+=== "Cluster Overview"
 
-    subgraph GKE Cluster
-        subgraph ingress-nginx namespace
-            ING[Ingress Resource]
-            ILB[Internal GCP HTTPS LB]
+    ### GKE Cluster Layout
+    The cluster uses dedicated **Node Pools** — the Controller runs on a small stable pool, agents run on a larger auto-scaling pool with different machine types.
+
+    ```mermaid
+    graph TD
+        subgraph GKE["☸️ GKE Cluster: enterprise-gke-prod-us-central1"]
+            subgraph NP1["Node Pool: jenkins-controller-pool\nn2-standard-4 × 1-2 nodes"]
+                JC["Jenkins Controller Pod\njenkins/jenkins:2.462.3-lts-jdk17\nCPU: 2-4 cores | RAM: 4-8 Gi"]
+            end
+            subgraph NP2["Node Pool: jenkins-agents-pool\nn2-standard-8 × 0-20 nodes (autoscaled)"]
+                AG1[Kaniko Agent Pod]
+                AG2[Maven Agent Pod]
+                AG3[NodeJS Agent Pod]
+                AG4[SonarScanner Pod]
+                AG5[Terraform Pod]
+            end
         end
 
-        subgraph jenkins-prod namespace
-            JC[Jenkins Controller Pod\nJCasC mounted]
-            PVC[(PVC jenkins-home 100Gi SSD)]
-            JUI[Jenkins UI Service\nClusterIP 8080]
-            JJNLP[Jenkins JNLP Service\nClusterIP 50000]
-            JC --- PVC
+        JC -->|"K8s API: create pod"| AG1
+        JC -->|"K8s API: create pod"| AG2
+        JC -->|"K8s API: create pod"| AG3
+        JC -->|"K8s API: create pod"| AG4
+        JC -->|"K8s API: create pod"| AG5
+    ```
+
+    !!! tip "Cluster Autoscaler"
+        The `jenkins-agents-pool` has **min=0, max=20 nodes**. When no builds are running, the pool scales to zero, saving cost. Scale-up takes ~90 seconds for a new GCE node.
+
+=== "Networking & Storage"
+
+    ### How traffic reaches Jenkins & how agents connect back
+
+    ```mermaid
+    graph LR
+        DEV(["👤 Developer Browser"])
+        
+        subgraph GCP_LB["GCP Load Balancing"]
+            HTTPS_LB["Internal HTTPS LB\n(GCP managed cert)"]
         end
 
-        subgraph jenkins-agents namespace
-            KAN[Kaniko Agent Pod]
-            MAV[Maven Agent Pod]
-            NOD[NodeJS Agent Pod]
-            SON[SonarScanner Agent Pod]
-            TF[Terraform Agent Pod]
+        subgraph NS_INGRESS["Namespace: ingress-nginx"]
+            ING[Ingress Resource\nHost: jenkins.internal.enterprise.com]
         end
-    end
 
-    DEV --> ILB
-    ILB --> ING
-    ING --> JUI
-    JUI --> JC
+        subgraph NS_PROD["Namespace: jenkins-prod"]
+            SVC_UI["Service: jenkins-ui\nClusterIP :8080"]
+            SVC_JNLP["Service: jenkins-jnlp\nClusterIP :50000"]
+            JC_POD[Jenkins Controller Pod]
+            PVC[("PVC: jenkins-home\n100 Gi SSD Regional-PD")]
+        end
 
-    JC --> |Spawns Pods| KAN
-    JC --> |Spawns Pods| MAV
-    JC --> |Spawns Pods| NOD
-    JC --> |Spawns Pods| SON
-    JC --> |Spawns Pods| TF
+        subgraph NS_AGENTS["Namespace: jenkins-agents"]
+            AGENT[Agent Pod\n(ephemeral)]
+        end
 
-    JJNLP <--> |Agent Communication| KAN
-    JJNLP <--> |Agent Communication| MAV
-    JJNLP <--> |Agent Communication| NOD
-    JJNLP <--> |Agent Communication| SON
-    JJNLP <--> |Agent Communication| TF
+        DEV --> HTTPS_LB
+        HTTPS_LB --> ING
+        ING --> SVC_UI
+        SVC_UI --> JC_POD
+        JC_POD --- PVC
+        AGENT -->|"JNLP connect-back\nport 50000"| SVC_JNLP
+        SVC_JNLP --> JC_POD
+    ```
 
-    KAN --> |Push| GCP_AR
-    MAV -.-> |WI Auth| WI
-    NOD -.-> |WI Auth| WI
+=== "Workload Identity"
 
-    WI -.-> GCP_AR
-    SON --> |Scan| SONAR
-```
+    ### Zero Static Keys — Workload Identity Flow
+    No service account JSON keys exist anywhere. Pods authenticate to GCP APIs via **Workload Identity**, which maps a Kubernetes ServiceAccount to a GCP Service Account.
+
+    ```mermaid
+    graph LR
+        subgraph K8S["Kubernetes"]
+            KSA_C["KSA: jenkins-controller\nNamespace: jenkins-prod"]
+            KSA_A["KSA: jenkins-agent\nNamespace: jenkins-agents"]
+        end
+
+        subgraph GCP_IAM["GCP IAM"]
+            GSA_C["GSA: jenkins-controller\n@enterprise-platform-prod"]
+            GSA_A["GSA: jenkins-agent\n@enterprise-platform-prod"]
+        end
+
+        subgraph GCP_APIS["GCP APIs"]
+            AR["Artifact Registry\nroles/artifactregistry.writer"]
+            GKE_API["GKE API\nroles/container.developer"]
+            GCS["Cloud Storage\nroles/storage.objectAdmin"]
+        end
+
+        KSA_C -->|"WI annotation binding"| GSA_C
+        KSA_A -->|"WI annotation binding"| GSA_A
+        GSA_C --> GKE_API
+        GSA_A --> AR
+        GSA_A --> GCS
+    ```
+
+    !!! success "Security Benefit"
+        Workload Identity tokens are **short-lived** (1 hour), **automatically rotated**, and **scoped to the pod's service account**. A compromised agent pod cannot access resources beyond its GSA's permissions.
 
 ---
 
 ## 3. CI/CD Pipeline — Git to Genesis Platform (GKE)
 
-The core deployment pipeline enforces a strict progression from version control to the production Genesis GKE platform. It guarantees that all code is validated, scanned, and formally approved before taking effect. Upon a Git push, Jenkins orchestrates linting, unit tests, and a rigorous SonarQube SAST and coverage analysis. Failure at the quality gate blocks the pipeline and alerts the developer; success triggers the creation and storage of an immutable artifact in Artifactory. Following manual or policy-engine approval, Jenkins initiates a Helm-based deployment to the Genesis cluster, equipped with automated rollback in case the new release fails to stabilize.
+### What this diagram shows
+The end-to-end journey of a code change from a developer's laptop to the production **Genesis GKE** cluster. The pipeline enforces three hard gates:
+1. **SonarQube Quality Gate** — SAST scan + coverage threshold (blocks on failure)
+2. **Artifactory upload** — artifact must be stored and immutable before deploy
+3. **Manual approval** — a human (or policy engine) must approve production deploys
 
-```mermaid
-sequenceDiagram
-    participant Developer
-    participant GitHub_Enterprise
-    participant Jenkins
-    participant SonarQube
-    participant Artifactory
-    participant ApprovalGate
-    participant GenesisGKE
-    participant Slack
+=== "Pipeline Stages"
 
-    Developer->>GitHub_Enterprise: git push / PR open
-    GitHub_Enterprise->>Jenkins: Webhook trigger (push event)
-    Jenkins->>Jenkins: Checkout, Dockerfile lint, Unit Tests
-    Jenkins->>SonarQube: SAST scan + coverage analysis
-    SonarQube-->>Jenkins: Quality Gate result (pass/fail)
-    
-    alt Quality Gate FAILED
-        Jenkins->>Slack: Notify failure
-        Jenkins->>Developer: Annotate PR with failures
-    else Quality Gate PASSED
-        Jenkins->>Artifactory: Push artifact/Docker image (tagged with build number + git SHA)
-        Artifactory-->>Jenkins: Artifact URL confirmed
-        Jenkins->>ApprovalGate: Request manual approval (Prod deploy)
-        ApprovalGate-->>Jenkins: Approved (human or policy engine)
-        Jenkins->>GenesisGKE: helm upgrade --install (with image tag)
-        GenesisGKE-->>Jenkins: Rollout status
-        
-        alt Rollout FAILED
-            Jenkins->>GenesisGKE: helm rollback
-            Jenkins->>Slack: Alert rollback
-        else Rollout SUCCESS
-            Jenkins->>Slack: Deploy success notification with image tag + duration
-        end
-    end
-```
+    ```mermaid
+    sequenceDiagram
+        autonumber
+        participant Dev as 👤 Developer
+        participant GH as GitHub Enterprise
+        participant JK as Jenkins
+        participant SQ as SonarQube
+        participant ART as Artifactory
+
+        Dev->>GH: git push / open PR
+        GH->>JK: Webhook: push event + commit SHA
+        JK->>JK: Stage 1 — Checkout & lint\n(Dockerfile, YAML, shellcheck)
+        JK->>JK: Stage 2 — Unit tests\n(Maven / npm test)
+        JK->>SQ: Stage 3 — SAST scan\n+ code coverage upload
+        SQ-->>JK: Quality Gate: PASSED ✅\n(coverage ≥ 80%, no critical issues)
+        JK->>ART: Stage 4 — Build & push Docker image\ntag: {build-number}-{git-sha:8}
+        ART-->>JK: Image URL confirmed + digest
+    ```
+
+=== "Approval & Deploy"
+
+    ```mermaid
+    sequenceDiagram
+        autonumber
+        participant JK as Jenkins
+        participant GATE as Approval Gate
+        participant GKE as Genesis GKE
+        participant SLACK as Slack #platform-releases
+
+        JK->>GATE: Request production approval\n(image: myapp-142-a3f21b4c)
+        Note over GATE: Human approves OR\npolicy engine auto-approves\n(non-prod environments)
+        GATE-->>JK: ✅ Approved by: sre-lead@enterprise.com
+        JK->>GKE: helm upgrade --install myapp ./chart\n--set image.tag=142-a3f21b4c\n--wait --timeout 5m
+        GKE-->>JK: Rollout complete: 3/3 pods Ready
+        JK->>SLACK: ✅ myapp v142 deployed to prod\nDuration: 4m 32s | Image: ...a3f21b4c
+    ```
+
+=== "Failure Paths"
+
+    ```mermaid
+    sequenceDiagram
+        autonumber
+        participant JK as Jenkins
+        participant SQ as SonarQube
+        participant GKE as Genesis GKE
+        participant SLACK as Slack
+        participant Dev as 👤 Developer
+
+        Note over JK,SQ: Scenario A — Quality Gate Failure
+        JK->>SQ: Scan results submitted
+        SQ-->>JK: ❌ FAILED: coverage 61% < 80% threshold\n3 critical vulnerabilities found
+        JK->>Dev: GitHub PR annotation with failure details
+        JK->>SLACK: ❌ Build #142 FAILED — QG: coverage too low
+        Note over JK,SLACK: Pipeline STOPS. No artifact pushed.
+
+        Note over JK,GKE: Scenario B — Rollout Failure
+        JK->>GKE: helm upgrade --install ...
+        GKE-->>JK: ❌ Timeout: 1/3 pods Ready\nCrashLoopBackOff detected
+        JK->>GKE: helm rollback myapp (auto)
+        GKE-->>JK: Rolled back to revision 141
+        JK->>SLACK: ⚠️ Deploy FAILED + rolled back\nPrevious version restored
+    ```
 
 ---
 
 ## 4. SRE Alert Flow — Slack to PagerDuty to Engineer
 
-In high-pressure situations, manual incident escalation is prone to delays. Our custom Slack bot streamlines the process by integrating directly with the PagerDuty API v2. When an engineer triggers an alert via Slack, a Cloud Function verifies the payload security and parses the request. It then dynamically looks up the current on-call engineer using PagerDuty's schedule and on-call endpoints before creating a high-urgency incident. Simultaneously, a formal notification is broadcasted to the SRE distribution list via SendGrid, and the engineer in Slack receives a thread reply confirming the incident assignment.
+### What this diagram shows
+Any engineer can trigger a **PagerDuty incident** directly from Slack by typing `@pagerduty <team-name> <description>`. A Cloud Function bot handles the entire workflow: authenticating the request, looking up who is currently on-call, creating the incident, emailing the team distribution list, and confirming back in the Slack thread — all within seconds.
 
-```mermaid
-sequenceDiagram
-    participant SRE_Engineer
-    participant Slack
-    participant CloudFunction_Bot
-    participant PagerDuty_API
-    participant SendGrid
-    participant OnCall_Engineer
+**Why this exists:** During a P1 incident, engineers shouldn't need to leave Slack, log into PagerDuty, find the right schedule, and manually create an incident. This removes all friction.
 
-    SRE_Engineer->>Slack: @pagerduty platform-sre P1: DB connection pool exhausted
-    Slack->>CloudFunction_Bot: Events API POST (event_callback)
-    CloudFunction_Bot->>CloudFunction_Bot: Verify Slack signing secret (HMAC-SHA256)
-    CloudFunction_Bot->>CloudFunction_Bot: Regex parse team=platform-sre, message body
-    CloudFunction_Bot->>PagerDuty_API: GET /schedules?query=platform-sre
-    PagerDuty_API-->>CloudFunction_Bot: Schedule ID list
-    CloudFunction_Bot->>PagerDuty_API: GET /oncalls?schedule_ids[]=SCH001&earliest=true
-    PagerDuty_API-->>CloudFunction_Bot: on_call: Jane Smith (jane@enterprise.com)
-    CloudFunction_Bot->>PagerDuty_API: POST /incidents {title, service_id, urgency:high}
-    PagerDuty_API-->>CloudFunction_Bot: Incident URL INC-4821
-    PagerDuty_API->>OnCall_Engineer: Page / push notification
-    CloudFunction_Bot->>SendGrid: Send HTML email to platform-sre-dl@enterprise.com
-    SendGrid-->>CloudFunction_Bot: 202 Accepted
-    CloudFunction_Bot->>Slack: Reply in thread: Incident INC-4821 created. On-call: Jane Smith.
-```
+=== "Trigger & Authentication"
+
+    ```mermaid
+    sequenceDiagram
+        autonumber
+        participant ENG as 👤 SRE Engineer
+        participant SLACK as Slack
+        participant BOT as Cloud Function Bot\n(Python / Flask)
+
+        ENG->>SLACK: @pagerduty platform-sre\nP1: DB connection pool exhausted
+        SLACK->>BOT: POST /slack/events\n{event_callback, text, channel, ts}
+        BOT->>BOT: 1. Check X-Slack-Request-Timestamp\n   (reject if > 5 min old — replay attack)
+        BOT->>BOT: 2. Compute HMAC-SHA256\n   sig = hmac(SIGNING_SECRET, v0:ts:body)
+        BOT->>BOT: 3. compare_digest(computed, X-Slack-Signature)\n   ✅ Signature valid
+        BOT->>BOT: 4. Regex parse:\n   team = platform-sre\n   body = P1: DB connection pool exhausted
+    ```
+
+=== "PagerDuty Lookup & Page"
+
+    ```mermaid
+    sequenceDiagram
+        autonumber
+        participant BOT as Cloud Function Bot
+        participant PD as PagerDuty API v2
+        participant ENG as 📟 On-Call Engineer
+
+        BOT->>PD: GET /schedules?query=platform-sre\nAuthorization: Token token={PD_API_TOKEN}
+        PD-->>BOT: [{id: SCH001, name: Platform SRE Rotation}]
+        BOT->>PD: GET /oncalls?schedule_ids[]=SCH001\n&earliest=true
+        PD-->>BOT: [{user: {name: Jane Smith,\n  email: jane@enterprise.com}}]
+        BOT->>PD: POST /incidents\n{title, service_id, escalation_policy,\n urgency: high, body: full message}
+        PD-->>BOT: {incident: {id: INC-4821,\n  html_url: pagerduty.com/...}}
+        PD->>ENG: 📱 Push notification + SMS page
+    ```
+
+=== "Notification & Reply"
+
+    ```mermaid
+    sequenceDiagram
+        autonumber
+        participant BOT as Cloud Function Bot
+        participant SG as SendGrid API
+        participant DL as platform-sre-dl@enterprise.com
+        participant SLACK as Slack
+
+        BOT->>SG: POST /v3/mail/send\n{to: platform-sre-dl@enterprise.com,\n subject: PagerDuty Incident INC-4821,\n html: full incident details table}
+        SG-->>BOT: 202 Accepted
+        SG->>DL: 📧 HTML email delivered to all DL members
+        BOT->>SLACK: chat.postMessage (thread reply)\n"✅ Incident INC-4821 created\n📟 On-call: Jane Smith\n🔗 pagerduty.com/incidents/INC-4821"
+        Note over SLACK: Reply appears in thread\nunder original @pagerduty message
+    ```
 
 ---
 
 ## 5. Golden Image Baking — GitOps Flow
 
-To ensure all compute instances comply with enterprise security standards, we employ an automated GitOps workflow for building Golden Images. The process is fully auditable, originating from a ServiceNow ticket and progressing through mandatory peer and SecOps reviews on GitHub. Cloud Build coordinates the execution of Packer and Ansible, which harden the base image according to CIS Level 1 benchmarks, configure firewalls, install necessary toolchains (like Node.js, Docker, Kubernetes tools), and embed monitoring agents. The resulting immutable image serves as the single source of truth for VM deployments, and the provisioning system automatically updates CMDB records upon success.
+### What this diagram shows
+Every change to a VM base image must go through this pipeline. No one can SSH into a running VM and install packages — **all image changes are GitOps-driven**. The pipeline ensures every image is CIS-hardened, audited, and traceable to a ServiceNow ticket.
 
-```mermaid
-sequenceDiagram
-    participant Developer
-    participant ServiceNow
-    participant GitHub_PR
-    participant SecOps_Reviewer
-    participant SRE_Reviewer
-    participant CloudBuild
-    participant Packer
-    participant Ansible
-    participant GCP_Images
+**Why immutable images?** If a VM is compromised or drifts from its intended state, you don't fix it — you replace it with a fresh image. This is **infrastructure cattle, not pets**.
 
-    Developer->>ServiceNow: Create RITM/CHG ticket (package addition request)
-    ServiceNow-->>Developer: Ticket RITM0042819 approved for PR
-    Developer->>GitHub_PR: git checkout -b feat/RITM0042819-add-nodejs20 && git push
-    Developer->>GitHub_PR: Open PR (fill PULL_REQUEST_TEMPLATE.md)
-    GitHub_PR->>SecOps_Reviewer: Review request (mandatory)
-    SecOps_Reviewer->>GitHub_PR: Review: CIS L1 checklist verified, CVE scan clean ✓
-    GitHub_PR->>SRE_Reviewer: Review request (2 SRE approvals required)
-    SRE_Reviewer->>GitHub_PR: Approve ✓
-    GitHub_PR->>CloudBuild: PR merged → Cloud Build trigger fires
-    CloudBuild->>Packer: packer init && packer validate
-    Packer-->>CloudBuild: Validation OK
-    CloudBuild->>Packer: packer build (GCP builder, IAP tunnel, no external IP)
-    Packer->>Ansible: Invoke ansible-playbook provisioner
-    
-    Ansible->>Ansible: Play 1: CIS L1 hardening (sysctl, auditd, SSH, AppArmor)
-    Ansible->>Ansible: Play 2: UFW firewall rules
-    Ansible->>Ansible: Play 3: Install packages (nodejs20, docker, kubectl, helm)
-    Ansible->>Ansible: Play 4: GCP Ops Agent
-    Ansible->>Ansible: Play 5: Datadog Agent
-    Ansible->>Ansible: Play 6: Pre-snapshot cleanup (bash_history, SSH host keys, logs)
-    
-    Ansible-->>Packer: Provisioning complete
-    Packer->>GCP_Images: Capture image → enterprise-debian12-base-{build}-{sha}
-    GCP_Images-->>CloudBuild: Image family updated
-    CloudBuild->>ServiceNow: REST API: Update RITM0042819 → Implemented
-    CloudBuild->>GitHub_PR: Post success comment with image name
-```
+=== "Request & Review"
+
+    ```mermaid
+    sequenceDiagram
+        autonumber
+        participant DEV as 👤 Developer
+        participant SNOW as ServiceNow
+        participant GH as GitHub PR
+        participant SECOPS as 🔒 SecOps Reviewer
+        participant SRE as ☸️ SRE Reviewer
+
+        DEV->>SNOW: File RITM ticket:\n"Add nodejs 20.x to base image\nReason: App team requirement"
+        SNOW-->>DEV: RITM0042819 approved for implementation
+        DEV->>GH: git checkout -b feat/RITM0042819-add-nodejs20
+        DEV->>GH: Edit ansible-playbook.yaml\n(add nodejs to apt_packages list)
+        DEV->>GH: Open PR — fill PULL_REQUEST_TEMPLATE.md\n(ticket link + justification + SecOps checklist)
+        GH->>SECOPS: Review request (CODEOWNERS mandatory)
+        SECOPS->>GH: ✅ CIS L1 check: no new SUID binaries\n   CVE scan: clean\n   UFW: no new external ports
+        GH->>SRE: Review request (2 approvals required)
+        SRE->>GH: ✅ Approve
+    ```
+
+=== "Build & Provision"
+
+    ```mermaid
+    sequenceDiagram
+        autonumber
+        participant GH as GitHub
+        participant CB as Cloud Build
+        participant PKR as Packer
+        participant VM as GCP Builder VM\n(temporary, no external IP)
+        participant ANS as Ansible
+
+        GH->>CB: PR merge → Cloud Build trigger fires
+        CB->>PKR: packer init (download plugins)
+        CB->>PKR: packer validate (syntax + API check)
+        PKR-->>CB: ✅ Validation passed
+        CB->>PKR: packer build\n(IAP tunnel SSH, no external IP)
+        PKR->>VM: Launch n2-standard-4 from debian-12 base
+        PKR->>ANS: Invoke ansible-playbook provisioner\n(over IAP tunnel)
+        ANS->>VM: Play 1: CIS L1 hardening\n(sysctl, auditd, SSH config, AppArmor)
+        ANS->>VM: Play 2: UFW firewall rules
+        ANS->>VM: Play 3: Dev packages\n(nodejs, docker, kubectl, helm, terraform)
+        ANS->>VM: Play 4: GCP Ops Agent
+        ANS->>VM: Play 5: Datadog Agent
+        ANS->>VM: Play 6: Pre-snapshot cleanup\n(bash_history, SSH host keys, apt cache, logs)
+        ANS-->>PKR: Provisioning complete ✅
+    ```
+
+=== "Image Capture & Notify"
+
+    ```mermaid
+    sequenceDiagram
+        autonumber
+        participant PKR as Packer
+        participant GCP as GCP Image Family\n(enterprise-images project)
+        participant CB as Cloud Build
+        participant SNOW as ServiceNow API
+        participant SLACK as Slack #platform-releases
+
+        PKR->>GCP: Stop VM + capture disk snapshot
+        GCP-->>PKR: Image created:\nenterprise-debian12-base-143-a3f21b4c
+        PKR->>GCP: Set image family:\nenterprise-debian12-base (latest pointer updated)
+        GCP-->>CB: Build step complete
+        CB->>SNOW: PATCH /api/now/table/sc_req_item/RITM0042819\n{state: implemented, image: enterprise-debian12-base-143}
+        SNOW-->>CB: 200 OK — ticket updated
+        CB->>SLACK: ✅ Golden image build #143 SUCCESS\nenterprise-debian12-base-143-a3f21b4c\nDuration: 18m 42s
+        CB->>GH: Post PR comment:\n✅ Image: enterprise-debian12-base-143-a3f21b4c
+    ```
 
 ---
 
 ## Key Design Principles
 
-The architecture illustrated above is governed by a set of core engineering principles designed to meet enterprise compliance and availability requirements:
-
-*   **GitOps Single Source of Truth:** All infrastructure and platform configurations are declared in version control. Direct manual changes to resources are prohibited.
-*   **Immutable Images:** Virtual machines and containers are deployed from immutable golden images that pass rigorous security checks during the build phase.
-*   **Workload Identity:** Services authenticate dynamically using Google Cloud Workload Identity. No static, long-lived service account keys are stored or transmitted.
-*   **Least-Privilege IAM:** Access to resources and APIs is strictly limited by fine-grained Identity and Access Management policies, enforcing minimum necessary permissions.
-*   **VPC Service Controls:** Cloud resources are encapsulated within a secure perimeter, preventing unauthorized data access or exfiltration.
-*   **CIS L1 Baseline Mandatory:** All OS images and Kubernetes clusters are continuously audited against the Center for Internet Security Level 1 benchmarks.
-*   **Peer and SecOps Review Required:** Changes to critical infrastructure code require multiple layers of automated checks and manual approvals from relevant domain experts.
-*   **Automated CMDB Updates:** Infrastructure state changes and deployment events automatically synchronize with the central Configuration Management Database (ServiceNow) for audit and tracking.
+| Principle | Implementation |
+|-----------|---------------|
+| **GitOps Single Source of Truth** | All infra declared in Git. Direct resource changes are blocked and alerted on via Cloud Audit Logs. |
+| **Immutable Images** | VMs are replaced, never patched in place. Every image is traceable to a git commit and SNOW ticket. |
+| **Workload Identity** | Zero static service account keys. All pods use KSA→GSA binding with short-lived tokens. |
+| **Least-Privilege IAM** | Every GSA has exactly the roles it needs, nothing more. Reviewed quarterly by SecOps. |
+| **VPC Service Controls** | Data exfiltration blocked at the API layer. No data can leave the perimeter without explicit policy. |
+| **CIS L1 Baseline** | All OS images and GKE node pools continuously audited. Non-compliant resources trigger alerts. |
+| **Mandatory SecOps Review** | Any image recipe change requires a SecOps approval before merge is permitted. |
+| **Automated CMDB Updates** | Every build pipeline updates ServiceNow CMDB on success. No manual CMDB entries. |
+| **No Secrets in Code** | All secrets live in Secret Manager. GitHub Push Protection blocks accidental commits. |

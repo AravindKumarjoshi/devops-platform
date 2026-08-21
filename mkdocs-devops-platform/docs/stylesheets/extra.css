@@ -1,0 +1,90 @@
+/* ─── Mermaid Diagram Container ─────────────────────────────────────────── */
+/* Makes every diagram horizontally scrollable and prevents SVG from clipping */
+.mermaid {
+  overflow-x: auto;
+  overflow-y: visible;
+  padding: 1rem 0;
+  cursor: grab;
+}
+
+.mermaid svg {
+  max-width: none !important;  /* Override Material's max-width restriction     */
+  min-width: 600px;            /* Prevent tiny diagrams on wide screens          */
+  height: auto !important;
+  display: block;
+  margin: 0 auto;
+}
+
+/* Scroll hint shadow on right edge when diagram overflows */
+.mermaid-wrapper {
+  position: relative;
+  overflow-x: auto;
+  border: 1px solid var(--md-default-fg-color--lightest);
+  border-radius: 0.4rem;
+  padding: 1rem;
+  background: var(--md-code-bg-color);
+}
+
+/* ─── Diagram zoom on click ──────────────────────────────────────────────── */
+.mermaid svg:active {
+  cursor: grabbing;
+}
+
+/* ─── Sequence diagram improvements ─────────────────────────────────────── */
+.mermaid .actor {
+  font-size: 13px !important;
+}
+
+.mermaid .messageText {
+  font-size: 12px !important;
+}
+
+/* ─── Code block improvements ───────────────────────────────────────────── */
+/* Allow wide code blocks to scroll instead of wrapping */
+.highlight pre {
+  overflow-x: auto;
+  white-space: pre;
+}
+
+/* ─── Admonition custom colors ──────────────────────────────────────────── */
+.md-typeset .admonition.manifest,
+.md-typeset details.manifest {
+  border-color: #5c6bc0;
+}
+.md-typeset .admonition.manifest > .admonition-title,
+.md-typeset details.manifest > summary {
+  background-color: rgba(92, 107, 192, 0.1);
+}
+.md-typeset .admonition.manifest > .admonition-title::before,
+.md-typeset details.manifest > summary::before {
+  background-color: #5c6bc0;
+  -webkit-mask-image: var(--md-admonition-icon--note);
+          mask-image: var(--md-admonition-icon--note);
+}
+
+/* ─── Diagram label: "Scroll horizontally →" ────────────────────────────── */
+.diagram-scroll-hint {
+  font-size: 0.7rem;
+  color: var(--md-default-fg-color--light);
+  text-align: right;
+  margin-bottom: 0.25rem;
+  font-style: italic;
+}
+
+/* ─── Full-width content on large screens ────────────────────────────────── */
+@media screen and (min-width: 76.25em) {
+  .md-content {
+    max-width: none;
+  }
+}
+
+/* ─── Table improvements ─────────────────────────────────────────────────── */
+.md-typeset table:not([class]) {
+  display: table;
+  width: 100%;
+}
+
+.md-typeset table:not([class]) th {
+  background-color: var(--md-primary-fg-color);
+  color: var(--md-primary-bg-color);
+}

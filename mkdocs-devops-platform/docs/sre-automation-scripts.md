@@ -12,7 +12,47 @@ Our SRE automation philosophy is built on three core pillars: event-driven archi
 ### Overview
 This Flask-based Cloud Function is deployed at the `/slack/events` endpoint to handle the Slack Events API. It performs URL verification challenges and authenticates incoming payloads by verifying the Slack signing secret via HMAC-SHA256. When it detects a message matching the `@pagerduty <team-name>` pattern, it queries the PagerDuty Schedules API v2 to identify the current on-call engineer. It then creates a high-urgency PagerDuty incident, sends a formatted HTML email to the team's distribution list via SendGrid, and replies in the Slack thread with the incident URL and the on-call engineer's name.
 
-### `slack_pagerduty_bot.py`
+### slack_pagerduty_bot.py
+
+#### What does this script do?
+1. Receives a webhook payload from Slack Events API when a user mentions `@pagerduty <team-name>`.
+2. Validates the Slack request signature to ensure it is authentic.
+3. Queries PagerDuty API to find the on-call engineer for the requested team.
+4. Creates a high-urgency incident in PagerDuty assigned to that engineer.
+5. Sends an email notification to the team's distribution list.
+6. Posts a reply back to the Slack thread with the PagerDuty incident link.
+
+#### I/O Summary
+| Input | Process | Output |
+| --- | --- | --- |
+| Slack Event webhook (`POST` with `@pagerduty` mention) | Validate signature → query PD → create incident → email | PagerDuty Incident, Slack reply, Email notification |
+
+#### Key Environment Variables
+| Name | Required | Description | Example Value |
+| --- | --- | --- | --- |
+| `SLACK_SIGNING_SECRET` | Yes | Verifies incoming Slack webhook requests | `8f742231b...` |
+| `PAGERDUTY_API_TOKEN` | Yes | Token for creating incidents in PD | `y_Nb...` |
+| `PAGERDUTY_SERVICE_ID` | Yes | The ID of the PD service to create incidents under | `P123456` |
+| `PAGERDUTY_ESCALATION_POLICY_ID` | Yes | Fallback policy for incidents | `P654321` |
+| `SENDGRID_API_KEY` | Yes | Token to send emails via SendGrid | `SG.xyz...` |
+| `SLACK_BOT_TOKEN` | Yes | Used to post the reply message back to Slack | `xoxb-...` |
+
+!!! note "Deployment command"
+    ```bash
+    gcloud functions deploy slack-pagerduty-bot \
+      --runtime python311 \
+      --trigger-http \
+      --entry-point slack_events
+    ```
+
+!!! tip "How to test it"
+    ```bash
+    # Send a mock challenge request to verify the endpoint is up
+    curl -X POST https://REGION-PROJECT.cloudfunctions.net/slack-pagerduty-bot \
+         -H "Content-Type: application/json" \
+         -d '{"type": "url_verification", "challenge": "test1234"}'
+    ```
+
 ```python
 #!/usr/bin/env python3
 """
@@ -132,7 +172,7 @@ def create_pagerduty_incident(title: str, oncall_user_id: str, team_name: str) -
 @retry(stop=stop_after_attempt(3), wait=wait_exponential(multiplier=1, min=2, max=10), retry=retry_if_exception_type(Exception))
 def send_dl_email(dl_email: str, incident_url: str, oncall_name: str, oncall_email: str, title: str, team_name: str) -> bool:
     sg = SendGridAPIClient(SENDGRID_API_KEY)
-    html_content = f\"\"\"
+    html_content = f"""
     <h2>New PagerDuty Incident</h2>
     <table border="1" cellpadding="5" cellspacing="0">
         <tr><th>Team</th><td>{team_name}</td></tr>
@@ -140,7 +180,7 @@ def send_dl_email(dl_email: str, incident_url: str, oncall_name: str, oncall_ema
         <tr><th>On-Call</th><td>{oncall_name} ({oncall_email})</td></tr>
         <tr><th>Incident Link</th><td><a href="{incident_url}">View in PagerDuty</a></td></tr>
     </table>
-    \"\"\"
+    """
     message = Mail(
         from_email=From('bot@enterprise.com', 'PD Slack Bot'),
         to_emails=To(dl_email),
@@ -203,7 +243,30 @@ if __name__ == '__main__':
     app.run(host='0.0.0.0', port=int(os.environ.get('PORT', 8080)))
 ```
 
-### `requirements_bot.txt`
+### requirements_bot.txt
+
+#### What does this script do?
+1. Defines Python dependencies required for the Slack-PagerDuty Bot.
+2. Ensures reproducible builds across environments.
+
+#### I/O Summary
+| Input | Process | Output |
+| --- | --- | --- |
+| `requirements_bot.txt` | Read during function deployment | Installed Python dependencies |
+
+#### Key Environment Variables
+| Name | Required | Description | Example Value |
+| --- | --- | --- | --- |
+| N/A | No | Handled by Cloud Functions builder | N/A |
+
+!!! note "Deployment command"
+    Dependencies are read automatically during the `gcloud functions deploy` command shown above.
+
+!!! tip "How to test it"
+    ```bash
+    pip install -r requirements_bot.txt
+    ```
+
 ```text
 flask==3.0.3
 requests==2.32.3
@@ -221,7 +284,43 @@ functions-framework==3.8.1
 ### Overview
 This Cloud Function acts as a bridge between ServiceNow workflows and GCP resource provisioning. Triggered by outbound REST messages from ServiceNow, it secures the webhook endpoint using HMAC-SHA256 authentication. It supports two primary request types: `iam_grant`, which adds IAM bindings to specific GCP projects based on an approved roles allowlist, and `vm_create`, which provisions Google Compute Engine instances sourced from the enterprise golden image family. Every action is meticulously logged to a BigQuery audit dataset for compliance and historical tracking.
 
-### `servicenow_iam_handler.py`
+### servicenow_iam_handler.py
+
+#### What does this script do?
+1. Validates inbound requests from ServiceNow via HMAC-SHA256 signature.
+2. Reads the request type: `iam_grant` or `vm_create`.
+3. For IAM grants: verifies requested roles against an allowlist, then adds the policy binding using the GCP Resource Manager API.
+4. For VM creations: provisions a GCE instance from the enterprise golden image using the Compute Engine API.
+5. Logs every action into a BigQuery audit table.
+
+#### I/O Summary
+| Input | Process | Output |
+| --- | --- | --- |
+| ServiceNow JSON Webhook (`POST`) | Authenticate → Provision Resource → Audit | GCP IAM Policy / GCP VM, BigQuery log entry |
+
+#### Key Environment Variables
+| Name | Required | Description | Example Value |
+| --- | --- | --- | --- |
+| `SERVICENOW_HMAC_SECRET` | Yes | Validates the ServiceNow webhook | `sn_secret_99` |
+| `GCP_AUDIT_BQ_TABLE` | Yes | BigQuery dataset/table for audit logs | `enterprise-audit.iam_changes.gcp_grants` |
+
+!!! note "Deployment command"
+    ```bash
+    gcloud functions deploy servicenow-iam-handler \
+      --runtime python311 \
+      --trigger-http \
+      --entry-point servicenow_webhook
+    ```
+
+!!! tip "How to test it"
+    ```bash
+    # Test IAM grant locally with a mocked request
+    curl -X POST https://REGION-PROJECT.cloudfunctions.net/servicenow-iam-handler \
+         -H "X-ServiceNow-Signature: <calculated-hmac>" \
+         -H "Content-Type: application/json" \
+         -d '{"request_type": "iam_grant", "project_id": "test-project", "user_email": "user@enterprise.com", "roles": ["roles/monitoring.viewer"]}'
+    ```
+
 ```python
 #!/usr/bin/env python3
 """
@@ -409,7 +508,30 @@ def servicenow_webhook(request):
         return json.dumps({"error": "Internal Server Error"}), 500, {'Content-Type': 'application/json'}
 ```
 
-### `requirements_snow.txt`
+### requirements_snow.txt
+
+#### What does this script do?
+1. Defines Python dependencies for the ServiceNow handler function.
+2. Ensures all Google Cloud SDKs and functions-framework are available.
+
+#### I/O Summary
+| Input | Process | Output |
+| --- | --- | --- |
+| `requirements_snow.txt` | Deployed along with function | Dependencies installed |
+
+#### Key Environment Variables
+| Name | Required | Description | Example Value |
+| --- | --- | --- | --- |
+| N/A | No | N/A | N/A |
+
+!!! note "Deployment command"
+    Read natively by GCP Cloud Functions during deployment.
+
+!!! tip "How to test it"
+    ```bash
+    pip install -r requirements_snow.txt
+    ```
+
 ```text
 functions-framework==3.8.1
 google-cloud-resource-manager==1.12.4
@@ -425,7 +547,39 @@ cryptography==43.0.1
 ### Overview
 The VM Automated Patch Manager is a daemon run weekly via a systemd timer on compute instances. It loads approved package version constraints from a centralized YAML configuration, queries the local `dpkg-query` database, and evaluates version compliance. Non-compliant packages are targeted for targeted upgrades via `apt-get upgrade`. It generates a comprehensive JSON report and sends an HTML summary via email. It safely supports a `--dry-run` flag for testing without applying changes.
 
-### `approved_packages.yaml`
+### approved_packages.yaml
+
+#### What does this script do?
+1. Defines the desired state of critical packages, setting minimum version constraints.
+2. The patch manager parses this file and compares it to installed versions.
+3. Provides email delivery configurations and local log retention rules.
+4. **Note:** Any changes to this file require SecOps review to ensure compliance with enterprise baseline standards.
+
+#### How to add a new package
+To enforce a new package version, add it under the correct category with standard comparison syntax:
+```yaml
+  # New Package Category
+  curl: '>=8.0.0'
+```
+
+#### I/O Summary
+| Input | Process | Output |
+| --- | --- | --- |
+| Static YAML file | Loaded by Python parser | Configuration dictionary |
+
+#### Key Environment Variables
+| Name | Required | Description | Example Value |
+| --- | --- | --- | --- |
+| N/A | No | Parsed locally from disk | N/A |
+
+!!! note "Deployment command"
+    Deployed to VMs during golden image creation or via Chef/Puppet at `/opt/patch-manager/approved_packages.yaml`.
+
+!!! tip "How to test it"
+    ```bash
+    yamllint approved_packages.yaml
+    ```
+
 ```yaml
 # Enterprise Approved Package Version Constraints
 # Managed by: Platform SRE | SecOps Review: SecOps-2024-Q4-0018
@@ -486,7 +640,33 @@ reporting:
   log_file: /var/log/patch-manager/patch.log
 ```
 
-### `vm_patch_manager.py`
+### vm_patch_manager.py
+
+#### What does this script do?
+1. Parses the `approved_packages.yaml` constraints.
+2. Uses `dpkg-query` to fetch currently installed package versions on the system.
+3. Determines compliance by comparing installed versions against constraints.
+4. Uses `apt-get` to perform upgrades for non-compliant packages.
+5. Saves a JSON result report locally and emails an HTML summary.
+
+#### I/O Summary
+| Input | Process | Output |
+| --- | --- | --- |
+| YAML config, `dpkg-query` stdout | Validate & upgrade non-compliant packages | `apt-get` system changes, JSON log, Email report |
+
+#### Key Environment Variables
+| Name | Required | Description | Example Value |
+| --- | --- | --- | --- |
+| N/A | No | Takes args directly: `--config` and `--dry-run` | N/A |
+
+!!! note "Deployment command"
+    Deployed to `/opt/patch-manager/vm_patch_manager.py`.
+
+!!! tip "How to test it"
+    ```bash
+    python3 vm_patch_manager.py --config approved_packages.yaml --dry-run
+    ```
+
 ```python
 #!/usr/bin/env python3
 """
@@ -542,7 +722,7 @@ def get_installed_packages() -> dict:
     try:
         output = subprocess.check_output(["dpkg-query", "-W", "-f=${Package} ${Version}\\n"], universal_newlines=True)
         packages = {}
-        for line in output.strip().split('\\n'):
+        for line in output.strip().split('\n'):
             if line:
                 parts = line.split(maxsplit=1)
                 if len(parts) == 2:
@@ -633,14 +813,14 @@ def upgrade_package(pkg_name: str, dry_run: bool) -> dict:
     return result
 
 def generate_html_report(report_data: dict) -> str:
-    html = f\"\"\"
+    html = f"""
     <html><body>
     <h2>Patch Manager Report for {report_data['hostname']}</h2>
     <p>Run Time: {report_data['timestamp']}</p>
     <p>Dry Run: {report_data['dry_run']}</p>
     <table border="1" cellpadding="5" cellspacing="0">
     <tr><th>Package</th><th>Required</th><th>Installed</th><th>Compliant</th><th>Upgraded</th></tr>
-    \"\"\"
+    """
     
     for item in report_data['compliance']:
         status_color = "green" if item['compliant'] else "red"
@@ -733,7 +913,32 @@ if __name__ == "__main__":
     main()
 ```
 
-### `vm_patch_manager.sh` (Bash wrapper)
+### vm_patch_manager.sh
+
+#### What does this script do?
+1. Checks that the current user is root.
+2. Rotates logs older than 90 days.
+3. Acquires an exclusive file lock to ensure only one instance runs at a time.
+4. Activates the Python virtual environment and executes the Python patch manager script.
+
+#### I/O Summary
+| Input | Process | Output |
+| --- | --- | --- |
+| Execution request (from systemd) | Wrap execution, handle locks | Returns script exit code |
+
+#### Key Environment Variables
+| Name | Required | Description | Example Value |
+| --- | --- | --- | --- |
+| N/A | No | Script utilizes hardcoded paths | N/A |
+
+!!! note "Deployment command"
+    Ensure script is executable: `chmod +x /opt/patch-manager/vm_patch_manager.sh`
+
+!!! tip "How to test it"
+    ```bash
+    sudo /opt/patch-manager/vm_patch_manager.sh --dry-run
+    ```
+
 ```bash
 #!/usr/bin/env bash
 set -euo pipefail
@@ -794,7 +999,35 @@ main() {
 main "$@"
 ```
 
-### `vm-patch-manager.service`
+### vm-patch-manager.service
+
+#### What does this script do?
+1. Defines a `oneshot` systemd service, meaning it executes the script and terminates, rather than running continuously as a daemon.
+2. Instructs systemd on how to start the wrapper shell script as `root`.
+3. Sets up standard logging output to the journal.
+
+#### I/O Summary
+| Input | Process | Output |
+| --- | --- | --- |
+| Systemd timer trigger | Execute defined `ExecStart` command | Script exit code, Journal logs |
+
+#### Key Environment Variables
+| Name | Required | Description | Example Value |
+| --- | --- | --- | --- |
+| N/A | No | Configured natively within the `.service` file | N/A |
+
+!!! note "Deployment command"
+    ```bash
+    sudo cp vm-patch-manager.service /etc/systemd/system/
+    sudo systemctl daemon-reload
+    ```
+
+!!! tip "How to test it"
+    ```bash
+    sudo systemctl start vm-patch-manager.service
+    sudo journalctl -u vm-patch-manager.service -f
+    ```
+
 ```ini
 [Unit]
 Description=VM Automated Patch Manager Service
@@ -814,7 +1047,35 @@ TimeoutStartSec=3600
 WantedBy=multi-user.target
 ```
 
-### `vm-patch-manager.timer`
+### vm-patch-manager.timer
+
+#### What does this script do?
+1. Defines the scheduling for the patch manager service.
+2. `Persistent=true` guarantees execution if the VM was powered off during the scheduled time window.
+3. `RandomizedDelaySec=1800` ensures that fleets of VMs do not hammer package repositories at the exact same time.
+
+#### I/O Summary
+| Input | Process | Output |
+| --- | --- | --- |
+| Real-time clock | Evaluate time schedule constraints | Triggers `vm-patch-manager.service` |
+
+#### Key Environment Variables
+| Name | Required | Description | Example Value |
+| --- | --- | --- | --- |
+| N/A | No | Driven entirely by systemd internal logic | N/A |
+
+!!! note "Deployment command"
+    ```bash
+    sudo cp vm-patch-manager.timer /etc/systemd/system/
+    sudo systemctl daemon-reload
+    sudo systemctl enable --now vm-patch-manager.timer
+    ```
+
+!!! tip "How to test it"
+    ```bash
+    sudo systemctl list-timers | grep vm-patch-manager
+    ```
+
 ```ini
 [Unit]
 Description=Weekly VM Patch Manager Execution

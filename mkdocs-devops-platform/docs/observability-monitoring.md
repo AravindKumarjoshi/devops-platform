@@ -30,7 +30,21 @@ graph TD
 
 The Prometheus plugin for Jenkins exposes metrics at the `/prometheus` endpoint. A `ServiceMonitor` resource configures Prometheus to scrape this endpoint periodically, collecting critical data about Jenkins' health and build performance. Concurrently, a `PrometheusRule` resource defines alerting thresholds, evaluating the collected metrics and triggering alerts when anomalies such as build queue saturation or offline agents are detected.
 
-### `servicemonitor-jenkins.yaml`
+### servicemonitor-jenkins.yaml
+
+#### Explanation of ServiceMonitor & Rules
+- **ServiceMonitor Matching**: `matchLabels` directs Prometheus to discover endpoints labeled `app.kubernetes.io/name: jenkins`.
+- **Scrape Interval**: Set to `30s`. Jenkins metrics are scraped every half minute to maintain high resolution.
+- **Metric Relabeling**: Only keeps specific metrics via regex (`jenkins_(queue|executor|build|plugins|job).*`) to avoid metric bloat, and re-labels the target as `job: jenkins-controller`.
+
+#### Alert Rules Summary
+| Alert Name | Metric & Threshold | Duration | Severity |
+| --- | --- | --- | --- |
+| `JenkinsBuildQueueSaturated` | `jenkins_queue_size_value > 10` | 5m | Warning |
+| `JenkinsAllAgentsOffline` | `jenkins_executor_free_count_value == 0` | 5m | Critical |
+| `JenkinsBuildDurationHigh` | `histogram_quantile(0.95, duration) > 30m` | 10m | Warning |
+| `JenkinsControllerDown` | `up == 0` (Failed to scrape) | 2m | Critical |
+
 ```yaml
 apiVersion: monitoring.coreos.com/v1
 kind: ServiceMonitor
@@ -125,7 +139,21 @@ spec:
 
 This Grafana dashboard (UID: `enterprise-jenkins-001`) provides real-time visibility into the Jenkins Controller's health and activity. It refreshes every 30 seconds and defaults to a 3-hour time range. A namespace variable allows operators to filter metrics for specific Jenkins instances.
 
-### `jenkins-dashboard.json`
+### jenkins-dashboard.json
+
+#### Dashboard Panels Breakdown
+1. **Build Queue Depth**: Displays items waiting for executors. Values > 10 indicate a bottleneck.
+2. **Total Executors**: Raw count of active executors on the grid.
+3. **Free Executors**: Unused slots; triggers concern when approaching 0.
+4. **Build Success Rate %**: Ratio of successful to total builds; drops below 80% should prompt review.
+5. **Build Duration Percentiles**: Visualizes p50, p95, and p99. Useful for detecting broad slowdowns.
+6. **Build Rate**: Real-time throughput comparison of success vs. failure.
+7. **JVM Heap Usage**: Essential for checking Jenkins master garbage collection health and preventing OOMs.
+8. **Active Plugins**: Auditing point to ensure consistency across deployments.
+
+#### How to Import
+You can import this JSON file into Grafana by navigating to `Dashboards` -> `New` -> `Import`, pasting the contents, and selecting your Prometheus datasource.
+
 ```json
 {
   "id": null,
@@ -340,7 +368,22 @@ This Grafana dashboard (UID: `enterprise-jenkins-001`) provides real-time visibi
 
 The Datadog Agent is deployed as a DaemonSet across the GKE cluster using Helm. This configuration enables the Datadog Cluster Agent, Network Performance Monitoring (NPM), Cloud Security Posture Management (CSPM), and allows for Horizontal Pod Autoscaling (HPA) using custom Datadog metrics.
 
-### `values.yaml`
+### values.yaml
+
+#### Explanation of Configurations
+- **datadog**: High-level settings for cluster identity, APM behavior, and enabling system probes.
+- **agents**: Deployment parameters for the Node agent DaemonSet. Tolerations allow it to run on all nodes, while updates happen in rolling succession.
+- **clusterAgent**: Centralized control plane for Datadog in Kubernetes. Highly available (replicas=2), manages custom metrics API for HPA.
+- **clusterChecksRunner**: Handles polling for external services without tying checks to specific node agents.
+
+#### Key Feature Toggles
+| Feature | Enabled | Benefit |
+| --- | --- | --- |
+| **APM** | Yes | Correlates distributed traces from app instrumentation |
+| **NPM (Network)** | Yes | Maps internal cluster pod-to-pod and egress traffic |
+| **CSPM (Compliance)**| Yes | Continuously evaluates cluster against CIS benchmarks |
+| **Log Collection** | Yes | Centralized container logging, avoiding extra DaemonSets |
+
 ```yaml
 datadog:
   apiKeyExistingSecret: datadog-api-key
@@ -445,7 +488,14 @@ kubeStateMetrics:
 
 Alert policies for GCP resources are fully managed via Terraform. These configurations establish automated alerting based on Monitoring Query Language (MQL) conditions and direct notifications to appropriate channels, such as PagerDuty for critical incidents and email for warnings.
 
-### `provider.tf`
+### provider.tf
+
+#### Explanation
+Defines the core Google Cloud Terraform provider configuration, asserting a minimum version constraint (~> 5.0).
+
+!!! note "Terraform Workflow"
+    Use `terraform init` to download providers before executing a `terraform plan`.
+
 ```hcl
 terraform {
   required_providers {
@@ -462,7 +512,14 @@ provider "google" {
 }
 ```
 
-### `variables.tf`
+### variables.tf
+
+#### Explanation
+Declares input variables used across the monitoring policies.
+
+!!! warning "Security Notice"
+    `pagerduty_service_key` is marked sensitive and should be loaded directly from Google Secret Manager or secure CI/CD variables (e.g., `TF_VAR_pagerduty_service_key`), never committed to source.
+
 ```hcl
 variable "project_id" {
   type        = string
@@ -501,7 +558,14 @@ variable "gke_project_id" {
 }
 ```
 
-### `alert_policies.tf`
+### alert_policies.tf
+
+#### Explanation
+Declares notification channels and specific monitoring alert thresholds, evaluating conditions (like GKE pods repeatedly crashing, or high VM CPU) over defined durations.
+
+!!! tip "Workflow Command"
+    Run `terraform plan -var-file=prod.tfvars` to preview changes before applying.
+
 ```hcl
 # Notification channels
 resource "google_monitoring_notification_channel" "email" {
@@ -651,7 +715,11 @@ resource "google_monitoring_alert_policy" "jenkins_queue_deep" {
 }
 ```
 
-### `outputs.tf`
+### outputs.tf
+
+#### Explanation
+Exports the resulting GCP identifiers for cross-module consumption in downstream infrastructure.
+
 ```hcl
 output "alert_policy_crashloopbackoff_id" {
   value = google_monitoring_alert_policy.gke_crashloopbackoff.id
@@ -701,3 +769,25 @@ output "notification_channel_pagerduty_id" {
 | Jenkins Queue > 10 | Warning | Email | [Link](https://wiki.enterprise.com/runbooks/jenkins-queue-saturation) |
 | JenkinsControllerDown | Critical | PagerDuty | [Link](https://wiki.enterprise.com/runbooks/jenkins-controller-down) |
 | JenkinsBuildDurationHigh | Warning | Email | [Link](https://wiki.enterprise.com/runbooks/jenkins-build-duration) |
+
+### Runbook Quick Reference
+
+- **GKE Pod CrashLoopBackOff**:
+  - Run `kubectl describe pod <pod_name>` to review events and termination reasons.
+  - Inspect `kubectl logs <pod_name> --previous` for fatal startup errors.
+  - Check whether secrets/configmaps the pod mounts exist.
+
+- **GCE VM CPU / Memory Saturation**:
+  - SSH into the VM and run `top` or `htop` to identify intensive processes.
+  - Review `dmesg` or `/var/log/syslog` for Out-Of-Memory (OOM) killer invocations.
+  - If load is legitimate, increase instance type / scaling limits.
+
+- **GKE Node Not Ready**:
+  - Evaluate `kubectl describe node <node_name>` for MemoryPressure or DiskPressure flags.
+  - Investigate the underlying VM in GCP for kernel panics or disk exhaustion.
+  - Drain the node and replace if irrecoverable.
+
+- **Jenkins Issues (Queue Depth / Agents / Duration / Down)**:
+  - Check the Jenkins controller logs (`kubectl logs -l app=jenkins`) for plugin crashes.
+  - For high queue depths/offline agents, ensure the Kubernetes Cloud plugin has proper permissions to spawn agent pods.
+  - For high durations, confirm the agent VMs/Nodes are not resource-starved.
