@@ -1011,6 +1011,75 @@
   
 </li>
       
+        <li class="md-nav__item">
+  <a href="#6-advanced-declarative-programming-features" class="md-nav__link">
+    <span class="md-ellipsis">
+      6. Advanced Declarative Programming Features
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="6. Advanced Declarative Programming Features">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#61-conditionals-when" class="md-nav__link">
+    <span class="md-ellipsis">
+      6.1 Conditionals (when)
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#62-parallel-execution-parallel" class="md-nav__link">
+    <span class="md-ellipsis">
+      6.2 Parallel Execution (parallel)
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#63-manual-approvals-input" class="md-nav__link">
+    <span class="md-ellipsis">
+      6.3 Manual Approvals (input)
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#64-pipeline-options-options" class="md-nav__link">
+    <span class="md-ellipsis">
+      6.4 Pipeline Options (options)
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#65-matrix-builds-matrix" class="md-nav__link">
+    <span class="md-ellipsis">
+      6.5 Matrix Builds (matrix)
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#66-dropping-into-script-script" class="md-nav__link">
+    <span class="md-ellipsis">
+      6.6 Dropping into Script (script)
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
     </ul>
   
 </nav>
@@ -1559,6 +1628,75 @@
   
 </li>
       
+        <li class="md-nav__item">
+  <a href="#6-advanced-declarative-programming-features" class="md-nav__link">
+    <span class="md-ellipsis">
+      6. Advanced Declarative Programming Features
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="6. Advanced Declarative Programming Features">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#61-conditionals-when" class="md-nav__link">
+    <span class="md-ellipsis">
+      6.1 Conditionals (when)
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#62-parallel-execution-parallel" class="md-nav__link">
+    <span class="md-ellipsis">
+      6.2 Parallel Execution (parallel)
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#63-manual-approvals-input" class="md-nav__link">
+    <span class="md-ellipsis">
+      6.3 Manual Approvals (input)
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#64-pipeline-options-options" class="md-nav__link">
+    <span class="md-ellipsis">
+      6.4 Pipeline Options (options)
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#65-matrix-builds-matrix" class="md-nav__link">
+    <span class="md-ellipsis">
+      6.5 Matrix Builds (matrix)
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#66-dropping-into-script-script" class="md-nav__link">
+    <span class="md-ellipsis">
+      6.6 Dropping into Script (script)
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
     </ul>
   
 </nav>
@@ -1693,6 +1831,111 @@
 <a id="__codelineno-2-6" name="__codelineno-2-6" href="#__codelineno-2-6"></a>
 <a id="__codelineno-2-7" name="__codelineno-2-7" href="#__codelineno-2-7"></a><span class="c1"># Restart Jenkins</span>
 <a id="__codelineno-2-8" name="__codelineno-2-8" href="#__codelineno-2-8"></a>java<span class="w"> </span>-jar<span class="w"> </span>jenkins-cli.jar<span class="w"> </span>-s<span class="w"> </span>http://jenkins-url:8080/<span class="w"> </span>-auth<span class="w"> </span>admin:TOKEN<span class="w"> </span>safe-restart
+</code></pre></div>
+<hr />
+<h2 id="6-advanced-declarative-programming-features">6. Advanced Declarative Programming Features<a class="headerlink" href="#6-advanced-declarative-programming-features" title="Permanent link">&para;</a></h2>
+<p>Jenkins Declarative Pipeline offers powerful built-in directives for complex CI/CD workflows without needing heavy Groovy scripting.</p>
+<h3 id="61-conditionals-when">6.1 Conditionals (<code>when</code>)<a class="headerlink" href="#61-conditionals-when" title="Permanent link">&para;</a></h3>
+<p>Execute a stage only if specific conditions are met.</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a><span class="n">stage</span><span class="o">(</span><span class="s1">&#39;Deploy to Prod&#39;</span><span class="o">)</span><span class="w"> </span><span class="o">{</span>
+<a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a><span class="w">    </span><span class="n">when</span><span class="w"> </span><span class="o">{</span>
+<a id="__codelineno-3-3" name="__codelineno-3-3" href="#__codelineno-3-3"></a><span class="w">        </span><span class="n">branch</span><span class="w"> </span><span class="s1">&#39;main&#39;</span>
+<a id="__codelineno-3-4" name="__codelineno-3-4" href="#__codelineno-3-4"></a><span class="w">        </span><span class="n">environment</span><span class="w"> </span><span class="nl">name:</span><span class="w"> </span><span class="s1">&#39;DEPLOY_ENV&#39;</span><span class="o">,</span><span class="w"> </span><span class="nl">value:</span><span class="w"> </span><span class="s1">&#39;production&#39;</span>
+<a id="__codelineno-3-5" name="__codelineno-3-5" href="#__codelineno-3-5"></a><span class="w">        </span><span class="c1">// Or use custom Groovy expressions</span>
+<a id="__codelineno-3-6" name="__codelineno-3-6" href="#__codelineno-3-6"></a><span class="w">        </span><span class="n">expression</span><span class="w"> </span><span class="o">{</span><span class="w"> </span><span class="k">return</span><span class="w"> </span><span class="n">params</span><span class="o">.</span><span class="na">EXECUTE_DEPLOY</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="kc">true</span><span class="w"> </span><span class="o">}</span>
+<a id="__codelineno-3-7" name="__codelineno-3-7" href="#__codelineno-3-7"></a><span class="w">    </span><span class="o">}</span>
+<a id="__codelineno-3-8" name="__codelineno-3-8" href="#__codelineno-3-8"></a><span class="w">    </span><span class="n">steps</span><span class="w"> </span><span class="o">{</span>
+<a id="__codelineno-3-9" name="__codelineno-3-9" href="#__codelineno-3-9"></a><span class="w">        </span><span class="n">sh</span><span class="w"> </span><span class="s1">&#39;./deploy.sh prod&#39;</span>
+<a id="__codelineno-3-10" name="__codelineno-3-10" href="#__codelineno-3-10"></a><span class="w">    </span><span class="o">}</span>
+<a id="__codelineno-3-11" name="__codelineno-3-11" href="#__codelineno-3-11"></a><span class="o">}</span>
+</code></pre></div>
+<h3 id="62-parallel-execution-parallel">6.2 Parallel Execution (<code>parallel</code>)<a class="headerlink" href="#62-parallel-execution-parallel" title="Permanent link">&para;</a></h3>
+<p>Run multiple stages simultaneously to speed up build times (e.g., running tests across different suites).</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a><span class="n">stage</span><span class="o">(</span><span class="s1">&#39;Parallel Testing&#39;</span><span class="o">)</span><span class="w"> </span><span class="o">{</span>
+<a id="__codelineno-4-2" name="__codelineno-4-2" href="#__codelineno-4-2"></a><span class="w">    </span><span class="n">parallel</span><span class="w"> </span><span class="o">{</span>
+<a id="__codelineno-4-3" name="__codelineno-4-3" href="#__codelineno-4-3"></a><span class="w">        </span><span class="n">stage</span><span class="o">(</span><span class="s1">&#39;Unit Tests&#39;</span><span class="o">)</span><span class="w"> </span><span class="o">{</span>
+<a id="__codelineno-4-4" name="__codelineno-4-4" href="#__codelineno-4-4"></a><span class="w">            </span><span class="n">steps</span><span class="w"> </span><span class="o">{</span><span class="w"> </span><span class="n">sh</span><span class="w"> </span><span class="s1">&#39;make test-unit&#39;</span><span class="w"> </span><span class="o">}</span>
+<a id="__codelineno-4-5" name="__codelineno-4-5" href="#__codelineno-4-5"></a><span class="w">        </span><span class="o">}</span>
+<a id="__codelineno-4-6" name="__codelineno-4-6" href="#__codelineno-4-6"></a><span class="w">        </span><span class="n">stage</span><span class="o">(</span><span class="s1">&#39;Integration Tests&#39;</span><span class="o">)</span><span class="w"> </span><span class="o">{</span>
+<a id="__codelineno-4-7" name="__codelineno-4-7" href="#__codelineno-4-7"></a><span class="w">            </span><span class="n">steps</span><span class="w"> </span><span class="o">{</span><span class="w"> </span><span class="n">sh</span><span class="w"> </span><span class="s1">&#39;make test-integration&#39;</span><span class="w"> </span><span class="o">}</span>
+<a id="__codelineno-4-8" name="__codelineno-4-8" href="#__codelineno-4-8"></a><span class="w">        </span><span class="o">}</span>
+<a id="__codelineno-4-9" name="__codelineno-4-9" href="#__codelineno-4-9"></a><span class="w">        </span><span class="n">stage</span><span class="o">(</span><span class="s1">&#39;UI Tests&#39;</span><span class="o">)</span><span class="w"> </span><span class="o">{</span>
+<a id="__codelineno-4-10" name="__codelineno-4-10" href="#__codelineno-4-10"></a><span class="w">            </span><span class="n">steps</span><span class="w"> </span><span class="o">{</span><span class="w"> </span><span class="n">sh</span><span class="w"> </span><span class="s1">&#39;make test-ui&#39;</span><span class="w"> </span><span class="o">}</span>
+<a id="__codelineno-4-11" name="__codelineno-4-11" href="#__codelineno-4-11"></a><span class="w">        </span><span class="o">}</span>
+<a id="__codelineno-4-12" name="__codelineno-4-12" href="#__codelineno-4-12"></a><span class="w">    </span><span class="o">}</span>
+<a id="__codelineno-4-13" name="__codelineno-4-13" href="#__codelineno-4-13"></a><span class="o">}</span>
+</code></pre></div>
+<h3 id="63-manual-approvals-input">6.3 Manual Approvals (<code>input</code>)<a class="headerlink" href="#63-manual-approvals-input" title="Permanent link">&para;</a></h3>
+<p>Pause the pipeline and wait for human interaction before proceeding.</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a><span class="n">stage</span><span class="o">(</span><span class="s1">&#39;Approval Gate&#39;</span><span class="o">)</span><span class="w"> </span><span class="o">{</span>
+<a id="__codelineno-5-2" name="__codelineno-5-2" href="#__codelineno-5-2"></a><span class="w">    </span><span class="n">steps</span><span class="w"> </span><span class="o">{</span>
+<a id="__codelineno-5-3" name="__codelineno-5-3" href="#__codelineno-5-3"></a><span class="w">        </span><span class="n">input</span><span class="w"> </span><span class="nl">message:</span><span class="w"> </span><span class="s1">&#39;Approve deployment to production?&#39;</span><span class="o">,</span><span class="w"> </span>
+<a id="__codelineno-5-4" name="__codelineno-5-4" href="#__codelineno-5-4"></a><span class="w">              </span><span class="nl">ok:</span><span class="w"> </span><span class="s1">&#39;Deploy&#39;</span><span class="o">,</span>
+<a id="__codelineno-5-5" name="__codelineno-5-5" href="#__codelineno-5-5"></a><span class="w">              </span><span class="nl">submitter:</span><span class="w"> </span><span class="s1">&#39;ops-team,sre-leads&#39;</span>
+<a id="__codelineno-5-6" name="__codelineno-5-6" href="#__codelineno-5-6"></a><span class="w">    </span><span class="o">}</span>
+<a id="__codelineno-5-7" name="__codelineno-5-7" href="#__codelineno-5-7"></a><span class="o">}</span>
+</code></pre></div>
+<h3 id="64-pipeline-options-options">6.4 Pipeline Options (<code>options</code>)<a class="headerlink" href="#64-pipeline-options-options" title="Permanent link">&para;</a></h3>
+<p>Configure pipeline-specific behaviors.</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a><span class="n">pipeline</span><span class="w"> </span><span class="o">{</span>
+<a id="__codelineno-6-2" name="__codelineno-6-2" href="#__codelineno-6-2"></a><span class="w">    </span><span class="n">agent</span><span class="w"> </span><span class="n">any</span>
+<a id="__codelineno-6-3" name="__codelineno-6-3" href="#__codelineno-6-3"></a><span class="w">    </span><span class="n">options</span><span class="w"> </span><span class="o">{</span>
+<a id="__codelineno-6-4" name="__codelineno-6-4" href="#__codelineno-6-4"></a><span class="w">        </span><span class="n">buildDiscarder</span><span class="o">(</span><span class="n">logRotator</span><span class="o">(</span><span class="nl">numToKeepStr:</span><span class="w"> </span><span class="s1">&#39;30&#39;</span><span class="o">))</span><span class="w"> </span><span class="c1">// Keep last 30 builds</span>
+<a id="__codelineno-6-5" name="__codelineno-6-5" href="#__codelineno-6-5"></a><span class="w">        </span><span class="n">disableConcurrentBuilds</span><span class="o">()</span><span class="w"> </span><span class="c1">// Prevent parallel executions of this job</span>
+<a id="__codelineno-6-6" name="__codelineno-6-6" href="#__codelineno-6-6"></a><span class="w">        </span><span class="n">timeout</span><span class="o">(</span><span class="nl">time:</span><span class="w"> </span><span class="mi">1</span><span class="o">,</span><span class="w"> </span><span class="nl">unit:</span><span class="w"> </span><span class="s1">&#39;HOURS&#39;</span><span class="o">)</span><span class="w"> </span><span class="c1">// Fail the build if it takes &gt; 1 hour</span>
+<a id="__codelineno-6-7" name="__codelineno-6-7" href="#__codelineno-6-7"></a><span class="w">        </span><span class="n">timestamps</span><span class="o">()</span><span class="w"> </span><span class="c1">// Prepend logs with timestamps</span>
+<a id="__codelineno-6-8" name="__codelineno-6-8" href="#__codelineno-6-8"></a><span class="w">    </span><span class="o">}</span>
+<a id="__codelineno-6-9" name="__codelineno-6-9" href="#__codelineno-6-9"></a><span class="w">    </span><span class="n">stages</span><span class="w"> </span><span class="o">{</span><span class="w"> </span><span class="cm">/* ... */</span><span class="w"> </span><span class="o">}</span>
+<a id="__codelineno-6-10" name="__codelineno-6-10" href="#__codelineno-6-10"></a><span class="o">}</span>
+</code></pre></div>
+<h3 id="65-matrix-builds-matrix">6.5 Matrix Builds (<code>matrix</code>)<a class="headerlink" href="#65-matrix-builds-matrix" title="Permanent link">&para;</a></h3>
+<p>Run the same stage multiple times with different variable combinations.</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a><span class="n">stage</span><span class="o">(</span><span class="s1">&#39;Test Matrix&#39;</span><span class="o">)</span><span class="w"> </span><span class="o">{</span>
+<a id="__codelineno-7-2" name="__codelineno-7-2" href="#__codelineno-7-2"></a><span class="w">    </span><span class="n">matrix</span><span class="w"> </span><span class="o">{</span>
+<a id="__codelineno-7-3" name="__codelineno-7-3" href="#__codelineno-7-3"></a><span class="w">        </span><span class="n">axes</span><span class="w"> </span><span class="o">{</span>
+<a id="__codelineno-7-4" name="__codelineno-7-4" href="#__codelineno-7-4"></a><span class="w">            </span><span class="n">axis</span><span class="w"> </span><span class="o">{</span>
+<a id="__codelineno-7-5" name="__codelineno-7-5" href="#__codelineno-7-5"></a><span class="w">                </span><span class="n">name</span><span class="w"> </span><span class="s1">&#39;OS&#39;</span>
+<a id="__codelineno-7-6" name="__codelineno-7-6" href="#__codelineno-7-6"></a><span class="w">                </span><span class="n">values</span><span class="w"> </span><span class="s1">&#39;linux&#39;</span><span class="o">,</span><span class="w"> </span><span class="s1">&#39;windows&#39;</span><span class="o">,</span><span class="w"> </span><span class="s1">&#39;mac&#39;</span>
+<a id="__codelineno-7-7" name="__codelineno-7-7" href="#__codelineno-7-7"></a><span class="w">            </span><span class="o">}</span>
+<a id="__codelineno-7-8" name="__codelineno-7-8" href="#__codelineno-7-8"></a><span class="w">            </span><span class="n">axis</span><span class="w"> </span><span class="o">{</span>
+<a id="__codelineno-7-9" name="__codelineno-7-9" href="#__codelineno-7-9"></a><span class="w">                </span><span class="n">name</span><span class="w"> </span><span class="s1">&#39;BROWSER&#39;</span>
+<a id="__codelineno-7-10" name="__codelineno-7-10" href="#__codelineno-7-10"></a><span class="w">                </span><span class="n">values</span><span class="w"> </span><span class="s1">&#39;chrome&#39;</span><span class="o">,</span><span class="w"> </span><span class="s1">&#39;firefox&#39;</span><span class="o">,</span><span class="w"> </span><span class="s1">&#39;safari&#39;</span>
+<a id="__codelineno-7-11" name="__codelineno-7-11" href="#__codelineno-7-11"></a><span class="w">            </span><span class="o">}</span>
+<a id="__codelineno-7-12" name="__codelineno-7-12" href="#__codelineno-7-12"></a><span class="w">        </span><span class="o">}</span>
+<a id="__codelineno-7-13" name="__codelineno-7-13" href="#__codelineno-7-13"></a><span class="w">        </span><span class="n">excludes</span><span class="w"> </span><span class="o">{</span>
+<a id="__codelineno-7-14" name="__codelineno-7-14" href="#__codelineno-7-14"></a><span class="w">            </span><span class="c1">// Safari doesn&#39;t run on Linux/Windows</span>
+<a id="__codelineno-7-15" name="__codelineno-7-15" href="#__codelineno-7-15"></a><span class="w">            </span><span class="n">exclude</span><span class="w"> </span><span class="o">{</span>
+<a id="__codelineno-7-16" name="__codelineno-7-16" href="#__codelineno-7-16"></a><span class="w">                </span><span class="n">axis</span><span class="w"> </span><span class="o">{</span><span class="w"> </span><span class="n">name</span><span class="w"> </span><span class="s1">&#39;OS&#39;</span><span class="o">;</span><span class="w"> </span><span class="n">notValues</span><span class="w"> </span><span class="s1">&#39;mac&#39;</span><span class="w"> </span><span class="o">}</span>
+<a id="__codelineno-7-17" name="__codelineno-7-17" href="#__codelineno-7-17"></a><span class="w">                </span><span class="n">axis</span><span class="w"> </span><span class="o">{</span><span class="w"> </span><span class="n">name</span><span class="w"> </span><span class="s1">&#39;BROWSER&#39;</span><span class="o">;</span><span class="w"> </span><span class="n">values</span><span class="w"> </span><span class="s1">&#39;safari&#39;</span><span class="w"> </span><span class="o">}</span>
+<a id="__codelineno-7-18" name="__codelineno-7-18" href="#__codelineno-7-18"></a><span class="w">            </span><span class="o">}</span>
+<a id="__codelineno-7-19" name="__codelineno-7-19" href="#__codelineno-7-19"></a><span class="w">        </span><span class="o">}</span>
+<a id="__codelineno-7-20" name="__codelineno-7-20" href="#__codelineno-7-20"></a><span class="w">        </span><span class="n">stages</span><span class="w"> </span><span class="o">{</span>
+<a id="__codelineno-7-21" name="__codelineno-7-21" href="#__codelineno-7-21"></a><span class="w">            </span><span class="n">stage</span><span class="o">(</span><span class="s1">&#39;Run&#39;</span><span class="o">)</span><span class="w"> </span><span class="o">{</span>
+<a id="__codelineno-7-22" name="__codelineno-7-22" href="#__codelineno-7-22"></a><span class="w">                </span><span class="n">steps</span><span class="w"> </span><span class="o">{</span>
+<a id="__codelineno-7-23" name="__codelineno-7-23" href="#__codelineno-7-23"></a><span class="w">                    </span><span class="n">echo</span><span class="w"> </span><span class="s2">&quot;Testing on ${OS} with ${BROWSER}&quot;</span>
+<a id="__codelineno-7-24" name="__codelineno-7-24" href="#__codelineno-7-24"></a><span class="w">                </span><span class="o">}</span>
+<a id="__codelineno-7-25" name="__codelineno-7-25" href="#__codelineno-7-25"></a><span class="w">            </span><span class="o">}</span>
+<a id="__codelineno-7-26" name="__codelineno-7-26" href="#__codelineno-7-26"></a><span class="w">        </span><span class="o">}</span>
+<a id="__codelineno-7-27" name="__codelineno-7-27" href="#__codelineno-7-27"></a><span class="w">    </span><span class="o">}</span>
+<a id="__codelineno-7-28" name="__codelineno-7-28" href="#__codelineno-7-28"></a><span class="o">}</span>
+</code></pre></div>
+<h3 id="66-dropping-into-script-script">6.6 Dropping into Script (<code>script</code>)<a class="headerlink" href="#66-dropping-into-script-script" title="Permanent link">&para;</a></h3>
+<p>Declarative pipelines are strict. If you need complex <code>if/else</code> loops or custom Groovy logic, wrap it in a <code>script</code> block.</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-8-1" name="__codelineno-8-1" href="#__codelineno-8-1"></a><span class="n">stage</span><span class="o">(</span><span class="s1">&#39;Complex Logic&#39;</span><span class="o">)</span><span class="w"> </span><span class="o">{</span>
+<a id="__codelineno-8-2" name="__codelineno-8-2" href="#__codelineno-8-2"></a><span class="w">    </span><span class="n">steps</span><span class="w"> </span><span class="o">{</span>
+<a id="__codelineno-8-3" name="__codelineno-8-3" href="#__codelineno-8-3"></a><span class="w">        </span><span class="n">script</span><span class="w"> </span><span class="o">{</span>
+<a id="__codelineno-8-4" name="__codelineno-8-4" href="#__codelineno-8-4"></a><span class="w">            </span><span class="kt">def</span><span class="w"> </span><span class="n">servers</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="o">[</span><span class="s1">&#39;web-01&#39;</span><span class="o">,</span><span class="w"> </span><span class="s1">&#39;web-02&#39;</span><span class="o">,</span><span class="w"> </span><span class="s1">&#39;web-03&#39;</span><span class="o">]</span>
+<a id="__codelineno-8-5" name="__codelineno-8-5" href="#__codelineno-8-5"></a><span class="w">            </span><span class="k">for</span><span class="w"> </span><span class="o">(</span><span class="n">String</span><span class="w"> </span><span class="n">server</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="n">servers</span><span class="o">)</span><span class="w"> </span><span class="o">{</span>
+<a id="__codelineno-8-6" name="__codelineno-8-6" href="#__codelineno-8-6"></a><span class="w">                </span><span class="n">echo</span><span class="w"> </span><span class="s2">&quot;Deploying to ${server}...&quot;</span>
+<a id="__codelineno-8-7" name="__codelineno-8-7" href="#__codelineno-8-7"></a><span class="w">                </span><span class="c1">// custom groovy logic</span>
+<a id="__codelineno-8-8" name="__codelineno-8-8" href="#__codelineno-8-8"></a><span class="w">            </span><span class="o">}</span>
+<a id="__codelineno-8-9" name="__codelineno-8-9" href="#__codelineno-8-9"></a>
+<a id="__codelineno-8-10" name="__codelineno-8-10" href="#__codelineno-8-10"></a><span class="w">            </span><span class="k">if</span><span class="w"> </span><span class="o">(</span><span class="n">currentBuild</span><span class="o">.</span><span class="na">number</span><span class="w"> </span><span class="o">%</span><span class="w"> </span><span class="mi">2</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="mi">0</span><span class="o">)</span><span class="w"> </span><span class="o">{</span>
+<a id="__codelineno-8-11" name="__codelineno-8-11" href="#__codelineno-8-11"></a><span class="w">                </span><span class="n">echo</span><span class="w"> </span><span class="s2">&quot;Even build number!&quot;</span>
+<a id="__codelineno-8-12" name="__codelineno-8-12" href="#__codelineno-8-12"></a><span class="w">            </span><span class="o">}</span>
+<a id="__codelineno-8-13" name="__codelineno-8-13" href="#__codelineno-8-13"></a><span class="w">        </span><span class="o">}</span>
+<a id="__codelineno-8-14" name="__codelineno-8-14" href="#__codelineno-8-14"></a><span class="w">    </span><span class="o">}</span>
+<a id="__codelineno-8-15" name="__codelineno-8-15" href="#__codelineno-8-15"></a><span class="o">}</span>
 </code></pre></div>
 
 
