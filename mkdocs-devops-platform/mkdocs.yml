@@ -64,7 +64,6 @@ nav:
           - Testing & Playwright: cheatsheets/11_testing_playwright_cheatsheet.md
       - Interview & Context:
           - Interview Questions: cheatsheets/interview_questions.md
-          - Context Tracker: cheatsheets/CONTEXT_TRACKER.md
 
 markdown_extensions:
   - pymdownx.superfences:
