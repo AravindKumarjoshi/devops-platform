@@ -127,3 +127,129 @@ java -jar jenkins-cli.jar -s http://jenkins-url:8080/ -auth admin:TOKEN build my
 # Restart Jenkins
 java -jar jenkins-cli.jar -s http://jenkins-url:8080/ -auth admin:TOKEN safe-restart
 ```
+
+---
+
+## 6. Advanced Declarative Programming Features
+
+Jenkins Declarative Pipeline offers powerful built-in directives for complex CI/CD workflows without needing heavy Groovy scripting.
+
+### 6.1 Conditionals (`when`)
+Execute a stage only if specific conditions are met.
+
+```groovy
+stage('Deploy to Prod') {
+    when {
+        branch 'main'
+        environment name: 'DEPLOY_ENV', value: 'production'
+        // Or use custom Groovy expressions
+        expression { return params.EXECUTE_DEPLOY == true }
+    }
+    steps {
+        sh './deploy.sh prod'
+    }
+}
+```
+
+### 6.2 Parallel Execution (`parallel`)
+Run multiple stages simultaneously to speed up build times (e.g., running tests across different suites).
+
+```groovy
+stage('Parallel Testing') {
+    parallel {
+        stage('Unit Tests') {
+            steps { sh 'make test-unit' }
+        }
+        stage('Integration Tests') {
+            steps { sh 'make test-integration' }
+        }
+        stage('UI Tests') {
+            steps { sh 'make test-ui' }
+        }
+    }
+}
+```
+
+### 6.3 Manual Approvals (`input`)
+Pause the pipeline and wait for human interaction before proceeding.
+
+```groovy
+stage('Approval Gate') {
+    steps {
+        input message: 'Approve deployment to production?', 
+              ok: 'Deploy',
+              submitter: 'ops-team,sre-leads'
+    }
+}
+```
+
+### 6.4 Pipeline Options (`options`)
+Configure pipeline-specific behaviors.
+
+```groovy
+pipeline {
+    agent any
+    options {
+        buildDiscarder(logRotator(numToKeepStr: '30')) // Keep last 30 builds
+        disableConcurrentBuilds() // Prevent parallel executions of this job
+        timeout(time: 1, unit: 'HOURS') // Fail the build if it takes > 1 hour
+        timestamps() // Prepend logs with timestamps
+    }
+    stages { /* ... */ }
+}
+```
+
+### 6.5 Matrix Builds (`matrix`)
+Run the same stage multiple times with different variable combinations.
+
+```groovy
+stage('Test Matrix') {
+    matrix {
+        axes {
+            axis {
+                name 'OS'
+                values 'linux', 'windows', 'mac'
+            }
+            axis {
+                name 'BROWSER'
+                values 'chrome', 'firefox', 'safari'
+            }
+        }
+        excludes {
+            // Safari doesn't run on Linux/Windows
+            exclude {
+                axis { name 'OS'; notValues 'mac' }
+                axis { name 'BROWSER'; values 'safari' }
+            }
+        }
+        stages {
+            stage('Run') {
+                steps {
+                    echo "Testing on ${OS} with ${BROWSER}"
+                }
+            }
+        }
+    }
+}
+```
+
+### 6.6 Dropping into Script (`script`)
+Declarative pipelines are strict. If you need complex `if/else` loops or custom Groovy logic, wrap it in a `script` block.
+
+```groovy
+stage('Complex Logic') {
+    steps {
+        script {
+            def servers = ['web-01', 'web-02', 'web-03']
+            for (String server : servers) {
+                echo "Deploying to ${server}..."
+                // custom groovy logic
+            }
+            
+            if (currentBuild.number % 2 == 0) {
+                echo "Even build number!"
+            }
+        }
+    }
+}
+```
