@@ -59,7 +59,8 @@ For DynamoDB/AWS, you can use 	erraform force-unlock <LOCK_ID> to remove a stale
 **A:** Remove it from tracking using git rm --cached terraform.tfstate and commit. Add state files to .gitignore. Crucially, rotate any exposed credentials or secrets that were in the state file, and scan history with tools like 	ruffleHog or git-secrets.
 
 **Q: What is the 	erraform state command used for?**
-**A:** It is used for advanced manual state operations, such as listing resources (list), showing details (show), moving (mv), or removing (m) items from the state without affecting real infrastructure.
+**A:** It is used for advanced manual state operations, such as listing resources (list), showing details (show), moving (mv), or removing (
+m) items from the state without affecting real infrastructure.
 
 ---
 
@@ -140,11 +141,13 @@ For DynamoDB/AWS, you can use 	erraform force-unlock <LOCK_ID> to remove a stale
 **Q: What do alidate, mt, and graph do?**
 **A:** alidate checks syntax and internal consistency. mt rewrites code to canonical formatting. graph generates a visual dependency tree.
 
-**Q: What is the difference between local-exec, emote-exec, and 
+**Q: What is the difference between local-exec, 
+emote-exec, and 
 ull_resource?**
 **A:** 
 - local-exec runs commands on the machine executing Terraform.
-- emote-exec runs commands on the target resource (via SSH/WinRM).
+- 
+emote-exec runs commands on the target resource (via SSH/WinRM).
 - 
 ull_resource manages no real infrastructure but acts as a placeholder to run provisioners.
 *Best Practice:* Avoid provisioners unless absolutely necessary. Rely on configuration management tools (Ansible, Chef) or cloud-native init scripts (cloud-init) instead. Scripts must be idempotent.
@@ -296,7 +299,8 @@ ull_resource manages no real infrastructure but acts as a placeholder to run pro
 **Q: How do you handle a scenario where logs are missing for a specific service?**
 **A:** 
 1. Ensure the Ops Agent (or fluentbit in GKE) is properly installed and running.
-2. Check if the Compute/GKE service account has the oles/logging.logWriter role.
+2. Check if the Compute/GKE service account has the 
+oles/logging.logWriter role.
 3. Check Cloud Logging router sinks to ensure exclusion filters aren't accidentally dropping the logs.
 
 ---
@@ -367,7 +371,8 @@ ull_resource manages no real infrastructure but acts as a placeholder to run pro
 **A:** Terragrunt is a lightweight wrapper for Terraform that provides extra tools to keep configurations DRY (Don't Repeat Yourself). It is especially useful for managing remote state consistently, working with multiple Terraform modules, and managing deployments across multiple cloud accounts or environments without copying/pasting backend blocks.
 
 **Q: What are Terraform provisioners and why are they discouraged?**
-**A:** Provisioners (like local-exec and emote-exec) execute scripts on a local or remote machine as part of resource creation or destruction (e.g., bootstrapping software). They are discouraged because they break Terraform's declarative nature and idempotency. It is better to use configuration management tools like Ansible, or cloud-native solutions like cloud-init or golden AMIs (via Packer).
+**A:** Provisioners (like local-exec and 
+emote-exec) execute scripts on a local or remote machine as part of resource creation or destruction (e.g., bootstrapping software). They are discouraged because they break Terraform's declarative nature and idempotency. It is better to use configuration management tools like Ansible, or cloud-native solutions like cloud-init or golden AMIs (via Packer).
 
 **Q: When would you need to write a custom Terraform Provider and how is it done?**
 **A:** You write a custom provider when you need to manage in-house APIs, niche services, or proprietary technology not natively supported by Terraform. Providers are written in **Go** using the Terraform Plugin SDK. You must implement the API authentication and the CRUD (Create, Read, Update, Delete) lifecycle operations for your resources.
@@ -444,7 +449,9 @@ The enforcement levels are:
 4. Run an interactive shell for testing: kubectl exec -it <pod-name> -- /bin/sh.
 
 **Q: How do you implement zero-downtime deployments in GKE?**
-**A:** Define a Deployment with a ollingUpdate strategy (maxUnavailable: 0 and maxSurge: 1). Configure proper eadinessProbes so traffic isn't routed to the new pod until it's ready, and use preStop lifecycle hooks to gracefully drain existing connections before the old pod terminates.
+**A:** Define a Deployment with a 
+ollingUpdate strategy (maxUnavailable: 0 and maxSurge: 1). Configure proper 
+eadinessProbes so traffic isn't routed to the new pod until it's ready, and use preStop lifecycle hooks to gracefully drain existing connections before the old pod terminates.
 
 **Q: How do you connect kubectl to a GKE cluster?**
 **A:** Run: gcloud container clusters get-credentials <cluster-name> --region <region>. This fetches the kubeconfig and uses your GCP IAM credentials for authentication.
@@ -721,7 +728,8 @@ Internet -> Cloud Load Balancer -> Ingress Controller (handles routing rules/SSL
 
 **Q: Explain Docker layers and the layer caching mechanism.**
 **A:** Images are built in layers; each Dockerfile instruction (like RUN, COPY) creates a new layer. Docker caches these layers to speed up builds. If a layer changes (e.g., a source code file changes), all subsequent layers are invalidated and must be rebuilt. 
-*Optimization:* Always copy package.json or equirements.txt and install dependencies *before* copying the rest of the source code, maximizing cache usage.
+*Optimization:* Always copy package.json or 
+equirements.txt and install dependencies *before* copying the rest of the source code, maximizing cache usage.
 
 **Q: What is the difference between COPY and ADD?**
 **A:** Both copy files into the image, but ADD can also extract .tar archives automatically and download files from remote URLs. Use COPY unless you specifically need ADD's extraction features.
