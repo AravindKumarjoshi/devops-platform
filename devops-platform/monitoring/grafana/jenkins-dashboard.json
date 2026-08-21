@@ -1,0 +1,132 @@
+{
+  "uid": "enterprise-jenkins-001",
+  "title": "Jenkins Dashboard",
+  "tags": ["jenkins", "ci-cd"],
+  "timezone": "browser",
+  "schemaVersion": 38,
+  "refresh": "30s",
+  "time": {
+    "from": "now-3h",
+    "to": "now"
+  },
+  "templating": {
+    "list": [
+      {
+        "name": "namespace",
+        "type": "query",
+        "datasource": "${DS_PROMETHEUS}",
+        "query": "label_values(jenkins_queue_size_value, namespace)",
+        "refresh": 1
+      }
+    ]
+  },
+  "panels": [
+    {
+      "id": 1,
+      "title": "Build Queue Depth",
+      "type": "stat",
+      "targets": [
+        {
+          "expr": "jenkins_queue_size_value{namespace=~\"$namespace\"}",
+          "refId": "A"
+        }
+      ],
+      "gridPos": { "h": 6, "w": 6, "x": 0, "y": 0 }
+    },
+    {
+      "id": 2,
+      "title": "Executor Count",
+      "type": "stat",
+      "targets": [
+        {
+          "expr": "jenkins_executor_count_value{namespace=~\"$namespace\"}",
+          "refId": "A"
+        }
+      ],
+      "gridPos": { "h": 6, "w": 6, "x": 6, "y": 0 }
+    },
+    {
+      "id": 3,
+      "title": "Free Executors",
+      "type": "stat",
+      "targets": [
+        {
+          "expr": "jenkins_executor_free_count_value{namespace=~\"$namespace\"}",
+          "refId": "A"
+        }
+      ],
+      "gridPos": { "h": 6, "w": 6, "x": 12, "y": 0 }
+    },
+    {
+      "id": 4,
+      "title": "Plugin Count",
+      "type": "stat",
+      "targets": [
+        {
+          "expr": "jenkins_plugins_active{namespace=~\"$namespace\"}",
+          "refId": "A"
+        }
+      ],
+      "gridPos": { "h": 6, "w": 6, "x": 18, "y": 0 }
+    },
+    {
+      "id": 5,
+      "title": "Build Duration p50/p95/p99",
+      "type": "timeseries",
+      "targets": [
+        {
+          "expr": "histogram_quantile(0.50, sum(rate(jenkins_builds_duration_milliseconds_summary_bucket{namespace=~\"$namespace\"}[5m])) by (le))",
+          "legendFormat": "p50",
+          "refId": "A"
+        },
+        {
+          "expr": "histogram_quantile(0.95, sum(rate(jenkins_builds_duration_milliseconds_summary_bucket{namespace=~\"$namespace\"}[5m])) by (le))",
+          "legendFormat": "p95",
+          "refId": "B"
+        },
+        {
+          "expr": "histogram_quantile(0.99, sum(rate(jenkins_builds_duration_milliseconds_summary_bucket{namespace=~\"$namespace\"}[5m])) by (le))",
+          "legendFormat": "p99",
+          "refId": "C"
+        }
+      ],
+      "gridPos": { "h": 8, "w": 12, "x": 0, "y": 6 }
+    },
+    {
+      "id": 6,
+      "title": "Build Success Rate %",
+      "type": "stat",
+      "targets": [
+        {
+          "expr": "sum(rate(jenkins_builds_success_build_count{namespace=~\"$namespace\"}[5m])) / sum(rate(jenkins_builds_build_count{namespace=~\"$namespace\"}[5m])) * 100",
+          "refId": "A"
+        }
+      ],
+      "gridPos": { "h": 8, "w": 6, "x": 12, "y": 6 }
+    },
+    {
+      "id": 7,
+      "title": "Build Failure Rate",
+      "type": "timeseries",
+      "targets": [
+        {
+          "expr": "sum(rate(jenkins_builds_failed_build_count{namespace=~\"$namespace\"}[5m]))",
+          "refId": "A"
+        }
+      ],
+      "gridPos": { "h": 8, "w": 6, "x": 18, "y": 6 }
+    },
+    {
+      "id": 8,
+      "title": "JVM Heap Used",
+      "type": "timeseries",
+      "targets": [
+        {
+          "expr": "jvm_memory_bytes_used{area=\"heap\", namespace=~\"$namespace\"}",
+          "refId": "A"
+        }
+      ],
+      "gridPos": { "h": 8, "w": 24, "x": 0, "y": 14 }
+    }
+  ]
+}

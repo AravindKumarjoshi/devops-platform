@@ -1,0 +1,10 @@
+[Unit]
+Description=Run VM Patch Manager weekly on Sundays at 2:00 AM
+
+[Timer]
+OnCalendar=Sun *-*-* 02:00:00
+Persistent=true
+RandomizedDelaySec=1800
+
+[Install]
+WantedBy=timers.target

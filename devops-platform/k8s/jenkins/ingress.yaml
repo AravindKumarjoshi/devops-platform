@@ -1,0 +1,30 @@
+apiVersion: networking.gke.io/v1
+kind: ManagedCertificate
+metadata:
+  name: jenkins-tls
+  namespace: jenkins-prod
+spec:
+  domains:
+    - jenkins.internal.enterprise.com
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: jenkins-ingress
+  namespace: jenkins-prod
+  annotations:
+    kubernetes.io/ingress.class: "gce"
+    networking.gke.io/managed-certificates: "jenkins-tls"
+    kubernetes.io/ingress.allow-http: "false"
+spec:
+  rules:
+    - host: jenkins.internal.enterprise.com
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: jenkins-ui
+                port:
+                  number: 8080

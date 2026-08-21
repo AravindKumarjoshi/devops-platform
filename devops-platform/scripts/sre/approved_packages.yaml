@@ -1,0 +1,70 @@
+# Enterprise Approved Package Constraints
+# Format: package_name: 'operator>=version'
+# Maintained by: Platform SRE (platform-sre@enterprise.com)
+# SecOps Review: SecOps-2024-Q3-0012
+# Last Updated: 2026-08-01
+# Reference: CIS Debian Linux L1 Benchmark v3.0.0
+
+# ── Core OS & Shell ──────────────────────────────────────────────────────────
+bash: '>=5.1.16'
+coreutils: '>=8.32'
+util-linux: '>=2.37.2'
+tar: '>=1.34'
+gzip: '>=1.10'
+gawk: '>=5.1.0'
+sed: '>=4.8'
+grep: '>=3.7'
+
+# ── System Security (SecOps Mandated) ────────────────────────────────────────
+openssl: '>=3.0.14'
+libssl3: '>=3.0.14'
+openssh-server: '>=9.2p1'
+openssh-client: '>=9.2p1'
+sudo: '>=1.9.13'
+libpam-runtime: '>=1.4.0'
+ufw: '>=0.36.1'
+auditd: '>=3.0.7'
+apparmor: '>=3.0.4'
+
+# ── Networking ───────────────────────────────────────────────────────────────
+curl: '>=7.88.1'
+wget: '>=1.21.4'
+iproute2: '>=5.15.0'
+iputils-ping: '>=3.20221126'
+nftables: '>=1.0.6'
+dnsutils: '>=1.0.0'
+
+# ── System Libraries (CVE-tracked) ───────────────────────────────────────────
+libc6: '>=2.35'
+libstdc++6: '>=12.3.0'
+zlib1g: '>=1.2.11'
+libcurl4: '>=7.88.1'
+libxml2: '>=2.9.14'
+libsystemd0: '>=252.22'
+
+# ── Runtime & Development ────────────────────────────────────────────────────
+python3: '>=3.11.0'
+python3-pip: '>=23.0'
+python3-venv: '>=3.11.0'
+git: '>=2.39.2'
+vim: '>=9.0.0'
+jq: '>=1.6'
+
+# ── Web & Proxy ──────────────────────────────────────────────────────────────
+nginx: '>=1.24.0'
+
+# ── System Monitoring ────────────────────────────────────────────────────────
+procps: '>=4.0.2'
+sysstat: '>=12.6.1'
+
+# ── Logging & Auditing ───────────────────────────────────────────────────────
+rsyslog: '>=8.2302.0'
+logrotate: '>=3.21.0'
+
+# ── Filesystem & Storage ────────────────────────────────────────────────────
+lvm2: '>=2.03.16'
+e2fsprogs: '>=1.47.0'
+xfsprogs: '>=5.15.0'
+
+# ── Java Runtime (App teams) ─────────────────────────────────────────────────
+openjdk-17-jre-headless: '>=17.0.11'

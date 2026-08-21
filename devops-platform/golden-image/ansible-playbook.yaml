@@ -1,0 +1,445 @@
+---
+- name: Enterprise Golden Image Build
+  hosts: all
+  become: yes
+  
+  tasks:
+    - name: SecOps Baseline (CIS L1 Hardening)
+      block:
+        - name: Ensure /tmp is on separate partition
+          command: mountpoint -q /tmp
+          register: tmp_mount
+          failed_when: false
+          changed_when: false
+
+        - name: Warn if /tmp is not a separate partition
+          debug:
+            msg: "WARNING: /tmp is not on a separate partition. CIS requirement not fully met."
+          when: tmp_mount.rc != 0
+
+        - name: Set nodev,nosuid,noexec on /tmp mount
+          mount:
+            path: /tmp
+            src: tmpfs
+            fstype: tmpfs
+            opts: defaults,rw,nosuid,nodev,noexec,relatime
+            state: present
+          when: tmp_mount.rc == 0
+
+        - name: Disable unused filesystems
+          copy:
+            dest: "/etc/modprobe.d/cis-disable-fs.conf"
+            content: |
+              install cramfs /bin/true
+              install freevxfs /bin/true
+              install jffs2 /bin/true
+              install hfs /bin/true
+              install hfsplus /bin/true
+              install squashfs /bin/true
+              install udf /bin/true
+            owner: root
+            group: root
+            mode: '0644'
+
+        - name: Ensure sticky bit on world-writable dirs
+          command: find / -type d \( -perm -0002 -a ! -perm -1000 \) -exec chmod a+t {} +
+          ignore_errors: yes
+          changed_when: false
+
+        - name: Disable IPv6
+          sysctl:
+            name: net.ipv6.conf.all.disable_ipv6
+            value: '1'
+            state: present
+            sysctl_set: yes
+            reload: yes
+
+        - name: Sysctl hardening
+          sysctl:
+            name: "{{ item.name }}"
+            value: "{{ item.value }}"
+            state: present
+            sysctl_set: yes
+            reload: yes
+          loop:
+            - { name: 'net.ipv4.ip_forward', value: '0' }
+            - { name: 'net.ipv4.conf.all.send_redirects', value: '0' }
+            - { name: 'net.ipv4.conf.all.accept_redirects', value: '0' }
+            - { name: 'net.ipv4.conf.all.log_martians', value: '1' }
+            - { name: 'kernel.randomize_va_space', value: '2' }
+            - { name: 'fs.suid_dumpable', value: '0' }
+
+        - name: Disable core dumps (limits.conf)
+          lineinfile:
+            path: /etc/security/limits.conf
+            line: '* hard core 0'
+            state: present
+            create: yes
+
+        - name: Install auditd and rsyslog
+          package:
+            name: "{{ item }}"
+            state: present
+          loop:
+            - auditd
+            - rsyslog
+
+        - name: Enable auditd and rsyslog
+          systemd:
+            name: "{{ item }}"
+            enabled: yes
+            state: started
+          loop:
+            - auditd
+            - rsyslog
+
+        - name: Configure auditd rules
+          copy:
+            dest: /etc/audit/rules.d/cis.rules
+            content: |
+              -w /etc/sudoers -p wa -k scope
+              -w /etc/sudoers.d/ -p wa -k scope
+              -w /var/log/sudo.log -p wa -k actions
+              -w /etc/passwd -p wa -k identity
+              -w /etc/group -p wa -k identity
+              -w /etc/shadow -p wa -k identity
+              -w /var/run/faillock -p wa -k logins
+              -w /var/log/lastlog -p wa -k logins
+            owner: root
+            group: root
+            mode: '0640'
+
+        - name: SSH Hardening
+          lineinfile:
+            path: /etc/ssh/sshd_config
+            regexp: "{{ item.regexp }}"
+            line: "{{ item.line }}"
+            state: present
+          loop:
+            - { regexp: '^#?PermitRootLogin', line: 'PermitRootLogin no' }
+            - { regexp: '^#?PasswordAuthentication', line: 'PasswordAuthentication no' }
+            - { regexp: '^#?MaxAuthTries', line: 'MaxAuthTries 3' }
+            - { regexp: '^#?ClientAliveInterval', line: 'ClientAliveInterval 300' }
+            - { regexp: '^#?ClientAliveCountMax', line: 'ClientAliveCountMax 2' }
+            - { regexp: '^#?AllowAgentForwarding', line: 'AllowAgentForwarding no' }
+            - { regexp: '^#?X11Forwarding', line: 'X11Forwarding no' }
+            - { regexp: '^#?Banner', line: 'Banner /etc/ssh/banner' }
+            - { regexp: '^#?Protocol', line: 'Protocol 2' }
+          notify: restart sshd
+
+        - name: Create SSH Banner
+          copy:
+            dest: /etc/ssh/banner
+            content: |
+              UNAUTHORIZED ACCESS TO THIS DEVICE IS PROHIBITED.
+            owner: root
+            group: root
+            mode: '0644'
+
+    - name: UFW Firewall Configuration
+      block:
+        - name: Install UFW
+          package:
+            name: ufw
+            state: present
+
+        - name: Default deny incoming, allow outgoing
+          ufw:
+            state: enabled
+            direction: "{{ item.dir }}"
+            policy: "{{ item.pol }}"
+          loop:
+            - { dir: 'incoming', pol: 'deny' }
+            - { dir: 'outgoing', pol: 'allow' }
+
+        - name: Allow SSH from internal range
+          ufw:
+            rule: allow
+            port: '22'
+            proto: tcp
+            src: '10.0.0.0/8'
+
+        - name: Allow HTTP and HTTPS
+          ufw:
+            rule: allow
+            port: "{{ item }}"
+            proto: tcp
+          loop:
+            - '80'
+            - '443'
+
+        - name: Allow custom app ports from internal RFC1918
+          ufw:
+            rule: allow
+            src: "{{ item }}"
+          loop:
+            - '10.0.0.0/8'
+            - '172.16.0.0/12'
+            - '192.168.0.0/16'
+
+        - name: Enable UFW
+          systemd:
+            name: ufw
+            enabled: yes
+            state: started
+
+    - name: Developer-Requested Package Installation
+      block:
+        - name: Install base packages
+          package:
+            name: "{{ item }}"
+            state: present
+          loop:
+            - git
+            - curl
+            - wget
+            - jq
+            - vim
+            - htop
+            - tmux
+            - unzip
+            - python3
+            - python3-pip
+            - python3-venv
+
+        - name: Install build-essential (Debian/Ubuntu)
+          apt:
+            name: build-essential
+            state: present
+          when: ansible_os_family == 'Debian'
+
+        - name: Install Development Tools (RHEL/CentOS)
+          yum:
+            name: "@Development tools"
+            state: present
+          when: ansible_os_family == 'RedHat'
+
+        - name: Install Docker
+          package:
+            name: docker.io
+            state: present
+          when: ansible_os_family == 'Debian'
+
+        - name: Install Docker (RHEL)
+          yum:
+            name: docker
+            state: present
+          when: ansible_os_family == 'RedHat'
+
+        - name: Configure Docker daemon.json
+          copy:
+            dest: /etc/docker/daemon.json
+            content: |
+              {
+                "log-driver": "json-file",
+                "log-opts": {
+                  "max-size": "100m"
+                },
+                "storage-driver": "overlay2"
+              }
+            owner: root
+            group: root
+            mode: '0644'
+          notify: restart docker
+
+        - name: Enable and start Docker
+          systemd:
+            name: docker
+            enabled: yes
+            state: started
+
+        - name: Install gcloud SDK and kubectl (Debian)
+          block:
+            - name: Add Google Cloud apt key
+              apt_key:
+                url: https://packages.cloud.google.com/apt/doc/apt-key.gpg
+                state: present
+            - name: Add Google Cloud apt repo
+              apt_repository:
+                repo: deb https://packages.cloud.google.com/apt cloud-sdk main
+                state: present
+            - name: Install packages
+              apt:
+                name: "{{ item }}"
+                state: present
+              loop:
+                - google-cloud-sdk
+                - kubectl
+          when: ansible_os_family == 'Debian'
+
+        - name: Install Terraform (Debian)
+          block:
+            - name: Add HashiCorp apt key
+              apt_key:
+                url: https://apt.releases.hashicorp.com/gpg
+                state: present
+            - name: Add HashiCorp apt repo
+              apt_repository:
+                repo: "deb [arch=amd64] https://apt.releases.hashicorp.com {{ ansible_distribution_release }} main"
+                state: present
+            - name: Install Terraform
+              apt:
+                name: terraform
+                state: present
+          when: ansible_os_family == 'Debian'
+
+        - name: Install Helm
+          shell: |
+            curl -fsSL -o get_helm.sh https://raw.githubusercontent.com/helm/helm/main/scripts/get-helm-3
+            chmod 700 get_helm.sh
+            ./get_helm.sh
+            rm -f get_helm.sh
+          args:
+            creates: /usr/local/bin/helm
+
+        - name: Install AWS CLI
+          shell: |
+            curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip"
+            unzip awscliv2.zip
+            sudo ./aws/install
+            rm -rf aws awscliv2.zip
+          args:
+            creates: /usr/local/bin/aws
+
+    - name: GCP Ops Agent Installation
+      block:
+        - name: Download Ops Agent script
+          get_url:
+            url: https://dl.google.com/cloudagents/add-google-cloud-ops-agent-repo.sh
+            dest: /tmp/add-google-cloud-ops-agent-repo.sh
+            mode: '0755'
+        - name: Run Ops Agent script
+          command: /tmp/add-google-cloud-ops-agent-repo.sh --also-install
+        - name: Configure Ops Agent
+          copy:
+            dest: /etc/google-cloud-ops-agent/config.yaml
+            content: |
+              logging:
+                receivers:
+                  syslog:
+                    type: files
+                    include_paths:
+                      - /var/log/syslog
+                      - /var/log/messages
+                  auth_log:
+                    type: files
+                    include_paths:
+                      - /var/log/auth.log
+                      - /var/log/secure
+                  patch_manager:
+                    type: files
+                    include_paths:
+                      - /var/log/patch-manager/*.log
+                service:
+                  pipelines:
+                    default_pipeline:
+                      receivers: [syslog, auth_log, patch_manager]
+              metrics:
+                receivers:
+                  hostmetrics:
+                    type: hostmetrics
+                    collection_interval: 60s
+                service:
+                  pipelines:
+                    default_pipeline:
+                      receivers: [hostmetrics]
+            owner: root
+            group: root
+            mode: '0644'
+          notify: restart google-cloud-ops-agent
+
+    - name: Datadog Agent Installation
+      block:
+        - name: Install Datadog Agent script
+          shell: >
+            DD_API_KEY="{{ lookup('env', 'DD_API_KEY') | default('dummy_key', true) }}"
+            DD_SITE="datadoghq.com"
+            DD_APM_INSTRUMENTATION_ENABLED=host
+            bash -c "$(curl -L https://s3.amazonaws.com/dd-agent/scripts/install_script_agent7.sh)"
+          environment:
+            DD_API_KEY: "{{ lookup('env', 'DD_API_KEY') | default('dummy_key', true) }}"
+          ignore_errors: yes
+
+        - name: Configure Datadog Agent
+          copy:
+            dest: /etc/datadog-agent/datadog.yaml
+            content: |
+              api_key: "{{ lookup('env', 'DD_API_KEY') | default('dummy_key', true) }}"
+              site: datadoghq.com
+              tags:
+                - "environment:production"
+                - "managed_by:ansible"
+              logs_enabled: true
+              apm_config:
+                enabled: true
+            owner: dd-agent
+            group: dd-agent
+            mode: '0640'
+          notify: restart datadog-agent
+          ignore_errors: yes
+
+    - name: Pre-Snapshot Cleanup (CRITICAL)
+      block:
+        - name: Remove bash_history for all users
+          shell: rm -f /home/*/.bash_history /root/.bash_history ~/.bash_history
+          ignore_errors: yes
+
+        - name: Truncate log files
+          shell: |
+            truncate -s 0 /var/log/auth.log || true
+            truncate -s 0 /var/log/syslog || true
+            truncate -s 0 /var/log/messages || true
+            truncate -s 0 /var/log/secure || true
+            find /var/log -type f -name "*.log" -exec truncate -s 0 {} \;
+          ignore_errors: yes
+
+        - name: Remove /tmp contents
+          shell: rm -rf /tmp/*
+          ignore_errors: yes
+
+        - name: Remove SSH host keys
+          shell: rm -f /etc/ssh/ssh_host_*
+          ignore_errors: yes
+
+        - name: Remove cloud-init data
+          shell: rm -rf /var/lib/cloud/instances /var/lib/cloud/data
+          ignore_errors: yes
+
+        - name: Remove package manager caches
+          shell: |
+            if command -v apt-get >/dev/null 2>&1; then apt-get clean && rm -rf /var/lib/apt/lists/*; fi
+            if command -v yum >/dev/null 2>&1; then yum clean all; fi
+          ignore_errors: yes
+
+        - name: Remove pip cache
+          shell: pip3 cache purge || true
+          ignore_errors: yes
+
+        - name: Remove authorized_keys
+          shell: rm -f /root/.ssh/authorized_keys
+          ignore_errors: yes
+
+        - name: Zero out free space (Optional)
+          shell: dd if=/dev/zero of=/zero.file bs=1M || true; rm -f /zero.file
+          ignore_errors: yes
+
+        - name: Sync filesystem
+          shell: sync
+
+  handlers:
+    - name: restart sshd
+      systemd:
+        name: sshd
+        state: restarted
+    - name: restart docker
+      systemd:
+        name: docker
+        state: restarted
+    - name: restart google-cloud-ops-agent
+      systemd:
+        name: google-cloud-ops-agent
+        state: restarted
+    - name: restart datadog-agent
+      systemd:
+        name: datadog-agent
+        state: restarted

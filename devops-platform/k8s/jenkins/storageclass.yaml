@@ -1,0 +1,18 @@
+apiVersion: storage.k8s.io/v1
+kind: StorageClass
+metadata:
+  name: premium-rwo
+  labels:
+    app.kubernetes.io/managed-by: kustomize
+    environment: production
+    team: platform-sre
+  annotations:
+    storageclass.kubernetes.io/is-default-class: "false"
+    description: "Enterprise SSD Storage for stateful workloads like Jenkins"
+provisioner: pd.csi.storage.gke.io
+parameters:
+  type: pd-ssd
+  replication-type: regional-pd
+reclaimPolicy: Retain
+allowVolumeExpansion: true
+volumeBindingMode: WaitForFirstConsumer

@@ -1,0 +1,84 @@
+# namespace.yaml - Jenkins production namespace with resource quotas and network policies
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: jenkins-prod
+  labels:
+    app.kubernetes.io/name: jenkins
+    app.kubernetes.io/component: controller
+    environment: production
+    team: platform-sre
+    cost-center: "CC-1042"
+  annotations:
+    scheduler.alpha.kubernetes.io/node-selector: ""
+    contact: platform-sre@enterprise.com
+---
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: jenkins-agents
+  labels:
+    app.kubernetes.io/name: jenkins
+    app.kubernetes.io/component: agents
+    environment: production
+    team: platform-sre
+    cost-center: "CC-1042"
+  annotations:
+    contact: platform-sre@enterprise.com
+---
+apiVersion: v1
+kind: ResourceQuota
+metadata:
+  name: jenkins-prod-quota
+  namespace: jenkins-prod
+spec:
+  hard:
+    requests.cpu: "8"
+    requests.memory: 16Gi
+    limits.cpu: "16"
+    limits.memory: 32Gi
+    persistentvolumeclaims: "5"
+    pods: "20"
+---
+apiVersion: v1
+kind: ResourceQuota
+metadata:
+  name: jenkins-agents-quota
+  namespace: jenkins-agents
+spec:
+  hard:
+    requests.cpu: "64"
+    requests.memory: 128Gi
+    limits.cpu: "128"
+    limits.memory: 256Gi
+    pods: "100"
+---
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: jenkins-controller-netpol
+  namespace: jenkins-prod
+spec:
+  podSelector:
+    matchLabels:
+      app.kubernetes.io/name: jenkins
+  policyTypes:
+  - Ingress
+  - Egress
+  ingress:
+  - from:
+    - namespaceSelector:
+        matchLabels:
+          kubernetes.io/metadata.name: jenkins-agents
+    ports:
+    - protocol: TCP
+      port: 50000
+  - from:
+    - namespaceSelector:
+        matchLabels:
+          kubernetes.io/metadata.name: ingress-nginx
+    ports:
+    - protocol: TCP
+      port: 8080
+  egress:
+  - {} # Allow all egress for controller (GCP APIs, SonarQube, Artifactory)

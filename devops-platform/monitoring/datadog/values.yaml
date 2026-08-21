@@ -1,0 +1,70 @@
+datadog:
+  apiKeyExistingSecret: "datadog-api-key"
+  appKeyExistingSecret: "datadog-app-key"
+  site: "datadoghq.com"
+  clusterName: "enterprise-gke-prod-us-central1"
+  tags:
+    - "env:production"
+    - "team:platform-sre"
+    - "cloud:gcp"
+    - "region:us-central1"
+  collectEvents: true
+  leaderElection: true
+
+  logs:
+    enabled: true
+    containerCollectAll: true
+    autoMultiLineDetection: true
+
+  apm:
+    portEnabled: true
+
+  processAgent:
+    enabled: true
+    processCollection: true
+
+  systemProbe:
+    enabled: true
+
+  networkMonitoring:
+    enabled: true
+
+  kubelet:
+    tlsVerify: false
+
+  criSocketPath: /var/run/containerd/containerd.sock
+
+  kubeStateMetricsEnabled: true
+  
+  orchestratorExplorer:
+    enabled: true
+
+  securityAgent:
+    runtime:
+      enabled: true
+
+agents:
+  tolerations:
+    - operator: Exists
+  resources:
+    requests:
+      cpu: "200m"
+      memory: "256Mi"
+    limits:
+      cpu: "500m"
+      memory: "512Mi"
+
+  daemonset:
+    updateStrategy:
+      type: RollingUpdate
+      rollingUpdate:
+        maxUnavailable: "10%"
+
+clusterAgent:
+  enabled: true
+  replicas: 2
+  metricsProvider:
+    enabled: true
+
+clusterChecksRunner:
+  enabled: true

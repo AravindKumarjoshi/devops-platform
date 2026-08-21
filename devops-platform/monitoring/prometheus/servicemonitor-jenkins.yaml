@@ -1,0 +1,57 @@
+apiVersion: monitoring.coreos.com/v1
+kind: ServiceMonitor
+metadata:
+  name: jenkins-monitor
+  namespace: jenkins-prod
+  labels:
+    release: prometheus
+spec:
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: jenkins
+  endpoints:
+    - port: web
+      path: /prometheus
+      interval: 30s
+      scheme: http
+      relabelings:
+        - sourceLabels: [__meta_kubernetes_pod_name]
+          targetLabel: instance
+        - targetLabel: job
+          replacement: jenkins
+---
+apiVersion: monitoring.coreos.com/v1
+kind: PrometheusRule
+metadata:
+  name: jenkins-alerts
+  namespace: jenkins-prod
+  labels:
+    release: prometheus
+spec:
+  groups:
+    - name: jenkins
+      rules:
+        - alert: JenkinsBuildQueueSaturated
+          expr: jenkins_queue_size_value > 10
+          for: 5m
+          labels:
+            severity: warning
+          annotations:
+            summary: "Jenkins build queue is saturated"
+            description: "Jenkins queue size has been greater than 10 for more than 5 minutes."
+        - alert: JenkinsAgentOffline
+          expr: jenkins_executor_count_value < 2
+          for: 5m
+          labels:
+            severity: critical
+          annotations:
+            summary: "Jenkins agents offline"
+            description: "Jenkins has fewer than 2 executors available for more than 5 minutes."
+        - alert: JenkinsBuildDurationHigh
+          expr: histogram_quantile(0.95, sum(rate(jenkins_builds_duration_milliseconds_summary_bucket[5m])) by (le)) > 1800000
+          for: 5m
+          labels:
+            severity: warning
+          annotations:
+            summary: "Jenkins build duration is high"
+            description: "95th percentile of Jenkins build duration is over 30 minutes."
